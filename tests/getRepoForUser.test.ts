@@ -9,11 +9,11 @@ const data = {
     message: "done",
     data: [
       {
-        name: "cirrus-api-odbc-accelerator",
-        full_name: "EliLillyCo/cirrus-api-odbc-accelerator",
+        name: "repoNameOne",
+        full_name: "NickLiffen/repoNameOne",
         private: true,
         owner: {
-          login: "EliLillyCo",
+          login: "NickLiffen",
         },
         permissions: { admin: true, push: false, pull: true },
       },
@@ -27,11 +27,11 @@ const data = {
     message: "done",
     data: [
       {
-        name: "cirrus-api-odbc-accelerator",
-        full_name: "m-Pankaj/cirrus-api-odbc-accelerator",
+        name: "repoNameTwo",
+        full_name: "TestOrgTwo/repoNameTwo",
         private: true,
         owner: {
-          login: "m-Pankaj",
+          login: "TestOrgTwo",
         },
         permissions: { admin: true, push: false, pull: true },
       },
@@ -78,7 +78,7 @@ describe("Fetch Repos for current authenticated user", () => {
     jest.restoreAllMocks();
   });
 
-  it("Success in fetching repositories where owner is EliLillyCo", async () => {
+  it("Success in fetching repositories where owner is personal org", async () => {
     const client = (await octokit()) as Octokit;
 
     const mockAddListener = jest.spyOn(client, "paginate");
@@ -94,7 +94,7 @@ describe("Fetch Repos for current authenticated user", () => {
     expect(response).toStrictEqual(res);
   });
 
-  it("Successfully fetches repositories where owner is not EliLillyCo", async () => {
+  it("Successfully fetches repositories where owner is not a personal org", async () => {
     const client = (await octokit()) as Octokit;
 
     const mockAddListener = jest.spyOn(client, "paginate");

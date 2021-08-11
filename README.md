@@ -2,7 +2,7 @@
 
 ## Context
 
-There is no API access into the `.github/workflows/*` directory, and teams do not want to go and create a `codeql-analysis.yml` files manually across hundruds of repositories. 
+There is no API access into the `.github/workflows/*` directory, and teams do not want to go and create a `codeql-analysis.yml` files manually across hundreds of repositories. 
 
 ## Purpose
 
@@ -19,9 +19,9 @@ There are two main actions this tool does:
 ## Prerequisite
 
 -   [Node v12](https://nodejs.org/en/download/) or higher installed.
--   [Git](https://git-scm.com/downloads) installed on the users machine running this tool.
--   Someone who has at least admin access over the repositories that they want to enable Code Scanning on.
--   Some basic software development skills, e.g, is able to navigate there way around a terminal or command prompt.
+-   [Git](https://git-scm.com/downloads) installed on the user's machine running this tool.
+-   Someone who has at least admin access over the repositories they want to enable Code Scanning on.
+-   Some basic software development skills, e.g., can navigate their way around a terminal or command prompt.
 
 ## Set up Instructions
 
@@ -31,7 +31,7 @@ There are two main actions this tool does:
 git clone https://github.com/NickLiffen/ghas-enablement.git
 ```
 
-2.  Change directory to the repository you have just installed.
+2.  Change the directory to the repository you have just installed.
 
 ```
 cd ghas-enablement
@@ -49,7 +49,9 @@ mv .env-sample .env
 
 6.  Update the `GITHUB_ORG` value found within the `.env`. Remove the `XXXX` and replace that with the name of the GitHub Organisation you would like to use as part of this script.
 
-7.  Check the `codeql-analysis.yml` file. This is a sample file, please configure this file to suit your application needs.
+7.  Check the `codeql-analysis.yml` file. This is a sample file; please configure this file to suit your application needs.
+
+8. Run `npm run build`, which will create the JavaScript bundle from TypeScript.
 
 ## How to use?
 
@@ -65,7 +67,7 @@ The first step is collecting the repositories you would like to run this script 
 npm run getRepos
 ```
 
-In case you don't want to manually go through and copy/paste the repo names into `repos.json`, you may execute this command that returns you with a list of repos the current user is associated with and has admin access to. Post successful execution of this command, `repos.json` is created/updated at the root level holding the desired list. This can be viewed/edited and you may proceed with the next command to perform updates. You are welcome to modify this file. Just make sure it's a valid json file if you do edit.
+Suppose you don't want to manually go through and copy/paste the repo names into `repos.json`. In that case, you may execute this command that returns you with a list of repos the current user is associated with and has admin access to. Post successful execution of this command, `repos.json` is created/updated at the root level holding the desired list. This can be viewed/edited, and you may proceed with the following command to perform updates. You are welcome to modify this file. Just make sure it's a valid JSON file if you do edit.
 
 OR
 
@@ -75,17 +77,17 @@ Create a file called `repos.json` within the root of this directory. This file n
 
 ```
 [{
-		"repo": "repo-name-one",
-		"enableDependabot": false
-	},
-	{
-		"repo": "repo-name-two",
-		"enableDependabot": true
-	}
+        "repo": "repo-name-one",
+        "enableDependabot": false
+    },
+    {
+        "repo": "repo-name-two",
+        "enableDependabot": true
+    }
 ]
 ```
 
-As you can see, the object takes two keys, `repo` and `enableDependabot`. Set `repo` to name of the repository name where you would like the `codeql-analysis.yml` file to be enabled on. Set `enableDependabot` to `true` if you would also like to enable `Dependabot` on that repo, set it to `false` if you do not want to enable `Dependabot`.
+As you can see, the object takes two keys, `repo` and `enableDependabot`. Set `repo` to the name of the repository name where you would like the `codeql-analysis.yml` file to be enabled on. Set `enableDependabot` to `true` if you would also like to enable `Dependabot` on that repo; set it to `false` if you do not want to enable `Dependabot`.
 
 **NOTE:** The account that generated the PAT needs to have `write` access or higher over any repository that you include within the `repos` key.
 
@@ -99,11 +101,11 @@ npm run start
 
 This will run a script, and you should see output text appearing on your screen.
 
-After the script has ran, please head to your `~/Desktop` directory and delete the `tempGitLocations` directory that has been automatically created.
+After the script has run, please head to your `~/Desktop` directory and delete the `tempGitLocations` directory that has been automatically created.
 
 ## Found an Issue?
 
-Create an issue within the repository and make to `@nickliffen`. Key things to mention within your issue:
+Create an issue within the repository and make it to `@nickliffen`. Key things to mention within your issue:
 
 -   Windows or Mac
 -   What version of NodeJS you are running.
