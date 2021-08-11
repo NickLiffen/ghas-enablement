@@ -6,7 +6,7 @@ There is no API access into the `.github/workflows/*` directory, and teams do no
 
 ## Purpose
 
-The purpose of this tool is to help enable GitHub Code Scanning across multiple repositories in an automated way.
+The purpose of this tool is to help create a `codeql-analysis.yml` file across multiple repositories in an automated way.
 
 ## What does this tooling do?
 
@@ -27,13 +27,13 @@ There are two main actions this tool does:
 
 1.  Clone this repository onto your local machine.
 
-```
+```bash
 git clone https://github.com/NickLiffen/ghas-enablement.git
 ```
 
 2.  Change the directory to the repository you have just installed.
 
-```
+```bash
 cd ghas-enablement
 ```
 
@@ -41,7 +41,7 @@ cd ghas-enablement
 
 4.  Rename the `.env-sample` to `.env`. On a Mac, this can be done via the following terminal command:
 
-```
+```bash
 mv .env-sample .env
 ```
 
@@ -63,7 +63,7 @@ The first step is collecting the repositories you would like to run this script 
 
 **OPTION 1** (Preferred)
 
-```
+```bash
 npm run getRepos
 ```
 
@@ -75,16 +75,15 @@ OR
 
 Create a file called `repos.json` within the root of this directory. This file needs to have an array of objects. The structure of the objects should look like this:
 
-```
+```json
 [{
-        "repo": "repo-name-one",
-        "enableDependabot": false
-    },
-    {
-        "repo": "repo-name-two",
-        "enableDependabot": true
-    }
-]
+    "repo": "repo-name-one",
+    "enableDependabot": false
+},
+{
+    "repo": "repo-name-two",
+    "enableDependabot": true
+}]
 ```
 
 As you can see, the object takes two keys, `repo` and `enableDependabot`. Set `repo` to the name of the repository name where you would like the `codeql-analysis.yml` file to be enabled on. Set `enableDependabot` to `true` if you would also like to enable `Dependabot` on that repo; set it to `false` if you do not want to enable `Dependabot`.
@@ -95,7 +94,7 @@ As you can see, the object takes two keys, `repo` and `enableDependabot`. Set `r
 
 Run the script which enables Code Scanning (and/or Dependabot) on your repository by running:
 
-```
+```bash
 npm run start
 ```
 
