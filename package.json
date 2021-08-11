@@ -10,8 +10,8 @@
 		"lint": "npx eslint . --ext .ts",
 		"lint-fix": "npx eslint --fix . --ext .ts",
 		"test": "npx jest --coverage --verbose",
-		"getRepos": "node ./lib/src/get-repo.js",
-		"start": "node ./lib/src/index.js"
+		"getRepos": "node ./lib/src/get-repos.js",
+		"start": "node ./lib/src/enable.js"
 	},
 	"keywords": [
 		"GitHub",

@@ -1,0 +1,10 @@
+[
+    {
+        "enableDependabot": false,
+        "repo": "RepositoryOne"
+    },
+    {
+        "enableDependabot": false,
+        "repo": "RepositoryTwo"
+    }
+]

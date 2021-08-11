@@ -29,6 +29,17 @@ export type listOrgReposParameters =
 export type listOrgReposResponse =
   PaginatingEndpoints["GET /orgs/{org}/repos"]["response"];
 
+export type updateReposParameters =
+  Endpoints["PATCH /repos/{owner}/{repo}"]["parameters"];
+export type updateReposResponse =
+  Endpoints["PATCH /repos/{owner}/{repo}"]["response"];
+
+export type listCodeScanningParameters =
+  Endpoints["GET /repos/{owner}/{repo}/code-scanning/analyses"]["parameters"];
+
+export type listCodeScanningResponse =
+  Endpoints["GET /repos/{owner}/{repo}/code-scanning/analyses"]["response"];
+
 export type listVulnerabilityAlertsParameters =
   Endpoints["GET /repos/{owner}/{repo}/vulnerability-alerts"]["parameters"];
 export type listVulnerabilityAlertsResponse =
