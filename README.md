@@ -51,7 +51,9 @@ mv .env-sample .env
 
 7.  Check the `codeql-analysis.yml` file. This is a sample file; please configure this file to suit your application needs.
 
-8. Run `npm run build`, which will create the JavaScript bundle from TypeScript.
+8. Run `npm install`, which will install the necessary dependencies.
+
+9. Run `npm run build`, which will create the JavaScript bundle from TypeScript.
 
 ## How to use?
 
