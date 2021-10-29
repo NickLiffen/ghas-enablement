@@ -1,0 +1,50 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.202.3/containers/typescript-node
+{
+  "name": "Node.js & TypeScript",
+  "runArgs": ["--init"],
+  "build": {
+    "dockerfile": "Dockerfile",
+    "args": {
+      "VARIANT": "14"
+    }
+  },
+
+  // Set *default* container specific settings.json values on container create.
+  "settings": {},
+
+  "extensions": [
+    "dbaeumer.vscode-eslint",
+    "hookyqr.beautify",
+    "github.vscode-codeql",
+    "naumovs.color-highlight",
+    "redhat.vscode-yaml",
+    "vscode-icons-team.vscode-icons",
+    "wayou.vscode-todo-highlight",
+    "esbenp.prettier-vscode",
+    "ms-vscode.vscode-typescript-next",
+    "xabikos.javascriptsnippets",
+    "graphql.vscode-graphql",
+    "github.copilot",
+    "donjayamanne.githistory",
+    "dsznajder.es7-react-js-snippets",
+    "nixon.env-cmd-file-syntax",
+    "ms-azuretools.vscode-docker",
+    "yzhang.markdown-all-in-one",
+    "sodatea.velocity"
+  ],
+
+  "forwardPorts": [4000],
+
+  "postCreateCommand": "npm install && npm run build",
+
+  "remoteUser": "node",
+  "features": {
+    "docker-in-docker": "latest",
+    "docker-from-docker": "latest",
+    "git": "latest",
+    "github-cli": "latest",
+    "homebrew": "latest",
+    "python": "latest"
+  }
+}
