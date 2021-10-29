@@ -1,10 +1,10 @@
 [
   {
     "enableDependabot": false,
-    "repo": "RepositoryOne"
+    "repo": "PythonRepoTwo"
   },
   {
     "enableDependabot": false,
-    "repo": "RepositoryTwo"
+    "repo": "PythonRepoOne"
   }
 ]

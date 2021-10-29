@@ -7,7 +7,7 @@ import { createPullRequest } from "./createPullRequest.js";
 import { writeToFile } from "./writeToFile.js";
 import { octokit } from "./octokit.js";
 import { commitFileMac } from "./commitFile.js";
-import { enableGHAS } from "./enableGHAS.js";
+// import { enableGHAS } from "./enableGHAS.js";
 import { enableDependabotAlerts } from "./enableDependabotAlerts";
 import repos from "../../repos.json";
 
@@ -22,7 +22,7 @@ export const worker = async (): Promise<unknown> => {
     if (enableDependabot) {
       await enableDependabotAlerts(repo, client);
     }
-    await enableGHAS(repo, client);
+    // await enableGHAS(repo, client);
     const defaultBranch = await findDefulatBranch(repo, client);
     const defaultBranchSHA = await findDefulatBranchSHA(
       defaultBranch,

@@ -34,6 +34,11 @@ export type updateReposParameters =
 export type updateReposResponse =
   Endpoints["PATCH /repos/{owner}/{repo}"]["response"];
 
+export type searchParameters =
+  Endpoints["GET /search/repositories"]["parameters"];
+export type searchResponse =
+  Endpoints["GET /search/repositories"]["response"];
+
 export type listCodeScanningParameters =
   Endpoints["GET /repos/{owner}/{repo}/code-scanning/analyses"]["parameters"];
 

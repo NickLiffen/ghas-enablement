@@ -10,7 +10,8 @@
 		"lint": "npx eslint . --ext .ts",
 		"lint-fix": "npx eslint --fix . --ext .ts",
 		"test": "npx jest --coverage --verbose",
-		"getRepos": "node ./lib/src/get-repos.js",
+		"getReposByUser": "node ./lib/src/get-repos-by-user.js",
+		"getReposByLanguage": "node ./lib/src/get-repo-by-language.js",
 		"start": "node ./lib/src/enable.js"
 	},
 	"keywords": [
