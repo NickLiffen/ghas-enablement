@@ -37,7 +37,7 @@ git clone https://github.com/NickLiffen/ghas-enablement.git
 cd ghas-enablement
 ```
 
-3.  Generate a [Personal Access Token (PAT)](https://github.com/settings/tokens/new) and assign the `repo` scope.
+3.  Generate your choosen authentication stratergy. You are either able to use a [GitHub App](https://docs.github.com/en/developers/apps/getting-started-with-apps/about-apps) or a [Personal Access Token (PAT)](https://github.com/settings/tokens/new). The GitHub App needs to have permissions of `read and write` of `pull requests` `issues`, `dependabot`, `contents`. The GitHub PAT needs access to `repo` only.
 
 4.  Rename the `.env-sample` to `.env`. On a Mac, this can be done via the following terminal command:
 
