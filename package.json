@@ -1,61 +1,62 @@
 {
-	"name": "github-helper",
-	"version": "1.0.0",
-	"description": "GitHub Helpers - GHAS Code Scanning File",
-	"main": "lib/src/index.js",
-	"scripts": {
-		"build": "npx tsc",
-		"format": "npx prettier --write '**/*.ts'",
-		"format-check": "npx prettier --check '**/*.ts'",
-		"lint": "npx eslint . --ext .ts",
-		"lint-fix": "npx eslint --fix . --ext .ts",
-		"test": "npx jest --coverage --verbose",
-		"getReposByUser": "node ./lib/src/get-repos-by-user.js",
-		"getReposByLanguage": "node ./lib/src/get-repo-by-language.js",
-		"start": "npm run build && node ./lib/src/enable.js"
-	},
-	"keywords": [
-		"GitHub",
-		"Advanced Security"
-	],
-	"devDependencies": {
-		"@tsconfig/node14": "^1.0.1",
-		"@types/aws-lambda": "^8.10.84",
-		"@types/debug": "^4.1.7",
-		"@types/jest": "^27.0.2",
-		"@types/json-schema": "^7.0.9",
-		"@types/mock-fs": "^4.13.1",
-		"@types/node": "^16.11.6",
-		"@types/randomstring": "^1.1.8",
-		"@typescript-eslint/eslint-plugin": "^5.2.0",
-		"@typescript-eslint/parser": "^5.2.0",
-		"eslint": "^8.1.0",
-		"eslint-config-prettier": "^8.3.0",
-		"eslint-plugin-jest": "^25.2.2",
-		"eslint-plugin-prettier": "^4.0.0",
-		"jest": "^27.3.1",
-		"mock-fs": "^5.1.1",
-		"prettier": "^2.4.1",
-		"ts-jest": "^27.0.7",
-		"ts-node": "^10.4.0",
-		"tslib": "^2.3.1",
-		"typescript": "^4.4.4"
-	},
-	"author": "Nick Liffen",
-	"license": "ISC",
-	"engines": {
-		"node": "16"
-	},
-	"dependencies": {
-		"@octokit/core": "^3.5.1",
-		"@octokit/plugin-paginate-rest": "^2.17.0",
-		"@octokit/plugin-retry": "^3.0.9",
-		"@octokit/plugin-throttling": "^3.5.2",
-		"@octokit/request-error": "^2.1.0",
-		"@octokit/types": "^6.34.0",
-		"debug": "^4.3.2",
-		"delay": "^5.0.0",
-		"dotenv": "^10.0.0",
-		"randomstring": "^1.2.1"
-	}
+  "name": "github-helper",
+  "version": "1.0.0",
+  "description": "GitHub Helpers - GHAS Code Scanning File",
+  "main": "lib/src/index.js",
+  "scripts": {
+    "build": "npx tsc",
+    "prepare": "husky install",
+    "prettier-write": "npx prettier --write '**/*.{ts,json,md,yaml,yml}'",
+    "prettier-check": "npx prettier --check '**/*.{ts,json,md,yaml,yml}'",
+    "lint": "npx eslint '**/*.{ts,json}'",
+    "lint-fix": "npx eslint --fix '**/*.{ts,json}'",
+    "test": "npx jest --coverage --verbose",
+    "getReposByUser": "node ./lib/src/get-repos-by-user.js",
+    "getReposByLanguage": "node ./lib/src/get-repo-by-language.js",
+    "start": "npm run build && node ./lib/src/enable.js"
+  },
+  "keywords": [
+    "GitHub",
+    "Advanced Security"
+  ],
+  "devDependencies": {
+    "@tsconfig/node14": "^1.0.1",
+    "@types/aws-lambda": "^8.10.84",
+    "@types/debug": "^4.1.7",
+    "@types/jest": "^27.0.2",
+    "@types/json-schema": "^7.0.9",
+    "@types/mock-fs": "^4.13.1",
+    "@types/node": "^16.11.6",
+    "@types/randomstring": "^1.1.8",
+    "@typescript-eslint/eslint-plugin": "^5.2.0",
+    "@typescript-eslint/parser": "^5.2.0",
+    "eslint": "^8.1.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-jest": "^25.2.2",
+    "eslint-plugin-prettier": "^4.0.0",
+    "jest": "^27.3.1",
+    "mock-fs": "^5.1.1",
+    "prettier": "^2.4.1",
+    "ts-jest": "^27.0.7",
+    "ts-node": "^10.4.0",
+    "tslib": "^2.3.1",
+    "typescript": "^4.4.4"
+  },
+  "author": "Nick Liffen",
+  "license": "ISC",
+  "engines": {
+    "node": "16"
+  },
+  "dependencies": {
+    "@octokit/core": "^3.5.1",
+    "@octokit/plugin-paginate-rest": "^2.17.0",
+    "@octokit/plugin-retry": "^3.0.9",
+    "@octokit/plugin-throttling": "^3.5.2",
+    "@octokit/request-error": "^2.1.0",
+    "@octokit/types": "^6.34.0",
+    "debug": "^4.3.2",
+    "delay": "^5.0.0",
+    "dotenv": "^10.0.0",
+    "randomstring": "^1.2.1"
+  }
 }
