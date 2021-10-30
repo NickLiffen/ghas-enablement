@@ -20,6 +20,7 @@ export const fetchReposByLanguage = async (octokit: Octokit): Promise<response> 
       "GET /search/repositories",
       requestParams,
       (response: searchResponse) => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         return response.data.map((repo) => {
           return {
