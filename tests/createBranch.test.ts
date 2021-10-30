@@ -59,7 +59,7 @@ describe("Create Branch", () => {
 
     try {
       await createBranch(sha, repo, client);
-    } catch (error) {
+    } catch (error: any) {
       expect(error.message).toEqual("Error creating branch");
     }
   });

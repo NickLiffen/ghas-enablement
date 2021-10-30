@@ -59,7 +59,7 @@ describe("Default Branch SHA", () => {
 
     try {
       await findDefulatBranchSHA(defaultBranch, repo, client);
-    } catch (error) {
+    } catch (error: any) {
       expect(error.message).toEqual("Error finding default branch SHA");
     }
   });
