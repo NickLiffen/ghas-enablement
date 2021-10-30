@@ -1,4 +1,4 @@
-import { fetchRepos } from "../src/utils/getRepoForUser";
+import { fetchReposByUser } from "../src/utils/getRepoForUser";
 
 import { octokit } from "../src/utils/octokit";
 
@@ -90,7 +90,7 @@ describe("Fetch Repos for current authenticated user", () => {
         })
     );
 
-    const response = await fetchRepos(client);
+    const response = await fetchReposByUser(client);
     expect(response).toStrictEqual(res);
   });
 
@@ -106,7 +106,7 @@ describe("Fetch Repos for current authenticated user", () => {
         })
     );
 
-    const response = await fetchRepos(client);
+    const response = await fetchReposByUser(client);
     expect(response).toStrictEqual(res);
   });
 
@@ -122,7 +122,7 @@ describe("Fetch Repos for current authenticated user", () => {
         })
     );
 
-    const response = await fetchRepos(client);
+    const response = await fetchReposByUser(client);
     expect(response).toStrictEqual(res);
   });
 
@@ -139,7 +139,7 @@ describe("Fetch Repos for current authenticated user", () => {
     );
 
     try {
-      await fetchRepos(client);
+      await fetchReposByUser(client);
     } catch (error) {
       expect(error.message).toEqual("Error finding repos");
     }
