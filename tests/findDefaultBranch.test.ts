@@ -55,7 +55,7 @@ describe("Default Branch", () => {
 
     try {
       await findDefulatBranch(repo, client);
-    } catch (error) {
+    } catch (error: any) {
       expect(error.message).toEqual("Error finding default branch");
     }
   });

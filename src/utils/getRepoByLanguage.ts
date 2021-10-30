@@ -6,8 +6,9 @@ import { Octokit } from "./octokitTypes";
 
 import { searchParameters, searchResponse } from "./octokitTypes";
 
-export const fetchReposByLanguage = async (octokit: Octokit): Promise<response> => {
-
+export const fetchReposByLanguage = async (
+  octokit: Octokit
+): Promise<response> => {
   const org = process.env.GITHUB_ORG;
   const language = process.env.LANGUAGE;
 
@@ -27,7 +28,7 @@ export const fetchReposByLanguage = async (octokit: Octokit): Promise<response> 
             enableDependabot: false,
             repo: repo.name,
           };
-        })
+        });
       }
     )) as usersWriteAdminReposArray;
 

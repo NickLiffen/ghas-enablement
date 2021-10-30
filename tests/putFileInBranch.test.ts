@@ -59,7 +59,7 @@ describe("Commit File", () => {
 
     try {
       await putFileInBranch(refs, repo, client);
-    } catch (error) {
+    } catch (error: any) {
       expect(error.message).toEqual("Error putting fils in branch");
     }
   });

@@ -58,7 +58,7 @@ describe("Create Pull Request", () => {
 
     try {
       await createPullRequest(base, refs, repo, client);
-    } catch (error) {
+    } catch (error: any) {
       expect(error.message).toEqual("Error creating pull request");
     }
   });

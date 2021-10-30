@@ -89,7 +89,7 @@ describe("Enable Dependabot", () => {
 
     try {
       await enableDependabotAlerts(repo, client);
-    } catch (error) {
+    } catch (error: any) {
       expect(error.message).toEqual("Error enabling Dependabot");
     }
   });

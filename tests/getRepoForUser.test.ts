@@ -140,7 +140,7 @@ describe("Fetch Repos for current authenticated user", () => {
 
     try {
       await fetchReposByUser(client);
-    } catch (error) {
+    } catch (error: any) {
       expect(error.message).toEqual("Error finding repos");
     }
   });
