@@ -4,30 +4,31 @@ import { createReposListFile } from "./writeToFile";
 
 import { Octokit } from "./octokitTypes";
 
-import { listOrgReposParameters, listOrgReposResponse } from "./octokitTypes";
+import { searchParameters, searchResponse } from "./octokitTypes";
 
-export const fetchReposByUser = async (octokit: Octokit): Promise<response> => {
+export const fetchReposByLanguage = async (octokit: Octokit): Promise<response> => {
+
+  const org = process.env.GITHUB_ORG;
+  const language = process.env.LANGUAGE;
+
   try {
     const requestParams = {
-      type: "all",
-      per_page: 100,
-      org: process.env.GITHUB_ORG,
-    } as listOrgReposParameters;
+      q: `org:${org} language:${language}`,
+    } as searchParameters;
 
     const repos = (await octokit.paginate(
-      "GET /orgs/{org}/repos",
+      "GET /search/repositories",
       requestParams,
-      (response: listOrgReposResponse) =>
-        response.data.map((repo) => {
-          const permission = repo.permissions ? repo.permissions.admin : false;
-          if (permission) {
-            return {
-              enableDependabot: false,
-              repo: repo.name,
-            };
-          }
-          return {};
+      (response: searchResponse) => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        return response.data.map((repo) => {
+          return {
+            enableDependabot: false,
+            repo: repo.name,
+          };
         })
+      }
     )) as usersWriteAdminReposArray;
 
     inform(repos);

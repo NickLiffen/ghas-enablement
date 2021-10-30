@@ -4,7 +4,7 @@ dotenv.config({ path: __dirname + "/../../.env" });
 
 import { error } from "./utils/globals";
 
-import { fetchRepos } from "./utils/getRepoForUser";
+import { fetchReposByUser } from "./utils/getRepoForUser";
 import { octokit } from "./utils/octokit";
 
 import { Octokit } from "./utils/octokitTypes";
@@ -12,7 +12,7 @@ import { Octokit } from "./utils/octokitTypes";
 async function start() {
   try {
     const client = (await octokit()) as Octokit;
-    await fetchRepos(client);
+    await fetchReposByUser(client);
   } catch (err) {
     error(err);
     return err;
