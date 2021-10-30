@@ -2,10 +2,7 @@ import { owner, inform, error } from "./globals";
 
 import { Octokit } from "./octokitTypes";
 
-import {
-  updateReposResponse,
-  updateReposParameters,
-} from "./octokitTypes";
+import { updateReposResponse, updateReposParameters } from "./octokitTypes";
 
 export const enableGHAS = async (
   repo: string,

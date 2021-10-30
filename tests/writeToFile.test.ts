@@ -6,11 +6,11 @@ const pullRequestURL = "https://github.com/repoURL";
 const reposList = [
   {
     enableDependabot: false,
-    repo: "aads-edb-sandox-nithen-test",
+    repo: "repoOne",
   },
   {
     enableDependabot: false,
-    repo: "aads-test-nick-deployment-pipeline",
+    repo: "repoTwo",
   },
 ];
 

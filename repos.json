@@ -1,14 +1,1 @@
-[]  {
-    "name": "repoNameTwo",
-    "full_name": "TestOrgTwo/repoNameTwo",
-    "private": true,
-    "owner": {
-      "login": "TestOrgTwo"
-    },
-    "permissions": {
-      "admin": true,
-      "push": false,
-      "pull": true
-    }
-  }
-]
+[]

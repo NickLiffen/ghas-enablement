@@ -36,8 +36,7 @@ export type updateReposResponse =
 
 export type searchParameters =
   Endpoints["GET /search/repositories"]["parameters"];
-export type searchResponse =
-  Endpoints["GET /search/repositories"]["response"];
+export type searchResponse = Endpoints["GET /search/repositories"]["response"];
 
 export type listCodeScanningParameters =
   Endpoints["GET /repos/{owner}/{repo}/code-scanning/analyses"]["parameters"];
