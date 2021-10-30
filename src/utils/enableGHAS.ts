@@ -4,6 +4,8 @@ import { Octokit } from "./octokitTypes";
 
 import { updateReposResponse, updateReposParameters } from "./octokitTypes";
 
+import { response } from "../../types/common";
+
 export const enableGHAS = async (
   repo: string,
   octokit: Octokit

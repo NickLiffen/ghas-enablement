@@ -1,23 +1,20 @@
-import { createAppAuth } from "@octokit/auth-app";
+import { createAppAuth, StrategyOptions } from "@octokit/auth-app";
+
+import { env } from "process";
 
 export const githubAuth = async (): Promise<string | unknown> => {
-  const {
-    APP_ID: appId,
-    APP_PRIVATE_KEY: privateKey,
-    APP_INSTALLATION_ID: appInstallationId,
-    APP_CLIENT_ID: clientId,
-    APP_CLIENT_SECRET: clientSecret,
-  } = process.env;
+  const options = {
+    appId: env.GITHUB_APP_ID as string,
+    privateKey: env.APP_PRIVATE_KEY as string,
+    appInstallationId: parseInt(
+      env.APP_INSTALLATION_ID as string,
+      10
+    ) as number,
+    clientId: env.APP_CLIENT_ID as string,
+    clientSecret: env.APP_CLIENT_SECRET as string,
+  } as StrategyOptions;
 
-  const installationId = parseInt(appInstallationId as string, 10);
-
-  const auth = createAppAuth({
-    appId,
-    privateKey,
-    installationId,
-    clientId,
-    clientSecret,
-  });
+  const auth = createAppAuth(options);
 
   try {
     const { token } = await auth({ type: "installation" });

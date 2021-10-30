@@ -28,7 +28,7 @@ export type RateLimitOptions = {
 export type response = {
   status: number;
   message: string;
-}
+};
 
 export type TestOctokit = {
   request?: unknown;
