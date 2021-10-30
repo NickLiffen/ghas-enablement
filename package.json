@@ -49,6 +49,7 @@
     "node": "16"
   },
   "dependencies": {
+    "@octokit/auth-app": "^3.6.1",
     "@octokit/core": "^3.5.1",
     "@octokit/plugin-paginate-rest": "^2.17.0",
     "@octokit/plugin-retry": "^3.0.9",
