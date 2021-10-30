@@ -6,6 +6,8 @@ import { Octokit } from "./octokitTypes";
 
 import { searchParameters, searchResponse } from "./octokitTypes";
 
+import { response, usersWriteAdminReposArray } from "../../types/common";
+
 export const fetchReposByLanguage = async (
   octokit: Octokit
 ): Promise<response> => {
@@ -31,8 +33,6 @@ export const fetchReposByLanguage = async (
         });
       }
     )) as usersWriteAdminReposArray;
-
-    inform(repos);
 
     const arr = repos.filter(
       (repo) => Object.keys(repo).length !== 0

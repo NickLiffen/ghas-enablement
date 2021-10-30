@@ -20,7 +20,7 @@
     "Advanced Security"
   ],
   "devDependencies": {
-    "@tsconfig/node14": "^1.0.1",
+    "@tsconfig/node16": "^1.0.1",
     "@types/aws-lambda": "^8.10.84",
     "@types/debug": "^4.1.7",
     "@types/jest": "^27.0.2",
@@ -49,6 +49,7 @@
     "node": "16"
   },
   "dependencies": {
+    "@octokit/auth-app": "^3.6.1",
     "@octokit/core": "^3.5.1",
     "@octokit/plugin-paginate-rest": "^2.17.0",
     "@octokit/plugin-retry": "^3.0.9",

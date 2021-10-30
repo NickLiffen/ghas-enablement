@@ -1,45 +1,40 @@
-type gitCommands = {
+export type gitCommands = {
   command: string;
   cwd: string;
 };
 
-type response = {
-  status: number;
-  message: string;
-};
-
-type Error = {
-  status: number;
-  message: string;
-};
-
-type apiEndpoints = {
+export type apiEndpoints = {
   checkStatus: string;
   enableAlerts: string;
 };
 
-type config = {
+export type config = {
   type: string;
   per_page: number;
   page: number;
 };
 
-type usersWriteAdminRepos = {
+export type usersWriteAdminRepos = {
   enableDependabot: boolean;
   repo: string;
 };
 
-type RateLimitOptions = {
+export type RateLimitOptions = {
   request: {
     retryCount: number;
   };
 };
 
-type TestOctokit = {
+export type response = {
+  status: number;
+  message: string;
+};
+
+export type TestOctokit = {
   request?: unknown;
   paginate?: unknown;
 };
 
-type commands = gitCommands[];
+export type commands = gitCommands[];
 
 type usersWriteAdminReposArray = usersWriteAdminRepos[];

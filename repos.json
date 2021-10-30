@@ -1,10 +1,1 @@
-[
-  {
-    "enableDependabot": false,
-    "repo": "repoOne"
-  },
-  {
-    "enableDependabot": false,
-    "repo": "repoTwo"
-  }
-]
+[]
