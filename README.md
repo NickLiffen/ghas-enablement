@@ -45,6 +45,8 @@ cd ghas-enablement
 mv .env-sample .env
 ```
 
+5. Update the `.env` with the required values. Please pick one of the authentication methods for interacting with GitHub. You can either fill in the `GITHUB_TOKEN` with a PAT that has access to the Org. OR, fill in all the values required for a GitHub App. **Note**: It is recommended to pick the GitHub App choice, as this gives you more API requests versus a PAT, however, if you would like to pick Option 2 from the choices below, this won't be possible using a GitHub App and you will need to use a PAT. 
+
 5.  Update the `GITHUB_TOKEN` value found within the `.env`. Remove the `XXXX` and replace that with the PAT created in Step 1.
 
 6.  Update the `GITHUB_ORG` value found within the `.env`. Remove the `XXXX` and replace that with the name of the GitHub Organisation you would like to use as part of this script.
