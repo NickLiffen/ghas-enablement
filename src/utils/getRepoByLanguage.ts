@@ -34,8 +34,6 @@ export const fetchReposByLanguage = async (
       }
     )) as usersWriteAdminReposArray;
 
-    inform(repos);
-
     const arr = repos.filter(
       (repo) => Object.keys(repo).length !== 0
     ) as usersWriteAdminReposArray;

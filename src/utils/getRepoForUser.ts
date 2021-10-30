@@ -32,8 +32,6 @@ export const fetchReposByUser = async (octokit: Octokit): Promise<response> => {
         })
     )) as usersWriteAdminReposArray;
 
-    inform(repos);
-
     const arr = repos.filter(
       (repo) => Object.keys(repo).length !== 0
     ) as usersWriteAdminReposArray;

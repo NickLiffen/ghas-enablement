@@ -1,4 +1,4 @@
-import { tempDIR, owner } from "./globals";
+import { tempDIR, owner, inform } from "./globals";
 
 import { commands } from "../../types/common";
 
@@ -42,7 +42,6 @@ export const macCommands = (repo: string, branch: string): commands => {
   return commands;
 };
 export const windowsCommands = (repo: string, branch: string): void => {
-  // TODO: Windows
-  console.log(repo);
-  console.log(branch);
+  inform(repo);
+  inform(branch);
 };
