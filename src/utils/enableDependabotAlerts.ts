@@ -9,6 +9,8 @@ import {
   listVulnerabilityAlertsParameters,
 } from "./octokitTypes";
 
+import { response } from "../../types/common";
+
 const checkVulnerabilityAlertsStatus = async (
   requestParams: listVulnerabilityAlertsParameters,
   octokit: Octokit

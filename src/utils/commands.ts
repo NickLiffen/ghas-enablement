@@ -1,5 +1,7 @@
 import { tempDIR, owner } from "./globals";
 
+import { commands } from "../../types/common";
+
 export const macCommands = (repo: string, branch: string): commands => {
   const cwd = process.cwd() as string;
   const user = cwd.split("/")[2] as string;

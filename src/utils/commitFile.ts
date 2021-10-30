@@ -9,6 +9,8 @@ import { macCommands } from "./commands";
 
 import { exec as ImportedExec } from "child_process";
 
+import { response, commands } from "../../types/common";
+
 const exec = util.promisify(ImportedExec);
 
 export const commitFileMac = async (

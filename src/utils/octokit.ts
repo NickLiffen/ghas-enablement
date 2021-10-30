@@ -5,6 +5,8 @@ import { retry } from "@octokit/plugin-retry";
 import { throttling } from "@octokit/plugin-throttling";
 import { paginateRest } from "@octokit/plugin-paginate-rest";
 
+import { RateLimitOptions} from "../../types/common"
+
 let MyOctokit = Octokit.plugin(paginateRest, retry, throttling);
 
 export const octokit = async (testPlugin?: any): Promise<unknown> => {

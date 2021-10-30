@@ -6,6 +6,8 @@ import { Octokit } from "./octokitTypes";
 
 import { listOrgReposParameters, listOrgReposResponse } from "./octokitTypes";
 
+import { response, usersWriteAdminReposArray } from "../../types/common";
+
 export const fetchReposByUser = async (octokit: Octokit): Promise<response> => {
   try {
     const requestParams = {

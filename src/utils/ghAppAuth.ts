@@ -9,7 +9,7 @@ export const githubAuth = async (): Promise<string | unknown> => {
     APP_CLIENT_SECRET: clientSecret,
   } = process.env;
 
-  const installationId = parseInt(appInstallationId, 10);
+  const installationId = parseInt(appInstallationId as string, 10);
 
   const auth = createAppAuth({
     appId,

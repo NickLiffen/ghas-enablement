@@ -20,7 +20,7 @@
     "Advanced Security"
   ],
   "devDependencies": {
-    "@tsconfig/node14": "^1.0.1",
+    "@tsconfig/node16": "^1.0.1",
     "@types/aws-lambda": "^8.10.84",
     "@types/debug": "^4.1.7",
     "@types/jest": "^27.0.2",
