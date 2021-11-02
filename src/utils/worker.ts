@@ -20,13 +20,13 @@ export const worker = async (): Promise<unknown> => {
   let index: number;
   for (index = 0; index < repos.length; index++) {
     const { repo, enableDependabot, enableSecretScanning } = repos[index];
+    await enableGHAS(repo, client);
     if (enableDependabot) {
       await enableDependabotAlerts(repo, client);
     }
     if (enableSecretScanning) {
       await enableSecretScanningAlerts(repo, client);
     }
-    await enableGHAS(repo, client);
     const defaultBranch = await findDefulatBranch(repo, client);
     const defaultBranchSHA = await findDefulatBranchSHA(
       defaultBranch,
