@@ -13,8 +13,8 @@ export const fetchReposByLanguage = async (
 ): Promise<response> => {
   const org = process.env.GITHUB_ORG;
   const language = process.env.LANGUAGE;
-  const secretScanning = (process.env.SECRET_SCANNING === "true") ? true : false;
-  const dependabot = (process.env.DEPENDABOT === "true") ? true : false;
+  const secretScanning = process.env.SECRET_SCANNING === "true" ? true : false;
+  const dependabot = process.env.DEPENDABOT === "true" ? true : false;
 
   try {
     const requestParams = {
