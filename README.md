@@ -47,17 +47,17 @@ mv .env-sample .env
 
 5. Update the `.env` with the required values. Please pick one of the authentication methods for interacting with GitHub. You can either fill in the `GITHUB_TOKEN` with a PAT that has access to the Org. OR, fill in all the values required for a GitHub App. **Note**: It is recommended to pick the GitHub App choice, as this gives you more API requests versus a PAT, however, if you would like to pick Option 2 from the choices below, this won't be possible using a GitHub App and you will need to use a PAT.
 
-7. Update the `GITHUB_ORG` value found within the `.env`. Remove the `XXXX` and replace that with the name of the GitHub Organisation you would like to use as part of this script.
+6. Update the `GITHUB_ORG` value found within the `.env`. Remove the `XXXX` and replace that with the name of the GitHub Organisation you would like to use as part of this script.
 
-8. Update the `LANGUAGE` value found within the `.env`. Remove the `XXXX` and replace that with the language you would like to use as a filter when collecting repositories.
+7. Update the `LANGUAGE` value found within the `.env`. Remove the `XXXX` and replace that with the language you would like to use as a filter when collecting repositories.
 
-9. **OPTIONAL**: Update the `SECRET_SCANNING` and the `DEPENDABOT` values to `true/false` depending on if you would like to enable Secret Scanning and/or Dependabot on the repositories you would like code scanning enabled on. `true` === enabled. `false` (or anything else) === disabled.
+8. **OPTIONAL**: Update the `SECRET_SCANNING` and the `DEPENDABOT` values to `true/false` depending on if you would like to enable Secret Scanning and/or Dependabot on the repositories you would like code scanning enabled on. `true` === enabled. `false` (or anything else) === disabled.
 
-10. Check the `codeql-analysis.yml` file. This is a sample file; please configure this file to suit your application needs.
+9. Check the `codeql-analysis.yml` file. This is a sample file; please configure this file to suit your application needs.
 
-11. Run `npm install`, which will install the necessary dependencies.
+10. Run `npm install`, which will install the necessary dependencies.
 
-12. Run `npm run build`, which will create the JavaScript bundle from TypeScript.
+11. Run `npm run build`, which will create the JavaScript bundle from TypeScript.
 
 ## How to use?
 
