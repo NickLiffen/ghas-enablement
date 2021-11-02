@@ -10,10 +10,16 @@ import { RateLimitOptions } from "../../types/common";
 let MyOctokit = Octokit.plugin(paginateRest, retry, throttling);
 
 export const octokit = async (testPlugin?: any): Promise<unknown> => {
+
+console.log(process.env);
+
   const token =
-    process.env.GITHUB_TOKEN != ""
-      ? process.env.GITHUB_TOKEN
+    process.env.GITHUB_API_TOKEN != ""
+      ? process.env.GITHUB_API_TOKEN
       : await githubAuth();
+
+
+      console.log(token);
 
   if (!token) {
     throw new Error(
