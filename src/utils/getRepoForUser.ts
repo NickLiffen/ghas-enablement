@@ -9,11 +9,15 @@ import { listOrgReposParameters, listOrgReposResponse } from "./octokitTypes";
 import { response, usersWriteAdminReposArray } from "../../types/common";
 
 export const fetchReposByUser = async (octokit: Octokit): Promise<response> => {
+  const org = process.env.GITHUB_ORG;
+  const secretScanning = process.env.SECRET_SCANNING === "true" ? true : false;
+  const dependabot = process.env.DEPENDABOT === "true" ? true : false;
+
   try {
     const requestParams = {
       type: "all",
       per_page: 100,
-      org: process.env.GITHUB_ORG,
+      org,
     } as listOrgReposParameters;
 
     const repos = (await octokit.paginate(
@@ -24,7 +28,8 @@ export const fetchReposByUser = async (octokit: Octokit): Promise<response> => {
           const permission = repo.permissions ? repo.permissions.admin : false;
           if (permission) {
             return {
-              enableDependabot: false,
+              enableDependabot: dependabot,
+              enableSecretScanning: secretScanning,
               repo: repo.name,
             };
           }

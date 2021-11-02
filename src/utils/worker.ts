@@ -3,6 +3,7 @@
 import { findDefulatBranch } from "./findDefaultBranch.js";
 import { findDefulatBranchSHA } from "./findDefaultBranchSHA.js";
 import { createBranch } from "./createBranch.js";
+import { enableSecretScanningAlerts } from "./enableSecretScanning";
 import { createPullRequest } from "./createPullRequest.js";
 import { writeToFile } from "./writeToFile.js";
 import { octokit } from "./octokit.js";
@@ -18,11 +19,14 @@ export const worker = async (): Promise<unknown> => {
   let res;
   let index: number;
   for (index = 0; index < repos.length; index++) {
-    const { repo, enableDependabot } = repos[index];
+    const { repo, enableDependabot, enableSecretScanning } = repos[index];
+    await enableGHAS(repo, client);
     if (enableDependabot) {
       await enableDependabotAlerts(repo, client);
     }
-    await enableGHAS(repo, client);
+    if (enableSecretScanning) {
+      await enableSecretScanningAlerts(repo, client);
+    }
     const defaultBranch = await findDefulatBranch(repo, client);
     const defaultBranchSHA = await findDefulatBranchSHA(
       defaultBranch,
