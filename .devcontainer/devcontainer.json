@@ -17,7 +17,6 @@
     "yzhang.markdown-all-in-one",
     "sodatea.velocity"
   ],
-  "forwardPorts": [4000],
   "postCreateCommand": "npm install && npm run build",
   "remoteUser": "node"
 }
