@@ -2,7 +2,7 @@
 // https://github.com/microsoft/vscode-dev-containers/tree/v0.202.3/containers/typescript-node
 {
   "name": "Node.js & TypeScript",
-  "image": "docker.pkg.github.com/nickliffen/csenv:main",
+  "image": "ghcr.io/nickliffen/csenv:main",
 
   // Set *default* container specific settings.json values on container create.
   "settings": {},
