@@ -1,4 +1,7 @@
-export const issueText = (pullRequestURL: string, pullRequestNumber: string): string => `
+export const issueText = (
+  pullRequestURL: string,
+  pullRequestNumber: string
+): string => `
 
 # CodeQL Pull Request Created :wave:
 
@@ -29,4 +32,4 @@ If you need any more assistance, please don't hesitate to contact a member of th
 
 Thanks!
 - IT :) 
-`
+`;
