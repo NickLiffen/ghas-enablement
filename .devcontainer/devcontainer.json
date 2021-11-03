@@ -2,13 +2,7 @@
 // https://github.com/microsoft/vscode-dev-containers/tree/v0.202.3/containers/typescript-node
 {
   "name": "Node.js & TypeScript",
-  "runArgs": ["--init"],
-  "build": {
-    "dockerfile": "Dockerfile",
-    "args": {
-      "VARIANT": "14"
-    }
-  },
+  "image": "docker.pkg.github.com/nickliffen/csenv:main",
 
   // Set *default* container specific settings.json values on container create.
   "settings": {},
@@ -16,14 +10,12 @@
   "extensions": [
     "dbaeumer.vscode-eslint",
     "hookyqr.beautify",
-    "github.vscode-codeql",
     "naumovs.color-highlight",
     "redhat.vscode-yaml",
     "vscode-icons-team.vscode-icons",
     "wayou.vscode-todo-highlight",
     "esbenp.prettier-vscode",
     "ms-vscode.vscode-typescript-next",
-    "xabikos.javascriptsnippets",
     "graphql.vscode-graphql",
     "github.copilot",
     "donjayamanne.githistory",
@@ -40,8 +32,6 @@
 
   "remoteUser": "node",
   "features": {
-    "docker-in-docker": "latest",
-    "docker-from-docker": "latest",
     "git": "latest",
     "github-cli": "latest",
     "homebrew": "latest",
