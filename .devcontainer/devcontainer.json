@@ -13,9 +13,7 @@
     "ms-vscode.vscode-typescript-next",
     "github.copilot",
     "donjayamanne.githistory",
-    "nixon.env-cmd-file-syntax",
-    "yzhang.markdown-all-in-one",
-    "sodatea.velocity"
+    "nixon.env-cmd-file-syntax"
   ],
   "postCreateCommand": "npm install && npm run build",
   "remoteUser": "node"
