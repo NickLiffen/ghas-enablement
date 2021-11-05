@@ -16,5 +16,5 @@
     "nixon.env-cmd-file-syntax"
   ],
   "postCreateCommand": "npm install && npm run build",
-  "remoteUser": "developer"
+  "remoteUser": "root"
 }
