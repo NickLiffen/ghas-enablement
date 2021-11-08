@@ -6,7 +6,7 @@ Currently, there is no API access into the `.github/workflows/*` directory, and 
 
 ## Purpose
 
-The purpose of this tool is to help create a `codeql-analysis.yml` file across multiple repositories in an automated way, using the git client on the machine this script is running on. It also allows for the enablement of Dependabot and/or Secret Scanning on the repositories where Code Scanning was enabled (`codeql-analysis.yml`).  
+The purpose of this tool is to help create a `codeql-analysis.yml` file across multiple repositories in an automated way, using the git client on the machine this script is running on. It also allows for the enablement of Dependabot and/or Secret Scanning on the repositories where Code Scanning was enabled (`codeql-analysis.yml`).
 
 ## What does this tooling do?
 
@@ -19,7 +19,7 @@ There are two main actions this tool does:
 ## Prerequisite
 
 - [Node v16](https://nodejs.org/en/download/) or higher installed.
-- [Yarn](https://yarnpkg.com/)*
+- [Yarn](https://yarnpkg.com/)\*
 - [Git](https://git-scm.com/downloads) installed on the user's machine running this tool.
 - Someone who has at least admin access over the repositories they want to enable Code Scanning on.
 - Some basic software development skills, e.g., can navigate their way around a terminal or command prompt.
@@ -76,7 +76,7 @@ The first step is collecting the repositories you would like to run this script 
 yarn run getReposByLanguage
 ```
 
-OR 
+OR
 
 ```bash
 npm run getReposByLanguage
@@ -90,7 +90,7 @@ When using GitHub Actions, we commonly find (especially for non-build languages 
 yarn run getReposByUser
 ```
 
-OR 
+OR
 
 ```bash
 npm run getReposByUser
@@ -129,7 +129,7 @@ Run the script which enables Code Scanning (and/or Dependabot) on your repositor
 yarn run start
 ```
 
-OR 
+OR
 
 ```bash
 npm run start
