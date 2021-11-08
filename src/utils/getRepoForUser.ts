@@ -12,7 +12,7 @@ export const fetchReposByUser = async (octokit: Octokit): Promise<response> => {
   const org = process.env.GITHUB_ORG;
   const secretScanning = process.env.SECRET_SCANNING === "true" ? true : false;
   const dependabot = process.env.DEPENDABOT === "true" ? true : false;
-
+  const issue = process.env.CREATE_ISSUE === "true" ? true : false;
   try {
     const requestParams = {
       type: "all",
@@ -30,6 +30,7 @@ export const fetchReposByUser = async (octokit: Octokit): Promise<response> => {
             return {
               enableDependabot: dependabot,
               enableSecretScanning: secretScanning,
+              createIssue: issue,
               repo: repo.name,
             };
           }

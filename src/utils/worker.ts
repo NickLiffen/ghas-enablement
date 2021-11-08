@@ -10,6 +10,7 @@ import { octokit } from "./octokit.js";
 import { commitFileMac } from "./commitFile.js";
 import { enableGHAS } from "./enableGHAS.js";
 import { enableDependabotAlerts } from "./enableDependabotAlerts";
+import { enableIssueCreation } from "./enableIssueCreation";
 import repos from "../../repos.json";
 
 import { Octokit } from "./octokitTypes";
@@ -19,7 +20,8 @@ export const worker = async (): Promise<unknown> => {
   let res;
   let index: number;
   for (index = 0; index < repos.length; index++) {
-    const { repo, enableDependabot, enableSecretScanning } = repos[index];
+    const { repo, enableDependabot, enableSecretScanning, createIssue } =
+      repos[index];
     await enableGHAS(repo, client);
     if (enableDependabot) {
       await enableDependabotAlerts(repo, client);
@@ -41,6 +43,9 @@ export const worker = async (): Promise<unknown> => {
       repo,
       client
     );
+    if (createIssue) {
+      await enableIssueCreation(pullRequestURL);
+    }
     await writeToFile(pullRequestURL);
   }
   return res;
