@@ -3,15 +3,25 @@
 import util from "util";
 import delay from "delay";
 
+import os from "os";
+
 import { inform, error } from "./globals";
 
-import { macCommands } from "./commands";
+import { macCommands, windowsCommands } from "./commands";
 
 import { exec as ImportedExec } from "child_process";
 
 import { response, commands } from "../../types/common";
 
 const exec = util.promisify(ImportedExec);
+
+const platform = os.platform();
+
+const isWindows = platform === "win32";
+if (platform !== "win32" && platform !== "darwin") {
+  error("You can only use either windows or mac machine!");
+  throw Error;
+}
 
 export const commitFileMac = async (
   repo: string,
@@ -24,7 +34,9 @@ export const commitFileMac = async (
   const branch = regExpExecArray ? regExpExecArray[0] : "";
 
   try {
-    gitCommands = (await macCommands(repo, branch)) as commands;
+    gitCommands = isWindows
+      ? (windowsCommands(repo, branch) as commands)
+      : (macCommands(repo, branch) as commands);
     inform(gitCommands);
   } catch (err) {
     error(err);
