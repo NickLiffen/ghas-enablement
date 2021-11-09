@@ -1,12 +1,12 @@
 # GitHub Advanced Security - Code Scanning, Secret Scanning & Dependabot Bulk Enablement Tooling
 
-## Context
-
-Currently, there is no API access into the `.github/workflows/*` directory, and teams do not want to go and create a `codeql-analysis.yml` files manually across hundreds of repositories. So an automated solution is still required, just not using the API, as that is currently not possible.
-
 ## Purpose
 
 The purpose of this tool is to help create a `codeql-analysis.yml` file across multiple repositories in an automated way, using the git client on the machine this script is running on. It also allows for the enablement of Dependabot and/or Secret Scanning on the repositories where Code Scanning was enabled (`codeql-analysis.yml`).
+
+## Context
+
+Currently, there is no API access into the `.github/workflows/*` directory, and teams do not want to go and create a `codeql-analysis.yml` files manually across hundreds of repositories. So an automated solution is still required, just not using the API, as that is currently not possible.
 
 ## What does this tooling do?
 
@@ -56,11 +56,13 @@ mv .env-sample .env
 
 8. **OPTIONAL**: Update the `SECRET_SCANNING` and the `DEPENDABOT` values to `true/false` depending on if you would like to enable Secret Scanning and/or Dependabot on the repositories you would like code scanning enabled on. `true` === enabled. `false` (or anything else) === disabled.
 
-9. Check the `codeql-analysis.yml` file. This is a sample file; please configure this file to suit your application needs.
+9. **OPTIONAL**: Update the `CREATE_ISSUE` value to `true/false` depending on if you would like to create an issue explaining purpose of the PR. We recommend this, as it will help explain why the PR was create; and give some context. However, this is optional. The text which is in the issue can be modified and found here: `./src/utils/text/`.
 
-10. Run `yarn add` or `npm install`, which will install the necessary dependencies.
+10. Check the `codeql-analysis.yml` file. This is a sample file; please configure this file to suit your application needs.
 
-11. Run yarn run build` `npm run build`, which will create the JavaScript bundle from TypeScript.
+11. Run `yarn add` or `npm install`, which will install the necessary dependencies.
+
+12. Run yarn run build` `npm run build`, which will create the JavaScript bundle from TypeScript.
 
 ## How to use?
 
