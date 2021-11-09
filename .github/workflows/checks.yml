@@ -15,6 +15,6 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: "16"
-      - run: npm install
-      - run: npm run lint
-      - run: npm run prettier-check
+      - run: yarn install --frozen-lockfile
+      - run: yarn run lint:check
+      - run: yarn run prettier:check

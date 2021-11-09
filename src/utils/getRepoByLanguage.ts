@@ -15,6 +15,7 @@ export const fetchReposByLanguage = async (
   const language = process.env.LANGUAGE;
   const secretScanning = process.env.SECRET_SCANNING === "true" ? true : false;
   const dependabot = process.env.DEPENDABOT === "true" ? true : false;
+  const issue = process.env.CREATE_ISSUE === "true" ? true : false;
 
   try {
     const requestParams = {
@@ -31,6 +32,7 @@ export const fetchReposByLanguage = async (
           return {
             enableDependabot: dependabot,
             enableSecretScanning: secretScanning,
+            createIssue: issue,
             repo: repo.name,
           };
         });

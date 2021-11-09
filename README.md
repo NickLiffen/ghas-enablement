@@ -1,12 +1,12 @@
-# GitHub Advanced Security - Code Scanning & Dependabot Bulk Enablement Tooling
+# GitHub Advanced Security - Code Scanning, Secret Scanning & Dependabot Bulk Enablement Tooling
+
+## Purpose
+
+The purpose of this tool is to help create a `codeql-analysis.yml` file across multiple repositories in an automated way, using the git client on the machine this script is running on. It also allows for the enablement of Dependabot and/or Secret Scanning on the repositories where Code Scanning was enabled (`codeql-analysis.yml`).
 
 ## Context
 
 Currently, there is no API access into the `.github/workflows/*` directory, and teams do not want to go and create a `codeql-analysis.yml` files manually across hundreds of repositories. So an automated solution is still required, just not using the API, as that is currently not possible.
-
-## Purpose
-
-The purpose of this tool is to help create a `codeql-analysis.yml` file across multiple repositories in an automated way, using the git client on the machine this script is running on.
 
 ## What does this tooling do?
 
@@ -19,9 +19,12 @@ There are two main actions this tool does:
 ## Prerequisite
 
 - [Node v16](https://nodejs.org/en/download/) or higher installed.
+- [Yarn](https://yarnpkg.com/)\*
 - [Git](https://git-scm.com/downloads) installed on the user's machine running this tool.
 - Someone who has at least admin access over the repositories they want to enable Code Scanning on.
 - Some basic software development skills, e.g., can navigate their way around a terminal or command prompt.
+
+* You can use `npm` but for the sake of this `README.md`; we are going to standardise the commands on yarn. These are easily replacable though with `npm` commands.
 
 ## Set up Instructions
 
@@ -53,11 +56,13 @@ mv .env-sample .env
 
 8. **OPTIONAL**: Update the `SECRET_SCANNING` and the `DEPENDABOT` values to `true/false` depending on if you would like to enable Secret Scanning and/or Dependabot on the repositories you would like code scanning enabled on. `true` === enabled. `false` (or anything else) === disabled.
 
-9. Check the `codeql-analysis.yml` file. This is a sample file; please configure this file to suit your application needs.
+9. **OPTIONAL**: Update the `CREATE_ISSUE` value to `true/false` depending on if you would like to create an issue explaining purpose of the PR. We recommend this, as it will help explain why the PR was create; and give some context. However, this is optional. The text which is in the issue can be modified and found here: `./src/utils/text/`.
 
-10. Run `npm install`, which will install the necessary dependencies.
+10. Check the `codeql-analysis.yml` file. This is a sample file; please configure this file to suit your application needs.
 
-11. Run `npm run build`, which will create the JavaScript bundle from TypeScript.
+11. Run `yarn add` or `npm install`, which will install the necessary dependencies.
+
+12. Run yarn run build` `npm run build`, which will create the JavaScript bundle from TypeScript.
 
 ## How to use?
 
@@ -70,12 +75,24 @@ The first step is collecting the repositories you would like to run this script 
 **OPTION 1** (Preferred)
 
 ```bash
+yarn run getReposByLanguage
+```
+
+OR
+
+```bash
 npm run getReposByLanguage
 ```
 
 When using GitHub Actions, we commonly find (especially for non-build languages such as JavaScript) that the `codeql-analysis.yml` file is repeatable and consistent across multiple repositories of the same language. About 80% of the time, teams can reuse the same workflow files for the same language. For Java, C++ that number drops down to about 60% of the time. But the reason why we recommend enabling Code Scanning at bulk via language is the `codeql-analysis.yml` file you propose within the pull request has the highest chance of being most accurate. Even if the file needs changing, the team reviewing the pull request would likely only need to make small changes. We recommend you run this command first to get a list of repositories to enable Code Scanning. After running the command, you are welcome to modify this file. Just make sure it's a valid JSON file if you do edit.
 
 **OPTION 2**
+
+```bash
+yarn run getReposByUser
+```
+
+OR
 
 ```bash
 npm run getReposByUser
@@ -109,6 +126,12 @@ As you can see, the object takes two keys, `repo` and `enableDependabot`. Set `r
 ### Step Two
 
 Run the script which enables Code Scanning (and/or Dependabot) on your repository by running:
+
+```bash
+yarn run start
+```
+
+OR
 
 ```bash
 npm run start
