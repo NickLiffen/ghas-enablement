@@ -21,7 +21,7 @@ export const enableIssueCreation = async (
     }
   );
 
-  if(status !== 201) {
+  if (status !== 201) {
     throw new Error(`Failed to create issue: ${status}`);
   }
 };
