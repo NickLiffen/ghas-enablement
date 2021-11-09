@@ -44,7 +44,7 @@ export const worker = async (): Promise<unknown> => {
       client
     );
     if (createIssue) {
-      await enableIssueCreation(pullRequestURL);
+      await enableIssueCreation(pullRequestURL, repo, client);
     }
     await writeToFile(pullRequestURL);
   }
