@@ -2,61 +2,58 @@ import { tempDIR, owner } from "./globals";
 
 import { commands } from "../../types/common";
 
+import { destDir, user } from "./globals";
+
 export const macCommands = (repo: string, branch: string): commands => {
-  const cwd = process.cwd() as string;
-  const user = cwd.split("/")[2] as string;
   const commands = [
     {
       command: "mkdir",
       args: ["-p", `${tempDIR}`],
-      cwd: `/Users/${user}/Desktop`,
+      cwd: `/Users/${user}/${destDir}`,
     },
     {
       command: "git",
       args: ["clone", `https://github.com/${owner}/${repo}.git`],
-      cwd: `/Users/${user}/Desktop/${tempDIR}`,
+      cwd: `/Users/${user}/${destDir}/${tempDIR}`,
     },
     {
       command: "git",
       args: ["checkout", "-b", `${branch}`],
-      cwd: `/Users/${user}/Desktop/${tempDIR}/${repo}`,
+      cwd: `/Users/${user}/${destDir}/${tempDIR}/${repo}`,
     },
     {
       command: "mkdir",
       args: ["-p", ".github/workflows"],
-      cwd: `/Users/${user}/Desktop/${tempDIR}/${repo}`,
+      cwd: `/Users/${user}/${destDir}/${tempDIR}/${repo}`,
     },
     {
       command: "cp",
       args: [
         "./codeql-analysis.yml",
-        `/Users/${user}/Desktop/${tempDIR}/${repo}/.github/workflows/`,
+        `/Users/${user}/${destDir}/${tempDIR}/${repo}/.github/workflows/`,
       ],
-      cwd,
+      cwd: process.cwd(),
     },
     {
       command: "git",
       args: ["add", ".github/workflows/codeql-analysis.yml"],
-      cwd: `/Users/${user}/Desktop/${tempDIR}/${repo}`,
+      cwd: `/Users/${user}/${destDir}/${tempDIR}/${repo}`,
     },
     {
       command: "git",
       args: ["commit", "-m", '"Commit CodeQL File"'],
-      cwd: `/Users/${user}/Desktop/${tempDIR}/${repo}`,
+      cwd: `/Users/${user}/${destDir}/${tempDIR}/${repo}`,
     },
     {
       command: `git`,
       args: ["push", "--set-upstream", "origin", `${branch}`],
-      cwd: `/Users/${user}/Desktop/${tempDIR}/${repo}`,
+      cwd: `/Users/${user}/${destDir}/${tempDIR}/${repo}`,
     },
   ] as commands;
   return commands;
 };
 
 export const windowsCommands = (repo: string, branch: string): commands => {
-  const cwd = process.cwd() as string;
-  const user = cwd.split("\\")[2] as string;
-  const destDir = "Documents";
   const commands = [
     {
       command: `mkdir -p ${tempDIR}`,
@@ -76,7 +73,7 @@ export const windowsCommands = (repo: string, branch: string): commands => {
     },
     {
       command: `cp ./codeql-analysis.yml c:\\Users\\${user}\\${destDir}\\${tempDIR}/${repo}\\.github\\workflows\\`,
-      cwd,
+      cwd: process.cwd(),
     },
     {
       command: `rm -rf "./-p/"`,
