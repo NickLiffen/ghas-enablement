@@ -9,11 +9,11 @@ import { inform, error } from "./globals";
 
 import { macCommands, windowsCommands } from "./commands";
 
-import { exec as ImportedExec } from "child_process";
+import { execFile as ImportedExec } from "child_process";
 
 import { response, commands } from "../../types/common";
 
-const exec = util.promisify(ImportedExec);
+const execFile = util.promisify(ImportedExec);
 
 const platform = os.platform();
 
@@ -44,7 +44,7 @@ export const commitFileMac = async (
   }
 
   for (index = 0; index < gitCommands.length; index++) {
-    const { stdout, stderr } = await exec(gitCommands[index].command, {
+    const { stdout, stderr } = await execFile(gitCommands[index].command, gitCommands[index].args, {
       cwd: gitCommands[index].cwd,
     });
     if (stderr) {

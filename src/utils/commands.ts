@@ -7,35 +7,43 @@ export const macCommands = (repo: string, branch: string): commands => {
   const user = cwd.split("/")[2] as string;
   const commands = [
     {
-      command: `mkdir -p ${tempDIR}`,
+      command: 'mkdir',
+      args: ['-p', `${tempDIR}`],
       cwd: `/Users/${user}/Desktop`,
     },
     {
-      command: `git clone https://github.com/${owner}/${repo}.git`,
+      command: 'git',
+      args: ['clone', `https://github.com/${owner}/${repo}.git`],
       cwd: `/Users/${user}/Desktop/${tempDIR}`,
     },
     {
-      command: `git checkout -b ${branch}`,
+      command: 'git',
+      args: ['checkout', '-b', `${branch}`],
       cwd: `/Users/${user}/Desktop/${tempDIR}/${repo}`,
     },
     {
-      command: "mkdir -p .github/workflows",
+      command: 'mkdir',
+      args: ['-p', '.github/workflows'],
       cwd: `/Users/${user}/Desktop/${tempDIR}/${repo}`,
     },
     {
-      command: `cp ./codeql-analysis.yml /Users/${user}/Desktop/${tempDIR}/${repo}/.github/workflows/`,
+      command: 'cp',
+      args: ['./codeql-analysis.yml', `/Users/${user}/Desktop/${tempDIR}/${repo}/.github/workflows/`],
       cwd,
     },
     {
-      command: "git add .github/workflows/codeql-analysis.yml",
+      command: 'git',
+      args: ['add', '.github/workflows/codeql-analysis.yml'],
       cwd: `/Users/${user}/Desktop/${tempDIR}/${repo}`,
     },
     {
-      command: 'git commit -m "Commit CodeQL File"',
+      command: 'git',
+      args: ['commit', '-m', '"Commit CodeQL File"'],
       cwd: `/Users/${user}/Desktop/${tempDIR}/${repo}`,
     },
     {
-      command: `git push --set-upstream origin ${branch}`,
+      command: `git`,
+      args: ['push', '--set-upstream', 'origin', `${branch}`],
       cwd: `/Users/${user}/Desktop/${tempDIR}/${repo}`,
     },
   ] as commands;
