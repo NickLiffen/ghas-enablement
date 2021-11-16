@@ -44,9 +44,13 @@ export const commitFileMac = async (
   }
 
   for (index = 0; index < gitCommands.length; index++) {
-    const { stdout, stderr } = await execFile(gitCommands[index].command, gitCommands[index].args, {
-      cwd: gitCommands[index].cwd,
-    });
+    const { stdout, stderr } = await execFile(
+      gitCommands[index].command,
+      gitCommands[index].args,
+      {
+        cwd: gitCommands[index].cwd,
+      }
+    );
     if (stderr) {
       error(stderr);
     }
