@@ -20,7 +20,9 @@ const platform = os.platform();
 const isWindows = platform === "win32";
 if (platform !== "win32" && platform !== "darwin") {
   error("You can only use either windows or mac machine!");
-  throw Error;
+  throw new Error(
+    "We detected an OS that wasn't Windows or Mac. Right now, these are the only two OS's supported. Log an issue on the repository for wider support"
+  );
 }
 
 export const commitFileMac = async (
