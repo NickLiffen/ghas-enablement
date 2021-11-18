@@ -45,7 +45,7 @@ export const macCommands = (repo: string, branch: string): commands => {
       cwd: `/Users/${user}/${destDir}/${tempDIR}/${repo}`,
     },
     {
-      command: `git`,
+      command: "git",
       args: ["push", "--set-upstream", "origin", `${branch}`],
       cwd: `/Users/${user}/${destDir}/${tempDIR}/${repo}`,
     },
@@ -56,47 +56,61 @@ export const macCommands = (repo: string, branch: string): commands => {
 export const windowsCommands = (repo: string, branch: string): commands => {
   const commands = [
     {
-      command: `mkdir -p ${tempDIR}`,
+      command: "mkdir",
+      args: ["-p", `${tempDIR}`],
       cwd: `/Users/${user}/${destDir}`,
     },
     {
-      command: `git clone https://github.com/${owner}/${repo}.git`,
+      command: "git",
+      args: ["clone", `https://github.com/${owner}/${repo}.git`],
       cwd: `/Users/${user}/${destDir}/${tempDIR}`,
     },
     {
-      command: `git checkout -b ${branch}`,
+      command: "git",
+      args: ["checkout", "-b", `${branch}`],
       cwd: `/Users/${user}/${destDir}/${tempDIR}/${repo}`,
     },
     {
-      command: `mkdir -p ".github/workflows"`,
+      command: "mkdir",
+      args: ["-p", ".github/workflows"],
       cwd: `/Users/${user}/${destDir}/${tempDIR}/${repo}`,
     },
     {
-      command: `cp ./codeql-analysis.yml c:\\Users\\${user}\\${destDir}\\${tempDIR}/${repo}\\.github\\workflows\\`,
+      command: "cp",
+      args: [
+        "./codeql-analysis.yml",
+        `c:\\Users\\${user}\\${destDir}\\${tempDIR}/${repo}\\.github\\workflows\\`,
+      ],
       cwd: process.cwd(),
     },
     {
-      command: `rm -rf "./-p/"`,
+      command: "rm",
+      args: ["-rf", '"./-p/"'],
       cwd: `/Users/${user}/${destDir}/${tempDIR}/${repo}`,
     },
     {
-      command: "git add .github/workflows/codeql-analysis.yml",
+      command: "git",
+      args: ["add", ".github/workflows/codeql-analysis.yml"],
       cwd: `/Users/${user}/${destDir}/${tempDIR}/${repo}`,
     },
     {
-      command: 'git commit -m "Commit CodeQL File"',
+      command: "git",
+      args: ["commit", "-m", '"Commit CodeQL File"'],
       cwd: `/Users/${user}/${destDir}/${tempDIR}/${repo}`,
     },
     {
-      command: `git push origin ${branch}`,
+      command: "git",
+      args: ["push", "origin", `${branch}`],
       cwd: `/Users/${user}/${destDir}/${tempDIR}/${repo}`,
     },
     {
-      command: `rm -rf "./${tempDIR}/"`,
+      command: "rm",
+      args: ["-rf", `"./${tempDIR}/"`],
       cwd: `/Users/${user}/${destDir}/`,
     },
     {
-      command: `rm -rf "./-p/"`,
+      command: "rm",
+      args: ["-rf", '"./-p/"'],
       cwd: `/Users/${user}/${destDir}`,
     },
   ] as commands;
