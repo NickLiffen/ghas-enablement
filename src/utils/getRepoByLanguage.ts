@@ -8,6 +8,8 @@ import { searchParameters, searchResponse } from "./octokitTypes";
 
 import { response, usersWriteAdminReposArray } from "../../types/common";
 
+import { checkCodeQLEnablement } from "./checkCodeQLEnablement";
+
 export const fetchReposByLanguage = async (
   octokit: Octokit
 ): Promise<response> => {
@@ -28,7 +30,11 @@ export const fetchReposByLanguage = async (
       (response: searchResponse) => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        return response.data.map((repo) => {
+        return response.data.map(async (repo) => {
+          const enabled = await checkCodeQLEnablement(repo, octokit);
+
+          if (enabled === true) return;
+
           return {
             enableDependabot: dependabot,
             enableSecretScanning: secretScanning,
