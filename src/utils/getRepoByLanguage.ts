@@ -30,11 +30,7 @@ export const fetchReposByLanguage = async (
       (response: searchResponse) => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        return response.data.map(async (repo) => {
-          const enabled = await checkCodeQLEnablement(repo, octokit);
-
-          if (enabled === true) return;
-
+        return response.data.map((repo) => {
           return {
             enableDependabot: dependabot,
             enableSecretScanning: secretScanning,
@@ -49,9 +45,22 @@ export const fetchReposByLanguage = async (
       (repo) => Object.keys(repo).length !== 0
     ) as usersWriteAdminReposArray;
 
-    inform(arr);
+    async function filterAsync<T>(
+      array: readonly T[],
+      callback: (value: T, index: number) => Promise<boolean>
+    ): Promise<T[]> {
+      const results: boolean[] = await Promise.all(
+        array.map((value, index) => callback(value, index))
+      );
+      return array.filter((_, i) => results[i]);
+    }
 
-    await createReposListFile(arr);
+    const results = await filterAsync(
+      arr,
+      async (value) => await checkCodeQLEnablement(value.repo, octokit)
+    );
+
+    await createReposListFile(results);
 
     inform(`
       Please review the generated list found in the repos.json file.

@@ -1,4 +1,4 @@
-import { owner, inform } from "./globals";
+import { owner } from "./globals";
 
 import {
   checkCodeScanningAnalysesParameters,
@@ -15,18 +15,13 @@ export const checkCodeQLEnablement = async (
     repo,
     tool_name: "CodeQL",
   } as checkCodeScanningAnalysesParameters;
-
-  const { data, status } = (await octokit.request(
-    "GET /repos/{owner}/{repo}/code-scanning/analyses",
-    requestParams
-  )) as checkCodeScanningAnalysesResponse;
-
-  inform("data", data);
-  inform("status", status);
-
-  if (status !== 200) return false;
-
-  if (data.length) return true;
-
-  throw new Error("Error in checking if CodeQL is enabled.");
+  try {
+    (await octokit.request(
+      "GET /repos/{owner}/{repo}/code-scanning/analyses",
+      requestParams
+    )) as checkCodeScanningAnalysesResponse;
+    return false;
+  } catch (e) {
+    return true;
+  }
 };
