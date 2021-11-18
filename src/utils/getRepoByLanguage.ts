@@ -10,6 +10,8 @@ import { response, usersWriteAdminReposArray } from "../../types/common";
 
 import { checkCodeQLEnablement } from "./checkCodeQLEnablement";
 
+import { filterAsync } from "./filterAsync";
+
 export const fetchReposByLanguage = async (
   octokit: Octokit
 ): Promise<response> => {
@@ -44,16 +46,6 @@ export const fetchReposByLanguage = async (
     const arr = repos.filter(
       (repo) => Object.keys(repo).length !== 0
     ) as usersWriteAdminReposArray;
-
-    async function filterAsync<T>(
-      array: readonly T[],
-      callback: (value: T, index: number) => Promise<boolean>
-    ): Promise<T[]> {
-      const results: boolean[] = await Promise.all(
-        array.map((value, index) => callback(value, index))
-      );
-      return array.filter((_, i) => results[i]);
-    }
 
     const results = await filterAsync(
       arr,
