@@ -15,6 +15,6 @@
     "donjayamanne.githistory",
     "nixon.env-cmd-file-syntax"
   ],
-  "postCreateCommand": "npm install && npm run build",
+  "postCreateCommand": "yarn install --frozen-lockfile && yarn run build",
   "remoteUser": "root"
 }

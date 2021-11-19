@@ -2,11 +2,13 @@ import { inform, error } from "./globals";
 
 import { createReposListFile } from "./writeToFile";
 
-import { Octokit } from "./octokitTypes";
-
-import { searchParameters, searchResponse } from "./octokitTypes";
+import { searchParameters, searchResponse, Octokit } from "./octokitTypes";
 
 import { response, usersWriteAdminReposArray } from "../../types/common";
+
+import { checkCodeQLEnablement } from "./checkCodeQLEnablement";
+
+import { filterAsync } from "./filterAsync";
 
 export const fetchReposByLanguage = async (
   octokit: Octokit
@@ -43,9 +45,12 @@ export const fetchReposByLanguage = async (
       (repo) => Object.keys(repo).length !== 0
     ) as usersWriteAdminReposArray;
 
-    inform(arr);
+    const results = await filterAsync(
+      arr,
+      async (value) => await checkCodeQLEnablement(value.repo, octokit)
+    );
 
-    await createReposListFile(arr);
+    await createReposListFile(results);
 
     inform(`
       Please review the generated list found in the repos.json file.

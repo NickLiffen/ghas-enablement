@@ -17,6 +17,8 @@ export type config = {
 
 export type usersWriteAdminRepos = {
   enableDependabot: boolean;
+  enableSecretScanning: boolean;
+  createIssue: boolean;
   repo: string;
 };
 
