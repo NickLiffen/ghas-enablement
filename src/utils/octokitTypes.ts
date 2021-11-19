@@ -24,6 +24,11 @@ export type listUsersReposParameters =
 export type listUsersReposResponse =
   Endpoints["GET /users/{username}/repos"]["response"];
 
+export type checkCodeScanningAnalysesParameters =
+  Endpoints["GET /repos/{owner}/{repo}/code-scanning/analyses"]["parameters"];
+export type checkCodeScanningAnalysesResponse =
+  Endpoints["GET /repos/{owner}/{repo}/code-scanning/analyses"]["response"];
+
 export type listOrgReposParameters =
   PaginatingEndpoints["GET /orgs/{org}/repos"]["parameters"];
 export type listOrgReposResponse =
