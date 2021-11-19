@@ -3,15 +3,27 @@
 import util from "util";
 import delay from "delay";
 
+import os from "os";
+
 import { inform, error } from "./globals";
 
-import { macCommands } from "./commands";
+import { macCommands, windowsCommands } from "./commands";
 
-import { exec as ImportedExec } from "child_process";
+import { execFile as ImportedExec } from "child_process";
 
 import { response, commands } from "../../types/common";
 
-const exec = util.promisify(ImportedExec);
+const execFile = util.promisify(ImportedExec);
+
+const platform = os.platform();
+
+const isWindows = platform === "win32";
+if (platform !== "win32" && platform !== "darwin") {
+  error("You can only use either windows or mac machine!");
+  throw new Error(
+    "We detected an OS that wasn't Windows or Mac. Right now, these are the only two OS's supported. Log an issue on the repository for wider support"
+  );
+}
 
 export const commitFileMac = async (
   repo: string,
@@ -24,7 +36,9 @@ export const commitFileMac = async (
   const branch = regExpExecArray ? regExpExecArray[0] : "";
 
   try {
-    gitCommands = (await macCommands(repo, branch)) as commands;
+    gitCommands = isWindows
+      ? (windowsCommands(repo, branch) as commands)
+      : (macCommands(repo, branch) as commands);
     inform(gitCommands);
   } catch (err) {
     error(err);
@@ -32,9 +46,13 @@ export const commitFileMac = async (
   }
 
   for (index = 0; index < gitCommands.length; index++) {
-    const { stdout, stderr } = await exec(gitCommands[index].command, {
-      cwd: gitCommands[index].cwd,
-    });
+    const { stdout, stderr } = await execFile(
+      gitCommands[index].command,
+      gitCommands[index].args,
+      {
+        cwd: gitCommands[index].cwd,
+      }
+    );
     if (stderr) {
       error(stderr);
     }

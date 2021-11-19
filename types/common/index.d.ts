@@ -1,5 +1,6 @@
 export type gitCommands = {
   command: string;
+  args: string[];
   cwd: string;
 };
 
