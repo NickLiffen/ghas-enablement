@@ -2,9 +2,7 @@ import { inform, error } from "./globals";
 
 import { createReposListFile } from "./writeToFile";
 
-import { Octokit } from "./octokitTypes";
-
-import { searchParameters, searchResponse } from "./octokitTypes";
+import { searchParameters, searchResponse, Octokit } from "./octokitTypes";
 
 import { response, usersWriteAdminReposArray } from "../../types/common";
 
