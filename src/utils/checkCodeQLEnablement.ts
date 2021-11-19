@@ -16,10 +16,11 @@ export const checkCodeQLEnablement = async (
     tool_name: "CodeQL",
   } as checkCodeScanningAnalysesParameters;
   try {
-    (await octokit.request(
+    const { data } = (await octokit.request(
       "GET /repos/{owner}/{repo}/code-scanning/analyses",
       requestParams
     )) as checkCodeScanningAnalysesResponse;
+    if (data.length === 0) return true;
     return false;
   } catch (e) {
     return true;
