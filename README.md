@@ -58,11 +58,13 @@ mv .env-sample .env
 
 9. **OPTIONAL**: Update the `CREATE_ISSUE` value to `true/false` depending on if you would like to create an issue explaining purpose of the PR. We recommend this, as it will help explain why the PR was create; and give some context. However, this is optional. The text which is in the issue can be modified and found here: `./src/utils/text/`.
 
-10. Check the `codeql-analysis.yml` file. This is a sample file; please configure this file to suit your application needs.
+10. **OPTIONAL**: If you are a GHES customer, then you will need to set the `GHES` env to `true` and then set `GHES_SERVER_BASE_URL` to the URL of your GHES instance. E.G `https://octodemo.com`.
 
-11. Run `yarn add` or `npm install`, which will install the necessary dependencies.
+11. Check the `codeql-analysis.yml` file. This is a sample file; please configure this file to suit your application needs.
 
-12. Run yarn run build` `npm run build`, which will create the JavaScript bundle from TypeScript.
+12. Run `yarn add` or `npm install`, which will install the necessary dependencies.
+
+13. Run yarn run build` `npm run build`, which will create the JavaScript bundle from TypeScript.
 
 ## How to use?
 

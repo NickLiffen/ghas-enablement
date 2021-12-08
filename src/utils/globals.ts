@@ -7,6 +7,14 @@ const rs = randomstring.generate({
   charset: "alphabetic",
 }) as string;
 
+export const baseApiURL =
+  process.env.GHES == "true"
+    ? `${process.env.GHES_SERVER_BASE_URL}/api/v3`
+    : "https://api.github.com";
+export const baseURL =
+  process.env.GHES == "true"
+    ? process.env.GHES_SERVER_BASE_URL
+    : "https://github.com";
 export const owner = process.env.GITHUB_ORG || ("" as string);
 export const ref = `refs/heads/ghas-${rs}` as string;
 export const message = "Created CodeQL Analysis File";

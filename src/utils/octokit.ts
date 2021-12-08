@@ -1,4 +1,4 @@
-import { inform } from "./globals";
+import { inform, baseApiURL as baseURL } from "./globals";
 import { githubAuth } from "./ghAppAuth";
 import { Octokit } from "@octokit/core";
 import { retry } from "@octokit/plugin-retry";
@@ -29,6 +29,7 @@ export const octokit = async (testPlugin?: any): Promise<unknown> => {
     auth: token,
     previews: ["hellcat", "mercy", "machine-man"],
     request: { retries: 3 },
+    baseUrl: baseURL,
     throttle: {
       onRateLimit: (options: RateLimitOptions) => {
         return options.request.retryCount <= 3;

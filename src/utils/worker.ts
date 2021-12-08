@@ -23,7 +23,7 @@ export const worker = async (): Promise<unknown> => {
     const { repo, enableDependabot, enableSecretScanning, createIssue } =
       repos[index];
     await enableGHAS(repo, client);
-    if (enableDependabot) {
+    if (enableDependabot || process.env.GHES != "true") {
       await enableDependabotAlerts(repo, client);
     }
     if (enableSecretScanning) {

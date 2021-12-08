@@ -1,4 +1,4 @@
-import { tempDIR, owner } from "./globals";
+import { tempDIR, owner, baseURL } from "./globals";
 
 import { commands } from "../../types/common";
 
@@ -13,7 +13,7 @@ export const macCommands = (repo: string, branch: string): commands => {
     },
     {
       command: "git",
-      args: ["clone", `https://github.com/${owner}/${repo}.git`],
+      args: ["clone", `${baseURL}/${owner}/${repo}.git`],
       cwd: `/Users/${user}/${destDir}/${tempDIR}`,
     },
     {
@@ -62,7 +62,7 @@ export const windowsCommands = (repo: string, branch: string): commands => {
     },
     {
       command: "git",
-      args: ["clone", `https://github.com/${owner}/${repo}.git`],
+      args: ["clone", `${baseURL}/${owner}/${repo}.git`],
       cwd: `/Users/${winUser}/${windestDir}/${tempDIR}`,
     },
     {
