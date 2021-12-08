@@ -1,1 +1,8 @@
-[]
+[
+  {
+    "enableDependabot": false,
+    "enableSecretScanning": false,
+    "createIssue": false,
+    "repo": "Test"
+  }
+]
