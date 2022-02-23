@@ -1,1 +1,16 @@
-[]
+[
+  {
+    "enableDependabot": true,
+    "enableSecretScanning": true,
+    "enableCodeScanning": false,
+    "createIssue": true,
+    "repo": "PythonRepoTwo"
+  },
+  {
+    "enableDependabot": true,
+    "enableSecretScanning": true,
+    "enableCodeScanning": false,
+    "createIssue": true,
+    "repo": "PythonRepoOne"
+  }
+]
