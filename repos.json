@@ -1,16 +1,1 @@
-[
-  {
-    "enableDependabot": false,
-    "enableSecretScanning": false,
-    "enableCodeScanning": true,
-    "createIssue": true,
-    "repo": "Test"
-  },
-  {
-    "enableDependabot": false,
-    "enableSecretScanning": false,
-    "enableCodeScanning": true,
-    "createIssue": true,
-    "repo": "JavaScriptRepoOne"
-  }
-]
+[]
