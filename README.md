@@ -2,7 +2,7 @@
 
 ## Purpose
 
-The purpose of this tool is to help enable GitHub Advanced Security (GHAS) across multiple repositories in an automated way. There will be times when you need the ability to enable Code Scanning, Secret Scanning and/or Dependabot across various repositories, and you don't want to click buttons manually or drop a GitHub Workflow for CodeQL into every repository. Doing this is manual and painstaking. The purpose of this utility is to help automate these manual tasks. 
+The purpose of this tool is to help enable GitHub Advanced Security (GHAS) across multiple repositories in an automated way. There will be times when you need the ability to enable Code Scanning, Secret Scanning and/or Dependabot across various repositories, and you don't want to click buttons manually or drop a GitHub Workflow for CodeQL into every repository. Doing this is manual and painstaking. The purpose of this utility is to help automate these manual tasks.
 
 ## Context
 
@@ -16,18 +16,18 @@ There are two main actions this tool does:
 
 **Part One:**
 
-Goes and collects repositories that will have Code Scanning/Secret Scanning/Dependabot enabled. There are three main ways these repositories are collected. 
+Goes and collects repositories that will have Code Scanning/Secret Scanning/Dependabot enabled. There are three main ways these repositories are collected.
 
-- Collect the repositories to which a user has administrative access, or a GitHub App has access. 
-- Collect the repositories where the primary language matches a specific value. For example, if you provide JavaScript, all repositories will be collected where the primary language is, Javascript. 
+- Collect the repositories to which a user has administrative access, or a GitHub App has access.
+- Collect the repositories where the primary language matches a specific value. For example, if you provide JavaScript, all repositories will be collected where the primary language is, Javascript.
 
 If you specify option 1, the script will return all repositories you are an administrator over. If you select option 2, the script will return all repositories in the language you specify (which you have access to). The repositories collected from this script are then stored within a `repos.json` file.
 
-The third option is to define the `repos.json` manually. We don't recommend this, but it's possible. If you want to go down this path, first run one of the above options for collecting repository information automatically, look at the structure, and build your fine of the laid out format. 
+The third option is to define the `repos.json` manually. We don't recommend this, but it's possible. If you want to go down this path, first run one of the above options for collecting repository information automatically, look at the structure, and build your fine of the laid out format.
 
 **Part Two:**
 
-Loops over the repositories found within the `repos.json` file and enables Code Scanning and/or Secret Scanning and/or Dependabot. 
+Loops over the repositories found within the `repos.json` file and enables Code Scanning and/or Secret Scanning and/or Dependabot.
 
 If you pick Code Scanning:
 
@@ -35,11 +35,11 @@ If you pick Code Scanning:
 
 If you pick Secret Scanning:
 
-- Loops over the repositories found within the `repos.json` file. Secret Scanning is then enabled on these repositories. 
+- Loops over the repositories found within the `repos.json` file. Secret Scanning is then enabled on these repositories.
 
 If you pick Dependabot:
 
-- Loops over the repositories found within the `repos.json` file. Dependabot is then enabled on these repositories. 
+- Loops over the repositories found within the `repos.json` file. Dependabot is then enabled on these repositories.
 
 ## Prerequisite
 
@@ -67,10 +67,10 @@ cd ghas-enablement
 
 3.  Generate your choosen authentication stratergy. You are either able to use a [GitHub App](https://docs.github.com/en/developers/apps/getting-started-with-apps/about-apps) or a [Personal Access Token (PAT)](https://github.com/settings/tokens/new). The GitHub App needs to have permissions of `read and write` of `pull requests` `issues`, `dependabot`, `contents`. The GitHub PAT needs access to `repo` only.
 
-4.  Rename the `.env-sample` to `.env`. On a Mac, this can be done via the following terminal command:
+4.  Rename the `.env.sample` to `.env`. On a Mac, this can be done via the following terminal command:
 
 ```bash
-mv .env-sample .env
+mv .env.sample .env
 ```
 
 5. Update the `.env` with the required values. Please pick one of the authentication methods for interacting with GitHub. You can either fill in the `GITHUB_API_TOKEN` with a PAT that has access to the Org. OR, fill in all the values required for a GitHub App. **Note**: It is recommended to pick the GitHub App choice, as this gives you more API requests versus a PAT, however, if you would like to pick Option 2 from the choices below, this won't be possible using a GitHub App and you will need to use a PAT.
@@ -79,7 +79,7 @@ mv .env-sample .env
 
 7. Update the `LANGUAGE` value found within the `.env`. Remove the `XXXX` and replace that with the language you would like to use as a filter when collecting repositories.
 
-8. Decide what you want to enable. Update the `ENABLE_ON` value to deicde what you want to enable on the repositories found within the `repos.json`. This can be one or multiple values. If you are enabling just code scanning (CodeQL) you will need to set `ENABLE_ON=codescanning`, if you are enabling everything, you will need to set `ENABLE_ON=codescanning,secretscanning,dependabot`. You can pick one, two or three. The format is a comma seperated list. 
+8. Decide what you want to enable. Update the `ENABLE_ON` value to deicde what you want to enable on the repositories found within the `repos.json`. This can be one or multiple values. If you are enabling just code scanning (CodeQL) you will need to set `ENABLE_ON=codescanning`, if you are enabling everything, you will need to set `ENABLE_ON=codescanning,secretscanning,dependabot`. You can pick one, two or three. The format is a comma seperated list.
 
 9. **OPTIONAL**: Update the `CREATE_ISSUE` value to `true/false` depending on if you would like to create an issue explaining purpose of the PR. We recommend this, as it will help explain why the PR was create; and give some context. However, this is optional. The text which is in the issue can be modified and found here: `./src/utils/text/`.
 
@@ -97,7 +97,7 @@ There are two simple steps to run:
 
 ### Step One
 
-The first step is collecting the repositories you would like to run this script on. You have three options as mentioned above. Option 1 is automated and finds all the repositories within an organisation you have admin access to. Option 2 is automated and finds all the repositories within an organisation based on the language you specify.  Or, Option 3, which is a manual entry of the repositories you would like to run this script on. See more information below.
+The first step is collecting the repositories you would like to run this script on. You have three options as mentioned above. Option 1 is automated and finds all the repositories within an organisation you have admin access to. Option 2 is automated and finds all the repositories within an organisation based on the language you specify. Or, Option 3, which is a manual entry of the repositories you would like to run this script on. See more information below.
 
 **OPTION 1** (Preferred)
 
@@ -126,12 +126,10 @@ Create a file called `repos.json` within the root of this directory. This file n
 ```JSON
 [
   {
-    "repo": "repo-name-one",
-    "enableDependabot": false
-  },
-  {
-    "repo": "repo-name-two",
-    "enableDependabot": true
+    "enableDependabot": "boolean",
+    "enableSecretScanning": "boolean",
+    "createIssue": "boolean",
+    "repo": "string",
   }
 ]
 ```
