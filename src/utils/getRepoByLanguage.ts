@@ -16,7 +16,7 @@ export const fetchReposByLanguage = async (
   const org = process.env.GITHUB_ORG as string;
   const language = process.env.LANGUAGE as string;
   const enable = process.env.ENABLE_ON as string;
-  
+
   const codeScanning = enable.includes("codescanning") as boolean;
   const secretScanning = enable.includes("secretscanning") as boolean;
   const dependabot = enable.includes("dependabot") as boolean;
@@ -45,7 +45,6 @@ export const fetchReposByLanguage = async (
         });
       }
     )) as usersWriteAdminReposArray;
-
 
     const arr = repos.filter(
       (repo) => Object.keys(repo).length !== 0
