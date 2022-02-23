@@ -20,33 +20,50 @@ export const worker = async (): Promise<unknown> => {
   let res;
   let index: number;
   for (index = 0; index < repos.length; index++) {
-    const { repo, enableDependabot, enableSecretScanning, createIssue } =
-      repos[index];
-    await enableGHAS(repo, client);
-    if (enableDependabot || process.env.GHES != "true") {
-      await enableDependabotAlerts(repo, client);
-    }
-    if (enableSecretScanning) {
-      await enableSecretScanningAlerts(repo, client);
-    }
-    const defaultBranch = await findDefulatBranch(repo, client);
-    const defaultBranchSHA = await findDefulatBranchSHA(
-      defaultBranch,
+    const {
       repo,
-      client
-    );
-    const ref = await createBranch(defaultBranchSHA, repo, client);
-    await commitFileMac(repo, ref);
-    const pullRequestURL = await createPullRequest(
-      defaultBranch,
-      ref,
-      repo,
-      client
-    );
-    if (createIssue) {
-      await enableIssueCreation(pullRequestURL, repo, client);
+      enableDependabot,
+      enableSecretScanning,
+      createIssue,
+      enableCodeScanning,
+    } = repos[index];
+
+    // If Code Scanning or Secret Scanning need to be enabled, let's go ahead and enable GHAS first
+    enableCodeScanning || enableSecretScanning
+      ? await enableGHAS(repo, client)
+      : null;
+
+    // If they want to enable Dependabot, and they are NOT on GHES (as that currently isn't GA yet), enable Dependabot
+    enableDependabot && process.env.GHES != "true"
+      ? await enableDependabotAlerts(repo, client)
+      : null;
+
+    // Kick off the process for enabling Secret Scanning
+    enableSecretScanning
+      ? await enableSecretScanningAlerts(repo, client)
+      : null;
+
+    // Kick off the process for enabling Code Scanning
+    if (enableCodeScanning) {
+      const defaultBranch = await findDefulatBranch(repo, client);
+      const defaultBranchSHA = await findDefulatBranchSHA(
+        defaultBranch,
+        repo,
+        client
+      );
+      const ref = await createBranch(defaultBranchSHA, repo, client);
+      await commitFileMac(repo, ref);
+      const pullRequestURL = await createPullRequest(
+        defaultBranch,
+        ref,
+        repo,
+        client
+      );
+      if (createIssue) {
+        await enableIssueCreation(pullRequestURL, repo, client);
+      }
+      await writeToFile(pullRequestURL);
     }
-    await writeToFile(pullRequestURL);
   }
   return res;
 };

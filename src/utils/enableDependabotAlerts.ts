@@ -16,17 +16,16 @@ const checkVulnerabilityAlertsStatus = async (
   octokit: Octokit
 ): Promise<response> => {
   try {
-    const { status } = (await octokit.request(
+    (await octokit.request(
       "GET /repos/{owner}/{repo}/vulnerability-alerts",
       requestParams
     )) as listVulnerabilityAlertsResponse;
-    const message = status === 204 ? "Enabled" : ("Not-Enabled" as string);
-    return { status, message } as response;
+    return { status: 204, message: "Enabled" } as response;
   } catch (err) {
-    error(
-      `Problem checking if Dependabot is enabled on the following repository: ${requestParams.repo}. The error was: ${err}`
+    inform(
+      `Dependabot is not enabled on the following repository: ${requestParams.repo}.`
     );
-    throw err;
+    return { status: 404, message: "Not-Enabled" } as response;
   }
 };
 

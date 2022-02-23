@@ -13,11 +13,15 @@ import { filterAsync } from "./filterAsync";
 export const fetchReposByLanguage = async (
   octokit: Octokit
 ): Promise<response> => {
-  const org = process.env.GITHUB_ORG;
-  const language = process.env.LANGUAGE;
-  const secretScanning = process.env.SECRET_SCANNING === "true" ? true : false;
-  const dependabot = process.env.DEPENDABOT === "true" ? true : false;
-  const issue = process.env.CREATE_ISSUE === "true" ? true : false;
+  const org = process.env.GITHUB_ORG as string;
+  const language = process.env.LANGUAGE as string;
+  const enable = process.env.ENABLE_ON as string;
+
+  const codeScanning = enable.includes("codescanning") as boolean;
+  const secretScanning = enable.includes("secretscanning") as boolean;
+  const dependabot = enable.includes("dependabot") as boolean;
+
+  const issue = process.env.CREATE_ISSUE === "true" ? true : (false as boolean);
 
   try {
     const requestParams = {
@@ -34,6 +38,7 @@ export const fetchReposByLanguage = async (
           return {
             enableDependabot: dependabot,
             enableSecretScanning: secretScanning,
+            enableCodeScanning: codeScanning,
             createIssue: issue,
             repo: repo.name,
           };
