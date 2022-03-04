@@ -5,7 +5,7 @@ dotenv.config({ path: __dirname + "/../../.env" });
 import { error } from "./utils/globals";
 
 import { fetchReposByLanguage } from "./utils/getRepoByLanguage";
-import { octokit } from "./utils/octokit";
+import { restClient as octokit } from "./utils/clients";
 
 import { Octokit } from "./utils/octokitTypes";
 
