@@ -1,4 +1,4 @@
-import { inform, baseApiURL as baseURL } from "../globals";
+import { inform, baseRestApiURL as baseUrl } from "../globals";
 import { Octokit } from "@octokit/core";
 import { retry } from "@octokit/plugin-retry";
 import { throttling } from "@octokit/plugin-throttling";
@@ -22,7 +22,7 @@ export const restClient = async (testPlugin?: any): Promise<unknown> => {
       auth,
       previews: ["hellcat", "mercy", "machine-man"],
       request: { retries: 3 },
-      baseUrl: baseURL,
+      baseUrl,
       throttle: {
         onRateLimit: (options: RateLimitOptions) => {
           return options.request.retryCount <= 3;

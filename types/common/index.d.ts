@@ -42,3 +42,15 @@ export type TestOctokit = {
 export type commands = gitCommands[];
 
 type usersWriteAdminReposArray = usersWriteAdminRepos[];
+
+export type performOrganisationsQueryType = [
+  string,
+  string,
+  orgsInEnterpriseArray
+];
+
+export type orgsInEnterpriseObject = {
+  login: string;
+};
+
+export type orgsInEnterpriseArray = orgsInEnterpriseObject[];

@@ -1,6 +1,6 @@
 import { graphql } from "@octokit/graphql";
 
-import { baseApiURL as baseUrl } from "../globals";
+import { baseGraphApiURL as baseUrl } from "../globals";
 import { auth } from "./auth";
 
 export const graphQLClient = async (): Promise<typeof graphql> => {
@@ -9,7 +9,7 @@ export const graphQLClient = async (): Promise<typeof graphql> => {
     const octokit = graphql.defaults({
       baseUrl,
       headers: {
-        authorization,
+        authorization: `token ${authorization}`,
       },
     });
     return octokit;
