@@ -1,23 +1,23 @@
 import { graphql, GraphQlQueryResponseData } from "@octokit/graphql";
 
-import { getOrganisationsQuery } from "./graphql";
-import { createOrganizationListFile } from "./writeToFile";
+import { getRepositoriesQuery } from "./graphql";
+import { graphQLClient as octokit } from "./clients";
 
 import {
-  performOrganisationsQueryType,
-  orgsInEnterpriseArray,
+  performRepositoryQueryType,
+  reposInOrgArray,
 } from "../../types/common";
 
-const performOrganisationsQuery = async (
+const performRepositoryQuery = async (
   client: typeof graphql,
   query: string,
   slug: string,
   after: string | null
-): Promise<performOrganisationsQueryType> => {
+): Promise<performRepositoryQueryType> => {
   try {
     const {
-      enterprise: {
-        organizations: {
+      organization: {
+        repositories: {
           pageInfo: { hasNextPage, endCursor },
           nodes,
         },
@@ -30,15 +30,15 @@ const performOrganisationsQuery = async (
   }
 };
 
-const getOrganisationsInEnterprise = async (
+const getRepositoryInOrganizationPaginate = async (
   client: typeof graphql,
   slug: string,
   query: string,
-  paginatedData = [] as orgsInEnterpriseArray,
+  paginatedData = [] as reposInOrgArray,
   ec = null as string | null
-): Promise<orgsInEnterpriseArray> => {
+): Promise<reposInOrgArray> => {
   try {
-    const [hasNextPage, endCursor, nodes] = await performOrganisationsQuery(
+    const [hasNextPage, endCursor, nodes] = await performRepositoryQuery(
       client,
       query,
       slug,
@@ -48,7 +48,7 @@ const getOrganisationsInEnterprise = async (
       return paginatedData.push(element);
     });
     if (hasNextPage) {
-      await getOrganisationsInEnterprise(
+      await getRepositoryInOrganizationPaginate(
         client,
         slug,
         query,
@@ -63,12 +63,14 @@ const getOrganisationsInEnterprise = async (
   }
 };
 
-export const index = async (client: typeof graphql): Promise<void> => {
+export const getRepositoryInOrganization = async (
+  slug: string
+): Promise<reposInOrgArray> => {
   try {
-    const slug = process.env.GITHUB_ENTERPRISE as string;
-    const query = await getOrganisationsQuery();
-    const data = await getOrganisationsInEnterprise(client, slug, query);
-    await createOrganizationListFile(data);
+    const client = await octokit();
+    const query = await getRepositoriesQuery();
+    const data = await getRepositoryInOrganizationPaginate(client, slug, query);
+    return data;
   } catch (err) {
     console.error(err);
     throw err;

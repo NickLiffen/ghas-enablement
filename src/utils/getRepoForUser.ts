@@ -2,63 +2,56 @@ import { inform, error } from "./globals";
 
 import { createReposListFile } from "./writeToFile";
 
-import {
-  listOrgReposParameters,
-  listOrgReposResponse,
-  Octokit,
-} from "./octokitTypes";
+import { orgsInEnterpriseArray, response } from "../../types/common";
 
-import { response, usersWriteAdminReposArray } from "../../types/common";
+import { getRepositoryInOrganization } from "./getRepositoryInOrganization";
 
-import { checkCodeQLEnablement } from "./checkCodeQLEnablement";
+/*import { checkCodeQLEnablement } from "./checkCodeQLEnablement";*/
 
 import { filterAsync } from "./filterAsync";
 
-export const fetchReposByUser = async (octokit: Octokit): Promise<response> => {
-  const org = process.env.GITHUB_ORG as string;
-  const enable = process.env.ENABLE_ON as string;
+import { getOrganizationFromLocalFile } from "./getOrganizationFromLocalFile";
 
+export const fetchReposByUser = async (): Promise<response> => {
+  /* The object we are going to use which contains organisation which we are going to collect the repositories from */
+  let res;
+  let response;
+
+  /* Checking and seeing if the collect organisations command has been run */
+  const { status, data } = await getOrganizationFromLocalFile();
+
+  if (status === 200) {
+    res = data as orgsInEnterpriseArray;
+  } else {
+    res = [{ login: `${process.env.GITHUB_ORG}` }] as orgsInEnterpriseArray;
+  }
+
+  /*const enable = process.env.ENABLE_ON as string;
   const codeScanning = enable.includes("codescanning") as boolean;
   const secretScanning = enable.includes("secretscanning") as boolean;
   const dependabot = enable.includes("dependabot") as boolean;
+  const issue = process.env.CREATE_ISSUE === "true" ? true : (false as boolean);*/
 
-  const issue = process.env.CREATE_ISSUE === "true" ? true : (false as boolean);
   try {
-    const requestParams = {
-      type: "all",
-      per_page: 100,
-      org,
-    } as listOrgReposParameters;
+    /* Looping through the organisation(s) and collecting repositories */
+    for (let index = 0; index < res.length; index++) {
+      inform(`Fetching repositories for ${res[index].login}`);
+      inform(`This is the ${index + 1} of ${res.length}. Please wait...`);
+      response = await getRepositoryInOrganization(res[index].login);
+      inform(`Data collected for ${res[index].login}`);
+      inform(`Filtering out any repositories that are archived or the user running the script is not an admin of the repository`);
+      const results = await filterAsync(
+        response,
+        async (value) => value.isArchived === "true" || (value.viewerPermission !== "ADMIN" || value.viewerPermission !== null) ? false : true
+      );
+      console.log(results);
+    }
+    /*const results = await filterAsync(
+      res,
+      async (value) => await checkCodeQLEnablement(value.repos.repo, octokit)
+    );*/
 
-    const repos = (await octokit.paginate(
-      "GET /orgs/{org}/repos",
-      requestParams,
-      (response: listOrgReposResponse) =>
-        response.data.map((repo) => {
-          const permission = repo.permissions ? repo.permissions.admin : false;
-          if (permission) {
-            return {
-              enableDependabot: dependabot,
-              enableSecretScanning: secretScanning,
-              enableCodeScanning: codeScanning,
-              createIssue: issue,
-              repo: repo.name,
-            };
-          }
-          return {};
-        })
-    )) as usersWriteAdminReposArray;
-
-    const arr = repos.filter(
-      (repo) => Object.keys(repo).length !== 0
-    ) as usersWriteAdminReposArray;
-
-    const results = await filterAsync(
-      arr,
-      async (value) => await checkCodeQLEnablement(value.repo, octokit)
-    );
-
-    await createReposListFile(results);
+    await createReposListFile(res);
 
     inform(`
       Please review the generated list found in the repos.json file.

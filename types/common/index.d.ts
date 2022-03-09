@@ -43,14 +43,30 @@ export type commands = gitCommands[];
 
 type usersWriteAdminReposArray = usersWriteAdminRepos[];
 
+export type orgsInEnterpriseArray = orgsInEnterpriseObject[];
+
+export type orgsInEnterpriseObject = {
+  login: string;
+  repos?: usersWriteAdminReposArray;
+};
+
 export type performOrganisationsQueryType = [
   string,
   string,
   orgsInEnterpriseArray
 ];
 
-export type orgsInEnterpriseObject = {
-  login: string;
+export type getOrgLocalFileResponse = {
+  status: number;
+  data: orgsInEnterpriseArray | null;
 };
 
-export type orgsInEnterpriseArray = orgsInEnterpriseObject[];
+export type performRepositoryQueryType = [string, string, reposInOrgArray];
+
+export type reposInOrgArray = reposInOrgObject[];
+
+export type reposInOrgObject = {
+  nameWithOwner: string;
+  isArchived: string;
+  viewerPermission: string;
+};

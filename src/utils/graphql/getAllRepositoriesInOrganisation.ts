@@ -12,9 +12,16 @@ export const getRepositoriesQuery = (): string => {
       used
     }
     organization(login: $slug) {
-      repositories(first: $first, after: $after) {
+      repositories(first: $first, after: $after, affiliations: ORGANIZATION_MEMBER, isFork: false) {
         nodes {
           nameWithOwner
+          isArchived
+          viewerPermission
+        }
+        totalCount
+        pageInfo {
+          hasNextPage
+          endCursor
         }
       }
     }
