@@ -31,3 +31,5 @@ export const destDir = "Desktop" as string;
 export const windestDir = "Documents" as string;
 export const user = process.cwd().split("/")[2] as string;
 export const winUser = process.cwd().split("\\")[2] as string;
+export const reposFileLocation = "./bin/repos.json" as string;
+export const orgsFileLocationb = "./bin/organizations.json" as string;
