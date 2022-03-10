@@ -67,6 +67,6 @@ export type reposInOrgArray = reposInOrgObject[];
 
 export type reposInOrgObject = {
   nameWithOwner: string;
-  isArchived: string;
-  viewerPermission: string;
+  isArchived?: boolean;
+  viewerPermission?: string;
 };

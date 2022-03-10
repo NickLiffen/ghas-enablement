@@ -2,20 +2,22 @@ import { inform, error } from "./globals";
 
 import { createReposListFile } from "./writeToFile";
 
-import { orgsInEnterpriseArray, response } from "../../types/common";
+import {
+  orgsInEnterpriseArray,
+  usersWriteAdminReposArray,
+  response,
+} from "../../types/common";
 
 import { getRepositoryInOrganization } from "./getRepositoryInOrganization";
 
 /*import { checkCodeQLEnablement } from "./checkCodeQLEnablement";*/
 
-import { filterAsync } from "./filterAsync";
-
 import { getOrganizationFromLocalFile } from "./getOrganizationFromLocalFile";
 
 export const fetchReposByUser = async (): Promise<response> => {
   /* The object we are going to use which contains organisation which we are going to collect the repositories from */
-  let res;
-  let response;
+  let res: orgsInEnterpriseArray;
+  let repositoriesInOrg: usersWriteAdminReposArray;
 
   /* Checking and seeing if the collect organisations command has been run */
   const { status, data } = await getOrganizationFromLocalFile();
@@ -26,30 +28,22 @@ export const fetchReposByUser = async (): Promise<response> => {
     res = [{ login: `${process.env.GITHUB_ORG}` }] as orgsInEnterpriseArray;
   }
 
-  /*const enable = process.env.ENABLE_ON as string;
-  const codeScanning = enable.includes("codescanning") as boolean;
-  const secretScanning = enable.includes("secretscanning") as boolean;
-  const dependabot = enable.includes("dependabot") as boolean;
-  const issue = process.env.CREATE_ISSUE === "true" ? true : (false as boolean);*/
+  console.log(res);
 
   try {
     /* Looping through the organisation(s) and collecting repositories */
     for (let index = 0; index < res.length; index++) {
       inform(`Fetching repositories for ${res[index].login}`);
       inform(`This is the ${index + 1} of ${res.length}. Please wait...`);
-      response = await getRepositoryInOrganization(res[index].login);
+      repositoriesInOrg = await getRepositoryInOrganization(res[index].login);
       inform(`Data collected for ${res[index].login}`);
-      inform(`Filtering out any repositories that are archived or the user running the script is not an admin of the repository`);
-      const results = await filterAsync(
-        response,
-        async (value) => value.isArchived === "true" || (value.viewerPermission !== "ADMIN" || value.viewerPermission !== null) ? false : true
+      inform(
+        `The total number of repositories in the ${res[index].login} org is ${repositoriesInOrg.length}`
       );
-      console.log(results);
+      res[index].repos = repositoriesInOrg;
     }
-    /*const results = await filterAsync(
-      res,
-      async (value) => await checkCodeQLEnablement(value.repos.repo, octokit)
-    );*/
+
+    console.log(res);
 
     await createReposListFile(res);
 

@@ -5,8 +5,10 @@ import { graphQLClient as octokit } from "./clients";
 
 import {
   performRepositoryQueryType,
-  reposInOrgArray,
+  usersWriteAdminReposArray,
 } from "../../types/common";
+
+import { filterAsync } from "./filterAsync";
 
 const performRepositoryQuery = async (
   client: typeof graphql,
@@ -34,9 +36,9 @@ const getRepositoryInOrganizationPaginate = async (
   client: typeof graphql,
   slug: string,
   query: string,
-  paginatedData = [] as reposInOrgArray,
+  paginatedData = [] as usersWriteAdminReposArray,
   ec = null as string | null
-): Promise<reposInOrgArray> => {
+): Promise<usersWriteAdminReposArray> => {
   try {
     const [hasNextPage, endCursor, nodes] = await performRepositoryQuery(
       client,
@@ -44,9 +46,29 @@ const getRepositoryInOrganizationPaginate = async (
       slug,
       ec
     );
-    nodes.forEach((element) => {
-      return paginatedData.push(element);
+
+    /* If (the viewerPermission is set to NULL OR the viewerPermission is set to ADMIN) 
+      OR the reposiory is not archived, keep in the array*/
+    const results = await filterAsync(nodes, async (value) =>
+      (value.viewerPermission === "ADMIN" || value.viewerPermission === null) &&
+      value.isArchived === false
+        ? true
+        : false
+    );
+
+    const enable = process.env.ENABLE_ON as string;
+
+    results.forEach((element) => {
+      return paginatedData.push({
+        enableDependabot: enable.includes("dependabot") as boolean,
+        enableSecretScanning: enable.includes("secretscanning") as boolean,
+        enableCodeScanning: enable.includes("codescanning") as boolean,
+        createIssue:
+          process.env.CREATE_ISSUE === "true" ? true : (false as boolean),
+        repo: element.nameWithOwner,
+      });
     });
+
     if (hasNextPage) {
       await getRepositoryInOrganizationPaginate(
         client,
@@ -65,7 +87,7 @@ const getRepositoryInOrganizationPaginate = async (
 
 export const getRepositoryInOrganization = async (
   slug: string
-): Promise<reposInOrgArray> => {
+): Promise<usersWriteAdminReposArray> => {
   try {
     const client = await octokit();
     const query = await getRepositoriesQuery();
