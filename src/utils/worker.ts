@@ -11,7 +11,7 @@ import { commitFileMac } from "./commitFile.js";
 import { enableGHAS } from "./enableGHAS.js";
 import { enableDependabotAlerts } from "./enableDependabotAlerts";
 import { enableIssueCreation } from "./enableIssueCreation";
-import repos from "../../repos.json";
+import repos from "../../bin/repos.json";
 
 import { Octokit } from "./octokitTypes";
 

@@ -28,7 +28,7 @@ export const createReposListFile = async (
   try {
     const writeFile = promisify(fs.writeFile);
     const data = JSON.stringify(list, null, 2);
-    writeFile("repos.json", data);
+    writeFile("./bin/repos.json", data);
     inform(`Success created repos.json`);
     return { status: 200, message: "Success created repos.json" };
   } catch (err) {
@@ -44,7 +44,7 @@ export const createOrganizationListFile = async (
   try {
     const writeFile = promisify(fs.writeFile);
     const data = JSON.stringify(list, null, 2);
-    writeFile("organizations.json", data);
+    writeFile("./bin/organizations.json", data);
     inform(`Success created organization.json`);
     return { status: 200, message: "Success created organization.json" };
   } catch (err) {

@@ -7,7 +7,7 @@ import {
 /* The reason I am doing this versus import x from "../x" is becuase the file may not exist */
 export async function getOrganizationFromLocalFile() {
   try {
-    const data = (await fs.readFile("./organizations.json", "utf-8")) as string;
+    const data = (await fs.readFile("./bin/organizations.json", "utf-8")) as string;
     const organizations = JSON.parse(data) as orgsInEnterpriseArray;
     return { status: 200, data: organizations } as getOrgLocalFileResponse;
   } catch (err) {
