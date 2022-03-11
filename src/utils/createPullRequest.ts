@@ -1,4 +1,4 @@
-import { owner, title, error, inform } from "./globals";
+import { title, error, inform } from "./globals";
 
 import { Octokit } from "./octokitTypes";
 
@@ -10,6 +10,7 @@ import {
 export const createPullRequest = async (
   base: string,
   refs: string,
+  owner: string,
   repo: string,
   octokit: Octokit
 ): Promise<string> => {

@@ -28,8 +28,6 @@ export const fetchReposByUser = async (): Promise<response> => {
     res = [{ login: `${process.env.GITHUB_ORG}` }] as orgsInEnterpriseArray;
   }
 
-  console.log(res);
-
   try {
     /* Looping through the organisation(s) and collecting repositories */
     for (let index = 0; index < res.length; index++) {
@@ -42,8 +40,6 @@ export const fetchReposByUser = async (): Promise<response> => {
       );
       res[index].repos = repositoriesInOrg;
     }
-
-    console.log(res);
 
     await createReposListFile(res);
 

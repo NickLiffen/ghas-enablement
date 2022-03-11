@@ -4,7 +4,7 @@ import {
   orgsInEnterpriseArray,
 } from "../../types/common";
 
-import { orgsFileLocationb } from "./globals";
+import { error, orgsFileLocationb } from "./globals";
 
 /* The reason I am doing this versus import x from "../x" is becuase the file may not exist */
 export async function getOrganizationFromLocalFile() {
@@ -13,7 +13,7 @@ export async function getOrganizationFromLocalFile() {
     const organizations = JSON.parse(data) as orgsInEnterpriseArray;
     return { status: 200, data: organizations } as getOrgLocalFileResponse;
   } catch (err) {
-    console.log(err);
+    error(err);
     return { status: 404, data: null } as getOrgLocalFileResponse;
   }
 }

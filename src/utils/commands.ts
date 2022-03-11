@@ -1,10 +1,14 @@
-import { tempDIR, owner, baseURL } from "./globals";
+import { tempDIR, baseURL } from "./globals";
 
 import { commands } from "../../types/common";
 
 import { destDir, user, winUser, windestDir } from "./globals";
 
-export const macCommands = (repo: string, branch: string): commands => {
+export const macCommands = (
+  owner: string,
+  repo: string,
+  branch: string
+): commands => {
   const commands = [
     {
       command: "mkdir",
@@ -53,7 +57,11 @@ export const macCommands = (repo: string, branch: string): commands => {
   return commands;
 };
 
-export const windowsCommands = (repo: string, branch: string): commands => {
+export const windowsCommands = (
+  owner: string,
+  repo: string,
+  branch: string
+): commands => {
   const commands = [
     {
       command: "mkdir",

@@ -1,4 +1,4 @@
-import { owner, error, inform } from "./globals";
+import { error, inform } from "./globals";
 
 import { Octokit } from "./octokitTypes";
 
@@ -9,6 +9,7 @@ import {
 
 export const findDefulatBranchSHA = async (
   defaultBranch: string,
+  owner: string,
   repo: string,
   octokit: Octokit
 ): Promise<string> => {

@@ -1,11 +1,10 @@
 import { issueText } from "./text/issueText";
 
-import { owner } from "./globals";
-
 import { Octokit } from "./octokitTypes";
 
 export const enableIssueCreation = async (
   pr: string,
+  owner: string,
   repo: string,
   octokit: Octokit
 ): Promise<void> => {

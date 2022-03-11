@@ -1,4 +1,4 @@
-import { owner, inform, error } from "./globals";
+import { inform, error } from "./globals";
 
 import { Octokit } from "./octokitTypes";
 
@@ -30,6 +30,7 @@ const checkVulnerabilityAlertsStatus = async (
 };
 
 export const enableDependabotAlerts = async (
+  owner: string,
   repo: string,
   octokit: Octokit
 ): Promise<response> => {

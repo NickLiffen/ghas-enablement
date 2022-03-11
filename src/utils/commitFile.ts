@@ -18,14 +18,15 @@ const execFile = util.promisify(ImportedExec);
 const platform = os.platform();
 
 const isWindows = platform === "win32";
-if (platform !== "win32" && platform !== "darwin") {
+if (platform !== "win32" && platform !== "darwin" && platform !== "linux") {
   error("You can only use either windows or mac machine!");
   throw new Error(
-    "We detected an OS that wasn't Windows or Mac. Right now, these are the only two OS's supported. Log an issue on the repository for wider support"
+    "We detected an OS that wasn't Windows, Linux or Mac. Right now, these are the only three OS's supported. Log an issue on the repository for wider support"
   );
 }
 
 export const commitFileMac = async (
+  owner: string,
   repo: string,
   refs: string
 ): Promise<response> => {
@@ -37,8 +38,8 @@ export const commitFileMac = async (
 
   try {
     gitCommands = isWindows
-      ? (windowsCommands(repo, branch) as commands)
-      : (macCommands(repo, branch) as commands);
+      ? (windowsCommands(owner, repo, branch) as commands)
+      : (macCommands(owner, repo, branch) as commands);
     inform(gitCommands);
   } catch (err) {
     error(err);

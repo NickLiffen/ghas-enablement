@@ -40,7 +40,7 @@ export const fetchReposByLanguage = async (
             enableSecretScanning: secretScanning,
             enableCodeScanning: codeScanning,
             createIssue: issue,
-            repo: repo.name,
+            repo: repo.nameWithOwner,
           };
         });
       }
@@ -50,10 +50,11 @@ export const fetchReposByLanguage = async (
       (repo) => Object.keys(repo).length !== 0
     ) as usersWriteAdminReposArray;
 
-    const results = await filterAsync(
-      arr,
-      async (value) => await checkCodeQLEnablement(value.repo, octokit)
-    );
+    const results = await filterAsync(arr, async (value) => {
+      const { repo: repoName } = value;
+      const [owner, repo] = repoName.split("/");
+      return await checkCodeQLEnablement(owner, repo, octokit);
+    });
 
     await createReposListFile(results);
 

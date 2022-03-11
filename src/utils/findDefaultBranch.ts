@@ -1,4 +1,4 @@
-import { owner, error, inform } from "./globals";
+import { error, inform } from "./globals";
 
 import { Octokit } from "./octokitTypes";
 
@@ -8,6 +8,7 @@ import {
 } from "./octokitTypes";
 
 export const findDefulatBranch = async (
+  owner: string,
   repo: string,
   octokit: Octokit
 ): Promise<string> => {

@@ -10,7 +10,6 @@ async function start() {
   try {
     await fetchReposByUser();
   } catch (err) {
-    console.log(err);
     error(err);
     return err;
   }
