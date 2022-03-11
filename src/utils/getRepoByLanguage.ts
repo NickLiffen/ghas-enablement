@@ -2,61 +2,50 @@ import { inform, error } from "./globals";
 
 import { createReposListFile } from "./writeToFile";
 
-import { searchParameters, searchResponse, Octokit } from "./octokitTypes";
+import { getLanguageSpecificRepositoriesInOrg } from "./getLanguageSpecificRepositoriesInOrg";
 
-import { response, usersWriteAdminReposArray } from "../../types/common";
+import {
+  orgsInEnterpriseArray,
+  response,
+  usersWriteAdminReposArray,
+} from "../../types/common";
 
-import { checkCodeQLEnablement } from "./checkCodeQLEnablement";
+/*import { checkCodeQLEnablement } from "./checkCodeQLEnablement";
+import { filterAsync } from "./filterAsync";*/
 
-import { filterAsync } from "./filterAsync";
+import { getOrganizationFromLocalFile } from "./getOrganizationFromLocalFile";
 
-export const fetchReposByLanguage = async (
-  octokit: Octokit
-): Promise<response> => {
-  const org = process.env.GITHUB_ORG as string;
-  const language = process.env.LANGUAGE as string;
-  const enable = process.env.ENABLE_ON as string;
+export const fetchReposByLanguage = async (): Promise<response> => {
+  /* The object we are going to use which contains organisation which we are going to collect the repositories from */
+  let res: orgsInEnterpriseArray;
 
-  const codeScanning = enable.includes("codescanning") as boolean;
-  const secretScanning = enable.includes("secretscanning") as boolean;
-  const dependabot = enable.includes("dependabot") as boolean;
+  /* Checking and seeing if the collect organisations command has been run */
+  const { status, data } = await getOrganizationFromLocalFile();
 
-  const issue = process.env.CREATE_ISSUE === "true" ? true : (false as boolean);
+  if (status === 200) {
+    res = data as orgsInEnterpriseArray;
+  } else {
+    res = [{ login: `${process.env.GITHUB_ORG}` }] as orgsInEnterpriseArray;
+  }
 
   try {
-    const requestParams = {
-      q: `org:${org} language:${language}`,
-    } as searchParameters;
+    /* Looping through the organisation(s) and collecting repositories */
+    for (let index = 0; index < res.length; index++) {
+      inform(
+        `Fetching repositories for ${res[index].login} where language is ${process.env.LANGUAGE}`
+      );
+      inform(`This is the ${index + 1} of ${res.length}. Please wait...`);
+      const repositoriesInOrg = (await getLanguageSpecificRepositoriesInOrg(
+        res[index].login
+      )) as usersWriteAdminReposArray;
+      inform(`Data collected for ${res[index].login}`);
+      inform(
+        `The total number of repositories in the ${res[index].login} org is ${repositoriesInOrg.length}`
+      );
+      res[index].repos = repositoriesInOrg;
+    }
 
-    const repos = (await octokit.paginate(
-      "GET /search/repositories",
-      requestParams,
-      (response: searchResponse) => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        return response.data.map((repo) => {
-          return {
-            enableDependabot: dependabot,
-            enableSecretScanning: secretScanning,
-            enableCodeScanning: codeScanning,
-            createIssue: issue,
-            repo: repo.nameWithOwner,
-          };
-        });
-      }
-    )) as usersWriteAdminReposArray;
-
-    const arr = repos.filter(
-      (repo) => Object.keys(repo).length !== 0
-    ) as usersWriteAdminReposArray;
-
-    const results = await filterAsync(arr, async (value) => {
-      const { repo: repoName } = value;
-      const [owner, repo] = repoName.split("/");
-      return await checkCodeQLEnablement(owner, repo, octokit);
-    });
-
-    await createReposListFile(results);
+    await createReposListFile(res);
 
     inform(`
       Please review the generated list found in the repos.json file.

@@ -17,7 +17,6 @@ import { getOrganizationFromLocalFile } from "./getOrganizationFromLocalFile";
 export const fetchReposByUser = async (): Promise<response> => {
   /* The object we are going to use which contains organisation which we are going to collect the repositories from */
   let res: orgsInEnterpriseArray;
-  let repositoriesInOrg: usersWriteAdminReposArray;
 
   /* Checking and seeing if the collect organisations command has been run */
   const { status, data } = await getOrganizationFromLocalFile();
@@ -33,7 +32,9 @@ export const fetchReposByUser = async (): Promise<response> => {
     for (let index = 0; index < res.length; index++) {
       inform(`Fetching repositories for ${res[index].login}`);
       inform(`This is the ${index + 1} of ${res.length}. Please wait...`);
-      repositoriesInOrg = await getRepositoryInOrganization(res[index].login);
+      const repositoriesInOrg = (await getRepositoryInOrganization(
+        res[index].login
+      )) as usersWriteAdminReposArray;
       inform(`Data collected for ${res[index].login}`);
       inform(
         `The total number of repositories in the ${res[index].login} org is ${repositoriesInOrg.length}`

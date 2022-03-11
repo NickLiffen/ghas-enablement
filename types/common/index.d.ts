@@ -63,6 +63,12 @@ export type getOrgLocalFileResponse = {
 
 export type performRepositoryQueryType = [string, string, reposInOrgArray];
 
+export type performRepositoryLanguageQueryType = [
+  string,
+  string,
+  reposByLanguageArray
+];
+
 export type reposInOrgArray = reposInOrgObject[];
 
 export type reposInOrgObject = {
@@ -70,3 +76,14 @@ export type reposInOrgObject = {
   isArchived?: boolean;
   viewerPermission?: string;
 };
+
+export type reposByLanguageObject = {
+  nameWithOwner: string;
+  isArchived?: boolean;
+  viewerPermission?: string;
+  primaryLanguage: {
+    name: string;
+  };
+};
+
+export type reposByLanguageArray = reposByLanguageObject[];
