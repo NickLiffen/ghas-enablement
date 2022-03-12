@@ -1,4 +1,4 @@
-import { owner, inform, error } from "./globals";
+import { inform, error } from "./globals";
 
 import { Octokit } from "./octokitTypes";
 
@@ -8,6 +8,7 @@ import { response } from "../../types/common";
 
 //TODO: I can combine this function and the function found within `enableGHAS` and pass in the `secret_scanning` or `ghas` as a var
 export const enableSecretScanningAlerts = async (
+  owner: string,
   repo: string,
   octokit: Octokit
 ): Promise<response> => {

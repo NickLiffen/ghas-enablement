@@ -4,10 +4,11 @@ import { Octokit } from "./octokitTypes";
 
 import { putFileInPathParameters, putFileInPathResponse } from "./octokitTypes";
 
-import { owner, path, message, error, inform } from "./globals";
+import { path, message, error, inform } from "./globals";
 
 export const putFileInBranch = async (
   refs: string,
+  owner: string,
   repo: string,
   octokit: Octokit
 ): Promise<string | unknown> => {

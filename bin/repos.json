@@ -1,0 +1,14 @@
+[
+  {
+    "login": "octodemo",
+    "repos": [
+      {
+        "enableDependabot": false,
+        "enableSecretScanning": false,
+        "enableCodeScanning": false,
+        "createIssue": false,
+        "repo": "octodemo"
+      }
+    ]
+  }
+]

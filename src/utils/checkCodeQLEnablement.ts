@@ -1,5 +1,3 @@
-import { owner } from "./globals";
-
 import {
   checkCodeScanningAnalysesParameters,
   checkCodeScanningAnalysesResponse,
@@ -7,6 +5,7 @@ import {
 } from "./octokitTypes";
 
 export const checkCodeQLEnablement = async (
+  owner: string,
   repo: string,
   octokit: Octokit
 ): Promise<boolean> => {

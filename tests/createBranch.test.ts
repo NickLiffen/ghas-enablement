@@ -35,8 +35,6 @@ describe("Create Branch", () => {
     mockAddListener.mockImplementation(
       (url, options?) =>
         new Promise((resolve) => {
-          console.log(url);
-          console.log(options);
           resolve(data);
         })
     );

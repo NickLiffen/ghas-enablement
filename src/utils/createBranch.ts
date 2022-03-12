@@ -1,4 +1,4 @@
-import { owner, ref, error, inform } from "./globals";
+import { ref, error, inform } from "./globals";
 
 import { createRefParameters, createRefResponse } from "./octokitTypes";
 
@@ -6,6 +6,7 @@ import { Octokit } from "./octokitTypes";
 
 export const createBranch = async (
   sha: string,
+  owner: string,
   repo: string,
   octokit: Octokit
 ): Promise<string> => {

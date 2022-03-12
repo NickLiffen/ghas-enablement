@@ -1,6 +1,10 @@
 import { error, inform } from "./globals";
 
-import { usersWriteAdminReposArray, response } from "../../types/common";
+import {
+  usersWriteAdminReposArray,
+  response,
+  orgsInEnterpriseArray,
+} from "../../types/common";
 
 import { promisify } from "util";
 
@@ -18,13 +22,14 @@ export const writeToFile = async (prURL: string): Promise<response> => {
     throw err;
   }
 };
-export const createReposListFile = async (
-  list: usersWriteAdminReposArray
+export const createFile = async (
+  list: orgsInEnterpriseArray | usersWriteAdminReposArray,
+  fileLocation: string
 ): Promise<response> => {
   try {
     const writeFile = promisify(fs.writeFile);
     const data = JSON.stringify(list, null, 2);
-    writeFile("repos.json", data);
+    writeFile(fileLocation, data);
     inform(`Success created repos.json`);
     return { status: 200, message: "Success created repos.json" };
   } catch (err) {

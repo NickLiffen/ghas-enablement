@@ -4,15 +4,15 @@ dotenv.config({ path: __dirname + "/../../.env" });
 
 import { error } from "./utils/globals";
 
-import { fetchReposByLanguage } from "./utils/getRepoByLanguage";
-import { octokit } from "./utils/octokit";
+import { paginateQuery } from "./utils/paginateQuery";
 
-import { Octokit } from "./utils/octokitTypes";
+import { collectRepos } from "./utils/collectRepos";
+
+import { getRepositoriesQuery } from "./utils/graphql";
 
 async function start() {
   try {
-    const client = (await octokit()) as Octokit;
-    await fetchReposByLanguage(client);
+    await collectRepos(paginateQuery, getRepositoriesQuery);
   } catch (err) {
     error(err);
     return err;

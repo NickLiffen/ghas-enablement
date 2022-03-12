@@ -11,8 +11,8 @@
     "lint:check": "npx eslint '**/*.{ts,json}'",
     "lint:write": "npx eslint --fix '**/*.{ts,json}'",
     "test": "npx jest --coverage --verbose",
-    "getReposByUser": "node ./lib/src/get-repos-by-user.js",
-    "getReposByLanguage": "node ./lib/src/get-repo-by-language.js",
+    "getRepos": "npm run build && node ./lib/src/getRepos.js",
+    "getOrgs": "npm run build && node ./lib/src/getOrgs.js",
     "start": "npm run build && node ./lib/src/enable.js"
   },
   "keywords": [

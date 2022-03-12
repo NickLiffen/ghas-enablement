@@ -7,15 +7,18 @@ const rs = randomstring.generate({
   charset: "alphabetic",
 }) as string;
 
-export const baseApiURL =
+export const baseRestApiURL =
   process.env.GHES == "true"
     ? `${process.env.GHES_SERVER_BASE_URL}/api/v3`
     : "https://api.github.com";
+export const baseGraphApiURL =
+  process.env.GHES == "true"
+    ? `${process.env.GHES_SERVER_BASE_URL}/api`
+    : "https://api.github.com";
 export const baseURL =
   process.env.GHES == "true"
-    ? process.env.GHES_SERVER_BASE_URL
+    ? process.env.GHES_SERVER_BASE_REST_URL
     : "https://github.com";
-export const owner = process.env.GITHUB_ORG || ("" as string);
 export const ref = `refs/heads/ghas-${rs}` as string;
 export const message = "Created CodeQL Analysis File";
 export const title = "GitHub Advanced Security - Code Scanning" as string;
@@ -27,3 +30,5 @@ export const destDir = "Desktop" as string;
 export const windestDir = "Documents" as string;
 export const user = process.cwd().split("/")[2] as string;
 export const winUser = process.cwd().split("\\")[2] as string;
+export const reposFileLocation = "./bin/repos.json" as string;
+export const orgsFileLocation = "./bin/organizations.json" as string;

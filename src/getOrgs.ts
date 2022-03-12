@@ -4,15 +4,13 @@ dotenv.config({ path: __dirname + "/../../.env" });
 
 import { error } from "./utils/globals";
 
-import { fetchReposByUser } from "./utils/getRepoForUser";
-import { octokit } from "./utils/octokit";
-
-import { Octokit } from "./utils/octokitTypes";
+import { index } from "./utils/getOrganisationsInEnterprise";
+import { graphQLClient as octokit } from "./utils/clients";
 
 async function start() {
   try {
-    const client = (await octokit()) as Octokit;
-    await fetchReposByUser(client);
+    const client = await octokit();
+    await index(client);
   } catch (err) {
     error(err);
     return err;
