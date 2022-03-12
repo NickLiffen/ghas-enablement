@@ -7,19 +7,49 @@
         "enableSecretScanning": true,
         "enableCodeScanning": false,
         "createIssue": true,
-        "repo": "geekmasher-testing/pixi"
-      }
-    ]
-  },
-  {
-    "login": "nickliffen-test-org",
-    "repos": [
+        "repo": "geekmasher-testing/advance-security"
+      },
       {
         "enableDependabot": false,
         "enableSecretScanning": true,
         "enableCodeScanning": false,
         "createIssue": true,
-        "repo": "nickliffen-test-org/js"
+        "repo": "geekmasher-testing/ghas-python-locals"
+      },
+      {
+        "enableDependabot": false,
+        "enableSecretScanning": true,
+        "enableCodeScanning": false,
+        "createIssue": true,
+        "repo": "geekmasher-testing/nickliffen-dependency-review-demo"
+      },
+      {
+        "enableDependabot": false,
+        "enableSecretScanning": true,
+        "enableCodeScanning": false,
+        "createIssue": true,
+        "repo": "geekmasher-testing/custom-secret-scanning-patterns"
+      },
+      {
+        "enableDependabot": false,
+        "enableSecretScanning": true,
+        "enableCodeScanning": false,
+        "createIssue": true,
+        "repo": "geekmasher-testing/pixi"
+      },
+      {
+        "enableDependabot": false,
+        "enableSecretScanning": true,
+        "enableCodeScanning": false,
+        "createIssue": true,
+        "repo": "geekmasher-testing/public"
+      },
+      {
+        "enableDependabot": false,
+        "enableSecretScanning": true,
+        "enableCodeScanning": false,
+        "createIssue": true,
+        "repo": "geekmasher-testing/daimler-testing-go"
       }
     ]
   }
