@@ -14,7 +14,7 @@ export const baseRestApiURL =
 export const baseGraphApiURL =
   process.env.GHES == "true"
     ? `${process.env.GHES_SERVER_BASE_URL}/api`
-    : "https://api.github.com/graphql";
+    : "https://api.github.com";
 export const baseURL =
   process.env.GHES == "true"
     ? process.env.GHES_SERVER_BASE_REST_URL

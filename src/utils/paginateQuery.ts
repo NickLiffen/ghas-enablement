@@ -48,15 +48,26 @@ const getRepositoryInOrganizationPaginate = async (
 
     /* If (the viewerPermission is set to NULL OR the viewerPermission is set to ADMIN) 
       OR the reposiory is not archived, keep in the array*/
-      const results = await filterAsync(nodes, async (value) => {
-        const { viewerPermission, isArchived, primaryLanguage } = value;
-        const { name } = primaryLanguage || { name: "false" };
-        const languageCheck = (process.env.LANGUAG_TO_CHECK) ? name.toLocaleLowerCase() === `${process.env.LANGUAG_TO_CHECK}` : true
-        return (viewerPermission === "ADMIN" || viewerPermission === null) &&
-          isArchived === false && languageCheck
+    const results = await filterAsync(nodes, async (value) => {
+      const { viewerPermission, isArchived, primaryLanguage, visibility } =
+        value;
+      const { name } = primaryLanguage || { name: "false" };
+      const languageCheck = process.env.LANGUAGE_TO_CHECK
+        ? name.toLocaleLowerCase() === `${process.env.LANGUAGE_TO_CHECK}`
+        : true;
+      const publicRepoCheck =
+        process.env.GHES === "true"
+          ? true
+          : visibility === "PRIVATE" || visibility === "INTERNAL"
           ? true
           : false;
-      });
+      return (viewerPermission === "ADMIN" || viewerPermission === null) &&
+        isArchived === false &&
+        languageCheck &&
+        publicRepoCheck
+        ? true
+        : false;
+    });
 
     const enable = process.env.ENABLE_ON as string;
 
@@ -93,7 +104,11 @@ export const paginateQuery = async (
 ): Promise<usersWriteAdminReposArray> => {
   try {
     const client = await octokit();
-    const data = await getRepositoryInOrganizationPaginate(client, slug, graphQuery);
+    const data = await getRepositoryInOrganizationPaginate(
+      client,
+      slug,
+      graphQuery
+    );
     return data;
   } catch (err) {
     console.error(err);

@@ -3,17 +3,19 @@ import { error, reposFileLocation } from "./globals";
 import { createFile } from "./writeToFile";
 
 import {
-    Func,
+  Func,
   GetGraphQLQueryFunction,
   orgsInEnterpriseArray,
   response,
   usersWriteAdminReposArray,
 } from "../../types/common";
 
-
 import { getOrganizationFromLocalFile } from "./getOrganizationFromLocalFile";
 
-export const collectRepos = async (func: Func, query: GetGraphQLQueryFunction): Promise<response> => {
+export const collectRepos = async (
+  func: Func,
+  query: GetGraphQLQueryFunction
+): Promise<response> => {
   /* The object we are going to use which contains organisation which we are going to collect the repositories from */
   let res: orgsInEnterpriseArray;
 

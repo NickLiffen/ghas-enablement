@@ -17,6 +17,7 @@ export const getRepositoriesQuery = (): string => {
           nameWithOwner
           isArchived
           viewerPermission
+          visibility
           primaryLanguage {
               name
             }
