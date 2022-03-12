@@ -4,11 +4,15 @@ dotenv.config({ path: __dirname + "/../../.env" });
 
 import { error } from "./utils/globals";
 
-import { fetchReposByUser } from "./utils/getRepoForUser";
+import { paginateQuery } from "./utils/paginateQuery";
+
+import { collectRepos } from "./utils/collectRepos";
+
+import { getRepositoriesQuery } from "./utils/graphql";
 
 async function start() {
   try {
-    await fetchReposByUser();
+    await collectRepos(paginateQuery, getRepositoriesQuery);
   } catch (err) {
     error(err);
     return err;

@@ -1,10 +1,9 @@
 import { graphql, GraphQlQueryResponseData } from "@octokit/graphql";
 
-import { getRepositoriesQuery } from "./graphql";
 import { graphQLClient as octokit } from "./clients";
 
 import {
-  performRepositoryQueryType,
+  GraphQLQueryResponse,
   usersWriteAdminReposArray,
 } from "../../types/common";
 
@@ -15,7 +14,7 @@ const performRepositoryQuery = async (
   query: string,
   slug: string,
   after: string | null
-): Promise<performRepositoryQueryType> => {
+): Promise<GraphQLQueryResponse> => {
   try {
     const {
       organization: {
@@ -49,12 +48,15 @@ const getRepositoryInOrganizationPaginate = async (
 
     /* If (the viewerPermission is set to NULL OR the viewerPermission is set to ADMIN) 
       OR the reposiory is not archived, keep in the array*/
-    const results = await filterAsync(nodes, async (value) =>
-      (value.viewerPermission === "ADMIN" || value.viewerPermission === null) &&
-      value.isArchived === false
-        ? true
-        : false
-    );
+      const results = await filterAsync(nodes, async (value) => {
+        const { viewerPermission, isArchived, primaryLanguage } = value;
+        const { name } = primaryLanguage || { name: "false" };
+        const languageCheck = (process.env.LANGUAG_TO_CHECK) ? name.toLocaleLowerCase() === `${process.env.LANGUAG_TO_CHECK}` : true
+        return (viewerPermission === "ADMIN" || viewerPermission === null) &&
+          isArchived === false && languageCheck
+          ? true
+          : false;
+      });
 
     const enable = process.env.ENABLE_ON as string;
 
@@ -85,13 +87,13 @@ const getRepositoryInOrganizationPaginate = async (
   }
 };
 
-export const getRepositoryInOrganization = async (
-  slug: string
+export const paginateQuery = async (
+  slug: string,
+  graphQuery: string
 ): Promise<usersWriteAdminReposArray> => {
   try {
     const client = await octokit();
-    const query = await getRepositoriesQuery();
-    const data = await getRepositoryInOrganizationPaginate(client, slug, query);
+    const data = await getRepositoryInOrganizationPaginate(client, slug, graphQuery);
     return data;
   } catch (err) {
     console.error(err);

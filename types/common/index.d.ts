@@ -87,3 +87,22 @@ export type reposByLanguageObject = {
 };
 
 export type reposByLanguageArray = reposByLanguageObject[];
+
+type Func = (slug: string, graphQuery: string) => Promise<usersWriteAdminReposArray>
+
+type GetGraphQLQueryFunction = () => string;
+
+export type GraphQLQueryResponseGetRepos = {
+  nameWithOwner: string;
+  isArchived: boolean;
+  viewerPermission: string;
+  primaryLanguage: {
+    name: string;
+  };
+}
+
+export type GraphQLQueryResponseData = GraphQLQueryResponseGetRepos[]
+
+export type GraphQLQueryResponse = [ string, string, GraphQLQueryResponseData ];
+  
+

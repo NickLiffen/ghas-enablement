@@ -1,7 +1,9 @@
 import { graphql, GraphQlQueryResponseData } from "@octokit/graphql";
 
 import { getOrganisationsQuery } from "./graphql";
-import { createOrganizationListFile } from "./writeToFile";
+import { createFile } from "./writeToFile";
+
+import { orgsFileLocation } from "./globals";
 
 import {
   performOrganisationsQueryType,
@@ -68,7 +70,7 @@ export const index = async (client: typeof graphql): Promise<void> => {
     const slug = process.env.GITHUB_ENTERPRISE as string;
     const query = await getOrganisationsQuery();
     const data = await getOrganisationsInEnterprise(client, slug, query);
-    await createOrganizationListFile(data);
+    await createFile(data, orgsFileLocation);
   } catch (err) {
     console.error(err);
     throw err;

@@ -1,4 +1,4 @@
-import { error, inform, orgsFileLocationb, reposFileLocation } from "./globals";
+import { error, inform } from "./globals";
 
 import {
   usersWriteAdminReposArray,
@@ -22,13 +22,14 @@ export const writeToFile = async (prURL: string): Promise<response> => {
     throw err;
   }
 };
-export const createReposListFile = async (
-  list: orgsInEnterpriseArray | usersWriteAdminReposArray
+export const createFile = async (
+  list: orgsInEnterpriseArray | usersWriteAdminReposArray,
+  fileLocation: string
 ): Promise<response> => {
   try {
     const writeFile = promisify(fs.writeFile);
     const data = JSON.stringify(list, null, 2);
-    writeFile(reposFileLocation, data);
+    writeFile(fileLocation, data);
     inform(`Success created repos.json`);
     return { status: 200, message: "Success created repos.json" };
   } catch (err) {
@@ -37,18 +38,3 @@ export const createReposListFile = async (
   }
 };
 
-/* TODO: Change this */
-export const createOrganizationListFile = async (
-  list: orgsInEnterpriseArray
-): Promise<response> => {
-  try {
-    const writeFile = promisify(fs.writeFile);
-    const data = JSON.stringify(list, null, 2);
-    writeFile(orgsFileLocationb, data);
-    inform(`Success created organization.json`);
-    return { status: 200, message: "Success created organization.json" };
-  } catch (err) {
-    error(err);
-    throw err;
-  }
-};
