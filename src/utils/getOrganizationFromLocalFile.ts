@@ -12,8 +12,8 @@ export async function getOrganizationFromLocalFile() {
     const data = (await fs.readFile(orgsFileLocation, "utf-8")) as string;
     const organizations = JSON.parse(data) as orgsInEnterpriseArray;
     return { status: 200, data: organizations } as getOrgLocalFileResponse;
-  } catch (err) {
-    inform(err);
+  } catch (e) {
+    inform(`Could not find file: ${orgsFileLocation}. Assuming no organizations have been collected.`);
     return { status: 404, data: null } as getOrgLocalFileResponse;
   }
 }
