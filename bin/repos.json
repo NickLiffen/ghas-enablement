@@ -3,172 +3,39 @@
     "login": "octodemo",
     "repos": [
       {
-        "enableDependabot": false,
+        "enableDependabot": true,
         "enableSecretScanning": true,
         "enableCodeScanning": false,
         "createIssue": false,
-        "repo": "octodemo/ml-ops"
+        "repo": "octodemo/ghes-ws1-arm"
       },
       {
-        "enableDependabot": false,
+        "enableDependabot": true,
         "enableSecretScanning": true,
         "enableCodeScanning": false,
         "createIssue": false,
-        "repo": "octodemo/tenable-code-scan"
+        "repo": "octodemo/codeql-demo-cantu"
       },
       {
-        "enableDependabot": false,
+        "enableDependabot": true,
         "enableSecretScanning": true,
         "enableCodeScanning": false,
         "createIssue": false,
-        "repo": "octodemo/docker-breakout-ssh"
+        "repo": "octodemo/fda-copilot-demo"
       },
       {
-        "enableDependabot": false,
+        "enableDependabot": true,
         "enableSecretScanning": true,
         "enableCodeScanning": false,
         "createIssue": false,
-        "repo": "octodemo/docker-breakout-side-channel"
+        "repo": "octodemo/MLD_SecretScanningDemo"
       },
       {
-        "enableDependabot": false,
+        "enableDependabot": true,
         "enableSecretScanning": true,
         "enableCodeScanning": false,
         "createIssue": false,
-        "repo": "octodemo/geekmasher-python-codeqlrunner"
-      },
-      {
-        "enableDependabot": false,
-        "enableSecretScanning": true,
-        "enableCodeScanning": false,
-        "createIssue": false,
-        "repo": "octodemo/ml-azure-james-leha"
-      },
-      {
-        "enableDependabot": false,
-        "enableSecretScanning": true,
-        "enableCodeScanning": false,
-        "createIssue": false,
-        "repo": "octodemo/nyc-python-try"
-      },
-      {
-        "enableDependabot": false,
-        "enableSecretScanning": true,
-        "enableCodeScanning": false,
-        "createIssue": false,
-        "repo": "octodemo/Azure-Voting-App-Redis"
-      },
-      {
-        "enableDependabot": false,
-        "enableSecretScanning": true,
-        "enableCodeScanning": false,
-        "createIssue": false,
-        "repo": "octodemo/geekmasher-dvpwa"
-      },
-      {
-        "enableDependabot": false,
-        "enableSecretScanning": true,
-        "enableCodeScanning": false,
-        "createIssue": false,
-        "repo": "octodemo/leaky-repo-private-"
-      },
-      {
-        "enableDependabot": false,
-        "enableSecretScanning": true,
-        "enableCodeScanning": false,
-        "createIssue": false,
-        "repo": "octodemo/visualize-actions-matrix-builds-on-k8s"
-      },
-      {
-        "enableDependabot": false,
-        "enableSecretScanning": true,
-        "enableCodeScanning": false,
-        "createIssue": false,
-        "repo": "octodemo/dhselman-playground"
-      },
-      {
-        "enableDependabot": false,
-        "enableSecretScanning": true,
-        "enableCodeScanning": false,
-        "createIssue": false,
-        "repo": "octodemo/via-varejo-codeql-tests"
-      },
-      {
-        "enableDependabot": false,
-        "enableSecretScanning": true,
-        "enableCodeScanning": false,
-        "createIssue": false,
-        "repo": "octodemo/via-flask-testing"
-      },
-      {
-        "enableDependabot": false,
-        "enableSecretScanning": true,
-        "enableCodeScanning": false,
-        "createIssue": false,
-        "repo": "octodemo/ghas-python-locals"
-      },
-      {
-        "enableDependabot": false,
-        "enableSecretScanning": true,
-        "enableCodeScanning": false,
-        "createIssue": false,
-        "repo": "octodemo/DjanGoat"
-      },
-      {
-        "enableDependabot": false,
-        "enableSecretScanning": true,
-        "enableCodeScanning": false,
-        "createIssue": false,
-        "repo": "octodemo/google-gruyere"
-      },
-      {
-        "enableDependabot": false,
-        "enableSecretScanning": true,
-        "enableCodeScanning": false,
-        "createIssue": false,
-        "repo": "octodemo/test-secret-decoding"
-      },
-      {
-        "enableDependabot": false,
-        "enableSecretScanning": true,
-        "enableCodeScanning": false,
-        "createIssue": false,
-        "repo": "octodemo/advanced-security-python-testing"
-      },
-      {
-        "enableDependabot": false,
-        "enableSecretScanning": true,
-        "enableCodeScanning": false,
-        "createIssue": false,
-        "repo": "octodemo/test-leftrightleft"
-      },
-      {
-        "enableDependabot": false,
-        "enableSecretScanning": true,
-        "enableCodeScanning": false,
-        "createIssue": false,
-        "repo": "octodemo/private-secrets"
-      },
-      {
-        "enableDependabot": false,
-        "enableSecretScanning": true,
-        "enableCodeScanning": false,
-        "createIssue": false,
-        "repo": "octodemo/lcartey-secret-scanning-demo"
-      },
-      {
-        "enableDependabot": false,
-        "enableSecretScanning": true,
-        "enableCodeScanning": false,
-        "createIssue": false,
-        "repo": "octodemo/lcartey-secret-scanning-demo-test"
-      },
-      {
-        "enableDependabot": false,
-        "enableSecretScanning": true,
-        "enableCodeScanning": false,
-        "createIssue": false,
-        "repo": "octodemo/lcartey-secret-scanning-push-protection"
+        "repo": "octodemo/daimler-go-testing"
       }
     ]
   }
