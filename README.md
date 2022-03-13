@@ -2,7 +2,7 @@
 
 ## Purpose
 
-The purpose of this tool is to help enable GitHub Advanced Security (GHAS) across multiple repositories in an automated way. There will be times when you need the ability to enable Code Scanning, Secret Scanning and/or Dependabot across various repositories, and you don't want to click buttons manually or drop a GitHub Workflow for CodeQL into every repository. Doing this is manual and painstaking. The purpose of this utility is to help automate these manual tasks.
+The purpose of this tool is to help enable GitHub Advanced Security (GHAS) across multiple repositories in an automated way. There will be times when you need the ability to enable Code Scanning (CodeQL), Secret Scanning and/or Dependabot across various repositories, and you don't want to click buttons manually or drop a GitHub Workflow for CodeQL into every repository. Doing this is manual and painstaking. The purpose of this utility is to help automate these manual tasks.
 
 ## Context
 
@@ -16,18 +16,17 @@ There are two main actions this tool does:
 
 **Part One:**
 
-Goes and collects repositories that will have Code Scanning/Secret Scanning/Dependabot enabled. There are three main ways these repositories are collected.
+Goes and collects repositories that will have Code Scanning(CodeQL)/Secret Scanning/Dependabot enabled. There are three main ways these repositories are collected.
 
-- Collect the repositories to which a user has administrative access, or a GitHub App has access.
 - Collect the repositories where the primary language matches a specific value. For example, if you provide JavaScript, all repositories will be collected where the primary language is, Javascript.
+- Collect the repositories to which a user has administrative access, or a GitHub App has access.
+- Manually create `repos.json`.
 
-If you specify option 1, the script will return all repositories you are an administrator over. If you select option 2, the script will return all repositories in the language you specify (which you have access to). The repositories collected from this script are then stored within a `repos.json` file.
-
-The third option is to define the `repos.json` manually. We don't recommend this, but it's possible. If you want to go down this path, first run one of the above options for collecting repository information automatically, look at the structure, and build your fine of the laid out format.
+If you select option 1, the script will return all repositories in the language you specify (which you have access to). The repositories collected from this script are then stored within a `repos.json` file. If you specify option 2, the script will return all repositories you are an administrator over. The third option is to define the `repos.json` manually. We don't recommend this, but it's possible. If you want to go down this path, first run one of the above options for collecting repository information automatically, look at the structure, and build your fine of the laid out format.
 
 **Part Two:**
 
-Loops over the repositories found within the `repos.json` file and enables Code Scanning and/or Secret Scanning and/or Dependabot.
+Loops over the repositories found within the `repos.json` file and enables Code Scanning(CodeQL)/Secret Scanning/Dependabot.
 
 If you pick Code Scanning:
 
@@ -115,13 +114,13 @@ This script only returns repositories where CodeQL results have not already been
 yarn run getRepos
 ```
 
-Similar to step one, another automated approach is to enable user access. This approach will be a little less accurate as the file will most certainly need changing between a Python project and a Java project, and the user's PAT you are using will most likely. But the file you propose is going to be a good start. After running the command, you are welcome to modify this file. Just make sure it's a valid JSON file if you do edit.
+Similar to step one, another automated approach is to enable by user access. This approach will be a little less accurate as the file will most certainly need changing between a Python project and a Java project (if you are enabling CodeQL), and the user's PAT you are using will most likely. But the file you propose is going to be a good start. After running the command, you are welcome to modify this file. Just make sure it's a valid JSON file if you do edit.
 
 This script only returns repositories where CodeQL results have not already been uploaded to code scanning. If any CodeQL results have been uploaded to a repositories code scanning feature, that repository will not be returned to this list. The motivation behind this is not to raise pull requests on repositories where CodeQL has already been enabled.
 
 **OPTION 3**
 
-Create a file called `repos.json` within the root of this directory. This file needs to have an array of objects. The structure of the objects should look like this:
+Create a file called `repos.json` within the `./bin/` directory. This file needs to have an array of objects. The structure of the objects should look like this:
 
 ```JSON
 [
@@ -129,18 +128,18 @@ Create a file called `repos.json` within the root of this directory. This file n
     "enableDependabot": "boolean",
     "enableSecretScanning": "boolean",
     "createIssue": "boolean",
-    "repo": "string",
+    "repo": "string <org/repo>",
   }
 ]
 ```
 
-As you can see, the object takes two keys, `repo` and `enableDependabot`. Set `repo` to the name of the repository name where you would like the `codeql-analysis.yml` file to be enabled on. Set `enableDependabot` to `true` if you would also like to enable `Dependabot` on that repo; set it to `false` if you do not want to enable `Dependabot`.
+As you can see, the object takes four keys: `repo`, `enableSecretScanning`, `createIssue` and `enableDependabot`. Set `repo` to the name of the repository name where you would like to run this script on. Set `enableDependabot` to `true` if you would also like to enable `Dependabot` on that repo; set it to `false` if you do not want to enable `Dependabot`. The same foes for `enableDependabot`. Finally set `createIssue` to `true` if you would like to create an issue on the repository with the text found in the `./src/utils/text/issueText.ts` directory. 
 
 **NOTE:** The account that generated the PAT needs to have `write` access or higher over any repository that you include within the `repos` key.
 
 ### Step Two
 
-Run the script which enables Code Scanning (and/or Dependabot) on your repository by running:
+Run the script which enables Code Scanning (and/or Dependabot/Secret Scanning) on your repository by running:
 
 ```bash
 yarn run start // or npm run start

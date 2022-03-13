@@ -1,4 +1,5 @@
-import { error, reposFileLocation } from "./globals";
+
+import { error, inform, reposFileLocation } from "./globals";
 
 import { createFile } from "./writeToFile";
 
@@ -33,13 +34,15 @@ export const collectRepos = async (
   try {
     /* Looping through the organisation(s) and collecting repositories */
     for (let index = 0; index < res.length; index++) {
+      inform(`Collecting repositories for ${res[index].login}`);
+      inform(`This is org number ${index + 1} of ${res.length}`);
       const repositoriesInOrg = (await func(
         res[index].login,
         graphQuery
       )) as usersWriteAdminReposArray;
       res[index].repos = repositoriesInOrg;
     }
-
+    inform(`All repos collected. Writing them to file: ${reposFileLocation}`);
     await createFile(res, reposFileLocation);
 
     return { status: 200, message: "sucess" };

@@ -8,6 +8,8 @@ import {
 } from "../../types/common";
 
 import { filterAsync } from "./filterAsync";
+import { error, inform } from "./globals";
+
 
 const performRepositoryQuery = async (
   client: typeof graphql,
@@ -26,7 +28,7 @@ const performRepositoryQuery = async (
     } = (await client(query, { slug, after })) as GraphQlQueryResponseData;
     return [hasNextPage, endCursor, nodes];
   } catch (err) {
-    console.error(err);
+    error(err);
     throw err;
   }
 };
@@ -49,9 +51,10 @@ const getRepositoryInOrganizationPaginate = async (
     /* If (the viewerPermission is set to NULL OR the viewerPermission is set to ADMIN) 
       OR the reposiory is not archived, keep in the array*/
     const results = await filterAsync(nodes, async (value) => {
-      const { viewerPermission, isArchived, primaryLanguage, visibility } =
+      const { nameWithOwner, viewerPermission, isArchived, primaryLanguage, visibility } =
         value;
-      const { name } = primaryLanguage || { name: "false" };
+      const { name } = primaryLanguage || { name: "no-language" };
+      inform(`Repo Name: ${nameWithOwner} Permission: ${viewerPermission} Archived: ${isArchived} Language: ${name} Visibility: ${visibility}`);
       const languageCheck = process.env.LANGUAGE_TO_CHECK
         ? name.toLocaleLowerCase() === `${process.env.LANGUAGE_TO_CHECK}`
         : true;
@@ -68,6 +71,8 @@ const getRepositoryInOrganizationPaginate = async (
         ? true
         : false;
     });
+
+    inform(`Found ${results.length} repositories that met the valid criteria in the organisation ${slug}. Out of ${nodes.length}.`);
 
     const enable = process.env.ENABLE_ON as string;
 
@@ -93,7 +98,7 @@ const getRepositoryInOrganizationPaginate = async (
     }
     return paginatedData;
   } catch (err) {
-    console.error(err);
+    error(err);
     throw err;
   }
 };
@@ -111,7 +116,7 @@ export const paginateQuery = async (
     );
     return data;
   } catch (err) {
-    console.error(err);
+    error(err);
     throw err;
   }
 };
