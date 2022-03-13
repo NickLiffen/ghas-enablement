@@ -3,39 +3,11 @@
     "login": "octodemo",
     "repos": [
       {
-        "enableDependabot": true,
-        "enableSecretScanning": true,
+        "enableDependabot": false,
+        "enableSecretScanning": false,
         "enableCodeScanning": false,
         "createIssue": false,
-        "repo": "octodemo/ghes-ws1-arm"
-      },
-      {
-        "enableDependabot": true,
-        "enableSecretScanning": true,
-        "enableCodeScanning": false,
-        "createIssue": false,
-        "repo": "octodemo/codeql-demo-cantu"
-      },
-      {
-        "enableDependabot": true,
-        "enableSecretScanning": true,
-        "enableCodeScanning": false,
-        "createIssue": false,
-        "repo": "octodemo/fda-copilot-demo"
-      },
-      {
-        "enableDependabot": true,
-        "enableSecretScanning": true,
-        "enableCodeScanning": false,
-        "createIssue": false,
-        "repo": "octodemo/MLD_SecretScanningDemo"
-      },
-      {
-        "enableDependabot": true,
-        "enableSecretScanning": true,
-        "enableCodeScanning": false,
-        "createIssue": false,
-        "repo": "octodemo/daimler-go-testing"
+        "repo": "octodemo"
       }
     ]
   }

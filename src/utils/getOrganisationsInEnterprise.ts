@@ -46,11 +46,14 @@ const getOrganisationsInEnterprise = async (
       slug,
       ec
     );
+    
     inform(`${nodes.length} organisations found. Is there more orgs: ${hasNextPage}`);
+    
     nodes.forEach((element) => {
       inform(`Organisation found: ${element.login}`);
       return paginatedData.push(element);
     });
+    
     if (hasNextPage) {
       await getOrganisationsInEnterprise(
         client,
@@ -69,7 +72,6 @@ const getOrganisationsInEnterprise = async (
 
 export const index = async (client: typeof graphql): Promise<void> => {
   try {
-
     const slug = (process.env.GITHUB_ENTERPRISE) ? process.env.GITHUB_ENTERPRISE : "no-enterprise-set";
     if (slug === "no-enterprise-set") throw new Error('No Enterprise Set. Please set the GITHUB_ENTERPRISE environment variable.');
     const query = await getOrganisationsQuery();
