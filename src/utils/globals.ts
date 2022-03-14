@@ -17,7 +17,7 @@ export const baseGraphApiURL =
     : "https://api.github.com";
 export const baseURL =
   process.env.GHES == "true"
-    ? process.env.GHES_SERVER_BASE_REST_URL
+    ? process.env.GHES_SERVER_BASE_URL
     : "https://github.com";
 export const ref = `refs/heads/ghas-${rs}` as string;
 export const message = "Created CodeQL Analysis File";
