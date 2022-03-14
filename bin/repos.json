@@ -1,13 +1,13 @@
 [
   {
-    "login": "nickliffen-test-org",
+    "login": "octodemo",
     "repos": [
       {
         "enableDependabot": false,
         "enableSecretScanning": false,
-        "enableCodeScanning": true,
-        "createIssue": true,
-        "repo": "nickliffen-test-org/js"
+        "enableCodeScanning": false,
+        "createIssue": false,
+        "repo": "octodemo"
       }
     ]
   }
