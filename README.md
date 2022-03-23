@@ -76,7 +76,7 @@ mv .env.sample .env
 
 6. Update the `GITHUB_ORG` value found within the `.env`. Remove the `XXXX` and replace that with the name of the GitHub Organisation you would like to use as part of this script.
 
-7. Update the `LANGUAGE` value found within the `.env`. Remove the `XXXX` and replace that with the language you would like to use as a filter when collecting repositories.
+7. Update the `LANGUAGE_TO_CHECK` value found within the `.env`. Remove the `XXXX` and replace that with the language you would like to use as a filter when collecting repositories.
 
 8. Decide what you want to enable. Update the `ENABLE_ON` value to deicde what you want to enable on the repositories found within the `repos.json`. This can be one or multiple values. If you are enabling just code scanning (CodeQL) you will need to set `ENABLE_ON=codescanning`, if you are enabling everything, you will need to set `ENABLE_ON=codescanning,secretscanning,dependabot`. You can pick one, two or three. The format is a comma seperated list.
 
