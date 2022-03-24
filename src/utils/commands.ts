@@ -63,6 +63,11 @@ export const codespacesCommands = (
       args: ["push", "--set-upstream", "origin", `${branch}`],
       cwd: `/workspaces/${destDir}/${tempDIR}/${repo}`,
     },
+    {
+      command: "rm",
+      args: ["-rf", "Desktop"],
+      cwd: `/workspaces`,
+    },
   ] as commands;
   return commands;
 };
