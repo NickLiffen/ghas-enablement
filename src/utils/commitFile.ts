@@ -3,11 +3,13 @@
 import util from "util";
 import delay from "delay";
 
+import { stat } from "fs/promises";
+
 import os from "os";
 
 import { inform, error } from "./globals";
 
-import { macCommands, windowsCommands } from "./commands";
+import { macCommands, windowsCommands, codespacesCommands } from "./commands";
 
 import { execFile as ImportedExec } from "child_process";
 
@@ -36,10 +38,15 @@ export const commitFileMac = async (
   const regExpExecArray = /[^/]*$/.exec(refs);
   const branch = regExpExecArray ? regExpExecArray[0] : "";
 
+  const isCodespace = await (await stat("/vscode")).isDirectory();
+
   try {
-    gitCommands = isWindows
-      ? (windowsCommands(owner, repo, branch) as commands)
-      : (macCommands(owner, repo, branch) as commands);
+    gitCommands =
+      isWindows === true
+        ? (windowsCommands(owner, repo, branch) as commands)
+        : isWindows === false && isCodespace === false
+        ? (macCommands(owner, repo, branch) as commands)
+        : (codespacesCommands(owner, repo, branch) as commands);
     inform(gitCommands);
   } catch (err) {
     error(err);
