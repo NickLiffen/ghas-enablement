@@ -3,7 +3,7 @@
 import util from "util";
 import delay from "delay";
 
-import { stat } from "fs/promises";
+import { existsSync } from "fs";
 
 import os from "os";
 
@@ -34,11 +34,15 @@ export const commitFileMac = async (
 ): Promise<response> => {
   let gitCommands: commands;
   let index: number;
+  let isCodespace = false as boolean;
 
   const regExpExecArray = /[^/]*$/.exec(refs);
   const branch = regExpExecArray ? regExpExecArray[0] : "";
 
-  const isCodespace = await (await stat("/vscode")).isDirectory();
+  /* This is the check to see if we are running in a Codespace are not. */
+  if (existsSync("/vscode")) {
+    isCodespace = true;
+  }
 
   try {
     gitCommands =

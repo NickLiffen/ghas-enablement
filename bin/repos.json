@@ -1,1 +1,14 @@
-[]
+[
+  {
+    "login": "octodemo",
+    "repos": [
+      {
+        "enableDependabot": false,
+        "enableSecretScanning": false,
+        "enableCodeScanning": true,
+        "createIssue": true,
+        "repo": "octodemo/nom-demo"
+      }
+    ]
+  }
+]
