@@ -7,48 +7,6 @@
         "enableSecretScanning": false,
         "enableCodeScanning": true,
         "createIssue": false,
-        "repo": "octodemo/push-protection-demo"
-      },
-      {
-        "enableDependabot": false,
-        "enableSecretScanning": false,
-        "enableCodeScanning": true,
-        "createIssue": false,
-        "repo": "octodemo/auto-merge-test"
-      },
-      {
-        "enableDependabot": false,
-        "enableSecretScanning": false,
-        "enableCodeScanning": true,
-        "createIssue": false,
-        "repo": "octodemo/test-pages-dns"
-      },
-      {
-        "enableDependabot": false,
-        "enableSecretScanning": false,
-        "enableCodeScanning": true,
-        "createIssue": false,
-        "repo": "octodemo/surepay-ghas-kick-off"
-      },
-      {
-        "enableDependabot": false,
-        "enableSecretScanning": false,
-        "enableCodeScanning": true,
-        "createIssue": false,
-        "repo": "octodemo/sennap-ghas"
-      },
-      {
-        "enableDependabot": false,
-        "enableSecretScanning": false,
-        "enableCodeScanning": true,
-        "createIssue": false,
-        "repo": "octodemo/codespaces-nodejs-npm-package-consumer"
-      },
-      {
-        "enableDependabot": false,
-        "enableSecretScanning": false,
-        "enableCodeScanning": true,
-        "createIssue": false,
         "repo": "octodemo/vulnerable-node-2"
       },
       {

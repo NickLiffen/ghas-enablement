@@ -16,5 +16,13 @@
     "nixon.env-cmd-file-syntax"
   ],
   "postCreateCommand": "yarn install --frozen-lockfile && yarn run build",
-  "remoteUser": "root"
+  "remoteUser": "root",
+  "codespaces": {
+    "repositories": [
+      {
+        "name": "octodemo/*",
+        "permissions":  "write-all",
+      },
+    ]
+  }
 }
