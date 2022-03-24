@@ -1,15 +1,25 @@
-import { tempDIR, baseURL } from "./globals";
-
 import { commands } from "../../types/common";
 
-import { destDir, user, winUser, windestDir } from "./globals";
+import {
+  destDir,
+  user,
+  winUser,
+  windestDir,
+  tempDIR,
+  baseURL,
+} from "./globals";
 
-export const macCommands = (
+export const codespacesCommands = (
   owner: string,
   repo: string,
   branch: string
 ): commands => {
   const commands = [
+    {
+      command: "mkdir",
+      args: ["-p", `${destDir}`],
+      cwd: `/workspaces`,
+    },
     {
       command: "mkdir",
       args: ["-p", `${tempDIR}`],
@@ -57,7 +67,7 @@ export const macCommands = (
   return commands;
 };
 
-export const codespacesCommands = (
+export const macCommands = (
   owner: string,
   repo: string,
   branch: string
