@@ -3,11 +3,13 @@
 import util from "util";
 import delay from "delay";
 
+import { existsSync } from "fs";
+
 import os from "os";
 
 import { inform, error } from "./globals";
 
-import { macCommands, windowsCommands } from "./commands";
+import { macCommands, windowsCommands, codespacesCommands } from "./commands";
 
 import { execFile as ImportedExec } from "child_process";
 
@@ -32,14 +34,23 @@ export const commitFileMac = async (
 ): Promise<response> => {
   let gitCommands: commands;
   let index: number;
+  let isCodespace = false as boolean;
 
   const regExpExecArray = /[^/]*$/.exec(refs);
   const branch = regExpExecArray ? regExpExecArray[0] : "";
 
+  /* This is the check to see if we are running in a Codespace are not. */
+  if (existsSync("/vscode")) {
+    isCodespace = true;
+  }
+
   try {
-    gitCommands = isWindows
-      ? (windowsCommands(owner, repo, branch) as commands)
-      : (macCommands(owner, repo, branch) as commands);
+    gitCommands =
+      isWindows === true
+        ? (windowsCommands(owner, repo, branch) as commands)
+        : isWindows === false && isCodespace === false
+        ? (macCommands(owner, repo, branch) as commands)
+        : (codespacesCommands(owner, repo, branch) as commands);
     inform(gitCommands);
   } catch (err) {
     error(err);

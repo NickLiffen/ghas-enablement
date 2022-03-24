@@ -5,9 +5,9 @@
       {
         "enableDependabot": false,
         "enableSecretScanning": false,
-        "enableCodeScanning": false,
-        "createIssue": false,
-        "repo": "octodemo"
+        "enableCodeScanning": true,
+        "createIssue": true,
+        "repo": "octodemo/nom-demo"
       }
     ]
   }

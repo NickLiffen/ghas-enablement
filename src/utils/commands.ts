@@ -1,8 +1,71 @@
-import { tempDIR, baseURL } from "./globals";
-
 import { commands } from "../../types/common";
 
-import { destDir, user, winUser, windestDir } from "./globals";
+import {
+  destDir,
+  user,
+  winUser,
+  windestDir,
+  tempDIR,
+  baseURL,
+} from "./globals";
+
+export const codespacesCommands = (
+  owner: string,
+  repo: string,
+  branch: string
+): commands => {
+  const commands = [
+    {
+      command: "mkdir",
+      args: ["-p", `${destDir}`],
+      cwd: `/workspaces`,
+    },
+    {
+      command: "mkdir",
+      args: ["-p", `${tempDIR}`],
+      cwd: `/workspaces/${destDir}`,
+    },
+    {
+      command: "git",
+      args: ["clone", `${baseURL}/${owner}/${repo}.git`],
+      cwd: `/workspaces/${destDir}/${tempDIR}`,
+    },
+    {
+      command: "git",
+      args: ["checkout", "-b", `${branch}`],
+      cwd: `/workspaces/${destDir}/${tempDIR}/${repo}`,
+    },
+    {
+      command: "mkdir",
+      args: ["-p", ".github/workflows"],
+      cwd: `/workspaces/${destDir}/${tempDIR}/${repo}`,
+    },
+    {
+      command: "cp",
+      args: [
+        "./codeql-analysis.yml",
+        `/workspaces/${destDir}/${tempDIR}/${repo}/.github/workflows/`,
+      ],
+      cwd: process.cwd(),
+    },
+    {
+      command: "git",
+      args: ["add", ".github/workflows/codeql-analysis.yml"],
+      cwd: `/workspaces/${destDir}/${tempDIR}/${repo}`,
+    },
+    {
+      command: "git",
+      args: ["commit", "-m", '"Commit CodeQL File"'],
+      cwd: `/workspaces/${destDir}/${tempDIR}/${repo}`,
+    },
+    {
+      command: "git",
+      args: ["push", "--set-upstream", "origin", `${branch}`],
+      cwd: `/workspaces/${destDir}/${tempDIR}/${repo}`,
+    },
+  ] as commands;
+  return commands;
+};
 
 export const macCommands = (
   owner: string,
