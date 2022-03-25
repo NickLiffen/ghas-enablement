@@ -44,13 +44,21 @@ export const commitFileMac = async (
     isCodespace = true;
   }
 
+  const {
+    env: { LANGUAGE_TO_CHECK: language },
+  } = process;
+
+  const fileName = language
+    ? `codeql-analysis-${language}.yml`
+    : "codeql-analysis.yml";
+
   try {
     gitCommands =
       isWindows === true
-        ? (windowsCommands(owner, repo, branch) as commands)
+        ? (windowsCommands(owner, repo, branch, fileName) as commands)
         : isWindows === false && isCodespace === false
-        ? (macCommands(owner, repo, branch) as commands)
-        : (codespacesCommands(owner, repo, branch) as commands);
+        ? (macCommands(owner, repo, branch, fileName) as commands)
+        : (codespacesCommands(owner, repo, branch, fileName) as commands);
     inform(gitCommands);
   } catch (err) {
     error(err);
