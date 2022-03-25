@@ -50,7 +50,7 @@ export const commitFileMac = async (
 
   const fileName = language
     ? `codeql-analysis-${language}.yml`
-    : "codeql-analysis.yml";
+    : "codeql-analysis-standard.yml";
 
   try {
     gitCommands =
