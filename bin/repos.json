@@ -7,7 +7,7 @@
         "enableSecretScanning": false,
         "enableCodeScanning": true,
         "createIssue": true,
-        "repo": "octodemo/daimler-go-testing"
+        "repo": "org/repo"
       }
     ]
   }
