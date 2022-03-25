@@ -12,7 +12,8 @@ import {
 export const codespacesCommands = (
   owner: string,
   repo: string,
-  branch: string
+  branch: string,
+  fileName: string
 ): commands => {
   const commands = [
     {
@@ -43,10 +44,18 @@ export const codespacesCommands = (
     {
       command: "cp",
       args: [
-        "./codeql-analysis.yml",
+        `./bin/workflows/${fileName}`,
         `/workspaces/${destDir}/${tempDIR}/${repo}/.github/workflows/`,
       ],
       cwd: process.cwd(),
+    },
+    {
+      command: "mv",
+      args: [
+        `./.github/workflows/${fileName}`,
+        `./.github/workflows/codeql-analysis.yml`,
+      ],
+      cwd: `/workspaces/${destDir}/${tempDIR}/${repo}`,
     },
     {
       command: "git",
@@ -75,7 +84,8 @@ export const codespacesCommands = (
 export const macCommands = (
   owner: string,
   repo: string,
-  branch: string
+  branch: string,
+  fileName: string
 ): commands => {
   const commands = [
     {
@@ -101,10 +111,18 @@ export const macCommands = (
     {
       command: "cp",
       args: [
-        "./codeql-analysis.yml",
+        `./bin/workflows/${fileName}`,
         `/Users/${user}/${destDir}/${tempDIR}/${repo}/.github/workflows/`,
       ],
       cwd: process.cwd(),
+    },
+    {
+      command: "mv",
+      args: [
+        `./.github/workflows/${fileName}`,
+        `./.github/workflows/codeql-analysis.yml`,
+      ],
+      cwd: `/Users/${user}/${destDir}/${tempDIR}/${repo}`,
     },
     {
       command: "git",
@@ -128,7 +146,8 @@ export const macCommands = (
 export const windowsCommands = (
   owner: string,
   repo: string,
-  branch: string
+  branch: string,
+  fileName: string
 ): commands => {
   const commands = [
     {
@@ -154,7 +173,7 @@ export const windowsCommands = (
     {
       command: "cp",
       args: [
-        "./codeql-analysis.yml",
+        `./bin/workflows/${fileName}`,
         `c:\\Users\\${winUser}\\${windestDir}\\${tempDIR}/${repo}\\.github\\workflows\\`,
       ],
       cwd: process.cwd(),
@@ -166,7 +185,7 @@ export const windowsCommands = (
     },
     {
       command: "git",
-      args: ["add", ".github/workflows/codeql-analysis.yml"],
+      args: ["add", `.github/workflows/${fileName}`],
       cwd: `/Users/${winUser}/${windestDir}/${tempDIR}/${repo}`,
     },
     {

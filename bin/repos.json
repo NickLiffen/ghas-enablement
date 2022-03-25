@@ -7,7 +7,7 @@
         "enableSecretScanning": false,
         "enableCodeScanning": true,
         "createIssue": true,
-        "repo": "octodemo/nom-demo"
+        "repo": "org/repo"
       }
     ]
   }
