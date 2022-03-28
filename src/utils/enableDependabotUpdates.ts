@@ -11,7 +11,7 @@ import { response } from "../../types/common";
 
 // currently there is no api for getting dependabot security updates status
 
-export const enableDependabotUpdates = async (
+export const enableDependabotFixes = async (
   owner: string,
   repo: string,
   octokit: Octokit
