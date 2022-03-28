@@ -4,6 +4,7 @@
     "repos": [
       {
         "enableDependabot": false,
+        "enableDependabotFixes": false,
         "enableSecretScanning": false,
         "enableCodeScanning": true,
         "createIssue": true,

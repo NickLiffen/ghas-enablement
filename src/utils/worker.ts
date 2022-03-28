@@ -10,6 +10,7 @@ import { restClient as octokit } from "./clients";
 import { commitFileMac } from "./commitFile.js";
 import { enableGHAS } from "./enableGHAS.js";
 import { enableDependabotAlerts } from "./enableDependabotAlerts";
+import { enableDependabotUpdates } from "./enableDependabotUpdates";
 import { enableIssueCreation } from "./enableIssueCreation";
 import repos from "../../bin/repos.json";
 
@@ -36,6 +37,7 @@ export const worker = async (): Promise<unknown> => {
       const {
         repo: repoName,
         enableDependabot,
+        enableDependabotFixes,
         enableSecretScanning,
         createIssue,
         enableCodeScanning,
@@ -51,6 +53,11 @@ export const worker = async (): Promise<unknown> => {
       // If they want to enable Dependabot, and they are NOT on GHES (as that currently isn't GA yet), enable Dependabot
       enableDependabot && process.env.GHES != "true"
         ? await enableDependabotAlerts(owner, repo, client)
+        : null;
+
+      // If they want to enable Dependabot Security Updates, and they are NOT on GHES (as that currently isn't GA yet), enable Dependabot Security Updates
+      enableDependabotFixes && process.env.GHES != "true"
+        ? await enableDependabotUpdates(owner, repo, client)
         : null;
 
       // Kick off the process for enabling Secret Scanning

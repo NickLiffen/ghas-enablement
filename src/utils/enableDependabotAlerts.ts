@@ -47,10 +47,10 @@ export const enableDependabotAlerts = async (
     octokit
   )) as response;
 
-  inform(`Is Dependabot enabled already for ${repo}? : ${message}`);
+  inform(`Is Dependabot Alerts enabled already for ${repo}? : ${message}`);
 
   if (status === 204) {
-    return { status, message: "Repository already had Dependabot Enabled" };
+    return { status, message: "Repository already had Dependabot Alerts Enabled" };
   }
 
   try {
@@ -62,7 +62,7 @@ export const enableDependabotAlerts = async (
     return { status, message: "Enabled" } as response;
   } catch (err) {
     error(
-      `Problem enabling Dependabot on the following repository: ${requestParams.repo}. The error was: ${err}`
+      `Problem enabling Dependabot Alerts on the following repository: ${requestParams.repo}. The error was: ${err}`
     );
     throw err;
   }
