@@ -9,7 +9,7 @@ export const auth = async (): Promise<string | Error> => {
   }
   /* Checking if they have supplied all the required informaiton to generate a GitHub App */
   if (
-    !env.GITHUB_APP_ID ||
+    !env.APP_ID ||
     !env.APP_PRIVATE_KEY ||
     !env.APP_INSTALLATION_ID ||
     !env.APP_CLIENT_ID ||
@@ -22,9 +22,9 @@ export const auth = async (): Promise<string | Error> => {
 
   /* If there is no hardcoded PAT, but all the required parameters for a GitHub App is provided, generate a token from a GitHub App */
   const options = {
-    appId: env.GITHUB_APP_ID as string,
+    appId: env.APP_ID as string,
     privateKey: env.APP_PRIVATE_KEY as string,
-    appInstallationId: parseInt(
+    installationId: parseInt(
       env.APP_INSTALLATION_ID as string,
       10
     ) as number,
