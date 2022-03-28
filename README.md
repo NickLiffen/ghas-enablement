@@ -128,13 +128,14 @@ Create a file called `repos.json` within the `./bin/` directory. This file needs
   {
     "enableDependabot": "boolean",
     "enableSecretScanning": "boolean",
+    "enableCodeScanning": "boolean",
     "createIssue": "boolean",
     "repo": "string <org/repo>",
   }
 ]
 ```
 
-As you can see, the object takes four keys: `repo`, `enableSecretScanning`, `createIssue` and `enableDependabot`. Set `repo` to the name of the repository name where you would like to run this script on. Set `enableDependabot` to `true` if you would also like to enable `Dependabot` on that repo; set it to `false` if you do not want to enable `Dependabot`. The same goes for `enableSecretScanning`. Finally set `createIssue` to `true` if you would like to create an issue on the repository with the text found in the `./src/utils/text/issueText.ts` directory.
+As you can see, the object takes five keys: `repo`, `enableDependabot`, `enableSecretScanning`, `enableCodeScanning` and `createIssue`. Set `repo` to the name of the repository name where you would like to run this script on. Set `enableDependabot` to `true` if you would also like to enable `Dependabot` on that repo; set it to `false` if you do not want to enable `Dependabot`. The same goes for `enableSecretScanning` and `enableCodeScanning`. Finally set `createIssue` to `true` if you would like to create an issue on the repository with the text found in the `./src/utils/text/issueText.ts` directory.
 
 **NOTE:** The account that generated the PAT needs to have `write` access or higher over any repository that you include within the `repos` key.
 
