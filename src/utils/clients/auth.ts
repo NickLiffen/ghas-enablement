@@ -24,10 +24,7 @@ export const auth = async (): Promise<string | Error> => {
   const options = {
     appId: env.APP_ID as string,
     privateKey: env.APP_PRIVATE_KEY as string,
-    installationId: parseInt(
-      env.APP_INSTALLATION_ID as string,
-      10
-    ) as number,
+    installationId: parseInt(env.APP_INSTALLATION_ID as string, 10) as number,
     clientId: env.APP_CLIENT_ID as string,
     clientSecret: env.APP_CLIENT_SECRET as string,
   } as StrategyOptions;
