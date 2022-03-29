@@ -50,7 +50,10 @@ export const enableDependabotAlerts = async (
   inform(`Is Dependabot Alerts enabled already for ${repo}? : ${message}`);
 
   if (status === 204) {
-    return { status, message: "Repository already had Dependabot Alerts Enabled" };
+    return {
+      status,
+      message: "Repository already had Dependabot Alerts Enabled",
+    };
   }
 
   try {

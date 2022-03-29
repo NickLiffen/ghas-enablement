@@ -29,7 +29,9 @@ export const enableDependabotFixes = async (
       "PUT /repos/{owner}/{repo}/automated-security-fixes",
       requestParams
     )) as createVulnerabilityUpdatesResponse;
-    inform(`Enabled Dependabot Security Updates for ${repo}. Status: ${status}`);
+    inform(
+      `Enabled Dependabot Security Updates for ${repo}. Status: ${status}`
+    );
     return { status, message: "Enabled" } as response;
   } catch (err) {
     error(
