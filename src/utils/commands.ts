@@ -95,7 +95,7 @@ export const macCommands = (
     },
     {
       command: "git",
-      args: ["clone", `${baseURL}/${owner}/${repo}.git`],
+      args: ["clone","--depth","1","--filter=blob:none","--sparse", `${baseURL}/${owner}/${repo}.git`],
       cwd: `/Users/${user}/${destDir}/${tempDIR}`,
     },
     {
