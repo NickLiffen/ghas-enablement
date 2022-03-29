@@ -64,7 +64,7 @@ git clone https://github.com/NickLiffen/ghas-enablement.git
 cd ghas-enablement
 ```
 
-3.  Generate your choosen authentication stratergy. You are either able to use a [GitHub App](https://docs.github.com/en/developers/apps/getting-started-with-apps/about-apps) or a [Personal Access Token (PAT)](https://github.com/settings/tokens/new). The GitHub App needs to have permissions of `read and write` of `pull requests` `issues`, `dependabot`, `contents`. The GitHub PAT needs access to `repo` only.
+3.  Generate your choosen authentication stratergy. You are either able to use a [GitHub App](https://docs.github.com/en/developers/apps/getting-started-with-apps/about-apps) or a [Personal Access Token (PAT)](https://github.com/settings/tokens/new). The GitHub App needs to have permissions of `read and write` of `pull requests`, `issues`, `administration`, `contents`. The GitHub PAT needs access to `repo` only.
 
 4.  Rename the `.env.sample` to `.env`. On a Mac, this can be done via the following terminal command:
 
@@ -73,6 +73,8 @@ mv .env.sample .env
 ```
 
 5. Update the `.env` with the required values. Please pick one of the authentication methods for interacting with GitHub. You can either fill in the `GITHUB_API_TOKEN` with a PAT that has access to the Org. OR, fill in all the values required for a GitHub App. **Note**: It is recommended to pick the GitHub App choice if running on thousands of repositories, as this gives you more API requests versus a PAT.
+
+   - If using a GitHub App, either paste in the value as-is in the `APP_PRIVATE_KEY` in the field surrounded by double quotes (the key will take up multiple lines), or convert the private key to a single line surrounded in double quotes by replacing the new line character with `\n` (In VS Code on Mac, you can use `⌃ + Enter` to find/replace the new line character)
 
 6. Update the `GITHUB_ORG` value found within the `.env`. Remove the `XXXX` and replace that with the name of the GitHub Organisation you would like to use as part of this script. **NOTE**: If you are running this across multiple organisations within an enterprise, you can not set the `GITHUB_ORG` variable and instead set the `GITHUB_ENTERPRISE` one with the name of the enterprise. You can then run `yarn run getOrgs`, which will collect all the organisations dynamically. This will mean you don't have to hardcode one. However, for most use cases, simply hardcoding the specific org within the `GITHUB_ORG` variable where you would like this script run will be the job.
 
@@ -88,7 +90,7 @@ mv .env.sample .env
 
 12. Run `yarn add` or `npm install`, which will install the necessary dependencies.
 
-13. Run yarn run build` `npm run build`, which will create the JavaScript bundle from TypeScript.
+13. Run `yarn run build` or `npm run build`, which will create the JavaScript bundle from TypeScript.
 
 ## How to use?
 
@@ -111,7 +113,7 @@ This script only returns repositories where CodeQL results have not already been
 **OPTION 2**
 
 ```bash
-yarn run getRepos
+yarn run getRepos // or npm run getRepos
 ```
 
 Similar to step one, another automated approach is to enable by user access. This approach will be a little less accurate as the file will most certainly need changing between a Python project and a Java project (if you are enabling CodeQL), and the user's PAT you are using will most likely. But the file you propose is going to be a good start. After running the command, you are welcome to modify this file. Just make sure it's a valid JSON file if you do edit.
@@ -127,13 +129,14 @@ Create a file called `repos.json` within the `./bin/` directory. This file needs
   {
     "enableDependabot": "boolean",
     "enableSecretScanning": "boolean",
+    "enableCodeScanning": "boolean",
     "createIssue": "boolean",
     "repo": "string <org/repo>",
   }
 ]
 ```
 
-As you can see, the object takes four keys: `repo`, `enableSecretScanning`, `createIssue` and `enableDependabot`. Set `repo` to the name of the repository name where you would like to run this script on. Set `enableDependabot` to `true` if you would also like to enable `Dependabot` on that repo; set it to `false` if you do not want to enable `Dependabot`. The same foes for `enableDependabot`. Finally set `createIssue` to `true` if you would like to create an issue on the repository with the text found in the `./src/utils/text/issueText.ts` directory.
+As you can see, the object takes five keys: `repo`, `enableDependabot`, `enableSecretScanning`, `enableCodeScanning` and `createIssue`. Set `repo` to the name of the repository name where you would like to run this script on. Set `enableDependabot` to `true` if you would also like to enable `Dependabot` on that repo; set it to `false` if you do not want to enable `Dependabot`. The same goes for `enableSecretScanning` and `enableCodeScanning`. Finally set `createIssue` to `true` if you would like to create an issue on the repository with the text found in the `./src/utils/text/issueText.ts` directory.
 
 **NOTE:** The account that generated the PAT needs to have `write` access or higher over any repository that you include within the `repos` key.
 
