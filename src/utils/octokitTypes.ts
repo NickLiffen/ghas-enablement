@@ -69,6 +69,11 @@ export type createVulnerabilityAlertsParameters =
 export type createVulnerabilityAlertsResponse =
   Endpoints["PUT /repos/{owner}/{repo}/vulnerability-alerts"]["response"];
 
+export type createVulnerabilityUpdatesParameters =
+  Endpoints["PUT /repos/{owner}/{repo}/automated-security-fixes"]["parameters"];
+export type createVulnerabilityUpdatesResponse =
+  Endpoints["PUT /repos/{owner}/{repo}/automated-security-fixes"]["response"];
+
 export type putFileInPathParameters =
   Endpoints["PUT /repos/{owner}/{repo}/contents/{path}"]["parameters"];
 export type putFileInPathResponse =

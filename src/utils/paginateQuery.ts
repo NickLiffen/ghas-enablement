@@ -87,6 +87,9 @@ const getRepositoryInOrganizationPaginate = async (
     results.forEach((element) => {
       return paginatedData.push({
         enableDependabot: enable.includes("dependabot") as boolean,
+        enableDependabotUpdates: enable.includes(
+          "dependabotupdates"
+        ) as boolean,
         enableSecretScanning: enable.includes("secretscanning") as boolean,
         enableCodeScanning: enable.includes("codescanning") as boolean,
         createIssue:

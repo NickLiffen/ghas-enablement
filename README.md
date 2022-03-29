@@ -2,7 +2,7 @@
 
 ## Purpose
 
-The purpose of this tool is to help enable GitHub Advanced Security (GHAS) across multiple repositories in an automated way. There will be times when you need the ability to enable Code Scanning (CodeQL), Secret Scanning and/or Dependabot across various repositories, and you don't want to click buttons manually or drop a GitHub Workflow for CodeQL into every repository. Doing this is manual and painstaking. The purpose of this utility is to help automate these manual tasks.
+The purpose of this tool is to help enable GitHub Advanced Security (GHAS) across multiple repositories in an automated way. There will be times when you need the ability to enable Code Scanning (CodeQL), Secret Scanning, Dependabot Alerts, and/or Dependabot Security Updates across various repositories, and you don't want to click buttons manually or drop a GitHub Workflow for CodeQL into every repository. Doing this is manual and painstaking. The purpose of this utility is to help automate these manual tasks.
 
 ## Context
 
@@ -16,7 +16,7 @@ There are two main actions this tool does:
 
 **Part One:**
 
-Goes and collects repositories that will have Code Scanning(CodeQL)/Secret Scanning/Dependabot enabled. There are three main ways these repositories are collected.
+Goes and collects repositories that will have Code Scanning(CodeQL)/Secret Scanning/Dependabot Alerts/Dependabot Security Updates enabled. There are three main ways these repositories are collected.
 
 - Collect the repositories where the primary language matches a specific value. For example, if you provide JavaScript, all repositories will be collected where the primary language is, Javascript.
 - Collect the repositories to which a user has administrative access, or a GitHub App has access.
@@ -26,7 +26,7 @@ If you select option 1, the script will return all repositories in the language 
 
 **Part Two:**
 
-Loops over the repositories found within the `repos.json` file and enables Code Scanning(CodeQL)/Secret Scanning/Dependabot.
+Loops over the repositories found within the `repos.json` file and enables Code Scanning(CodeQL)/Secret Scanning/Dependabot Alerts/Dependabot Security Updates.
 
 If you pick Code Scanning:
 
@@ -36,9 +36,13 @@ If you pick Secret Scanning:
 
 - Loops over the repositories found within the `repos.json` file. Secret Scanning is then enabled on these repositories.
 
-If you pick Dependabot:
+If you pick Dependabot Alerts:
 
-- Loops over the repositories found within the `repos.json` file. Dependabot is then enabled on these repositories.
+- Loops over the repositories found within the `repos.json` file. Dependabot Alerts is then enabled on these repositories.
+
+If you pick Dependabot Security Updates:
+
+- Loops over the repositories found within the `repos.json` file. Dependabot Security Updates is then enabled on these repositories.
 
 ## Prerequisite
 
@@ -80,7 +84,7 @@ mv .env.sample .env
 
 7. Update the `LANGUAGE_TO_CHECK` value found within the `.env`. Remove the `XXXX` and replace that with the language you would like to use as a filter when collecting repositories. **Note**: Please make sure these are lowercase values, such as: `javascript`, `python`, `go`, `ruby`, etc.
 
-8. Decide what you want to enable. Update the `ENABLE_ON` value to deicde what you want to enable on the repositories found within the `repos.json`. This can be one or multiple values. If you are enabling just code scanning (CodeQL) you will need to set `ENABLE_ON=codescanning`, if you are enabling everything, you will need to set `ENABLE_ON=codescanning,secretscanning,dependabot`. You can pick one, two or three. The format is a comma seperated list.
+8. Decide what you want to enable. Update the `ENABLE_ON` value to deicde what you want to enable on the repositories found within the `repos.json`. This can be one or multiple values. If you are enabling just code scanning (CodeQL) you will need to set `ENABLE_ON=codescanning`, if you are enabling everything, you will need to set `ENABLE_ON=codescanning,secretscanning,dependabot,dependabotupdates`. You can pick one, two or three. The format is a comma seperated list.
 
 9. **OPTIONAL**: Update the `CREATE_ISSUE` value to `true/false` depending on if you would like to create an issue explaining purpose of the PR. We recommend this, as it will help explain why the PR was create; and give some context. However, this is optional. The text which is in the issue can be modified and found here: `./src/utils/text/`.
 
@@ -128,6 +132,7 @@ Create a file called `repos.json` within the `./bin/` directory. This file needs
 [
   {
     "enableDependabot": "boolean",
+    "enableDependabotUpdates": "boolean",
     "enableSecretScanning": "boolean",
     "enableCodeScanning": "boolean",
     "createIssue": "boolean",
@@ -136,13 +141,13 @@ Create a file called `repos.json` within the `./bin/` directory. This file needs
 ]
 ```
 
-As you can see, the object takes five keys: `repo`, `enableDependabot`, `enableSecretScanning`, `enableCodeScanning` and `createIssue`. Set `repo` to the name of the repository name where you would like to run this script on. Set `enableDependabot` to `true` if you would also like to enable `Dependabot` on that repo; set it to `false` if you do not want to enable `Dependabot`. The same goes for `enableSecretScanning` and `enableCodeScanning`. Finally set `createIssue` to `true` if you would like to create an issue on the repository with the text found in the `./src/utils/text/issueText.ts` directory.
+As you can see, the object takes six keys: `repo`, `enableDependabot`, `enableDependabotUpdates`, `enableSecretScanning`, `enableCodeScanning`, and `enableCodeScanning`. Set `repo` to the name of the repository name where you would like to run this script on. Set `enableDependabot` to `true` if you would also like to enable Dependabot Alerts on that repo; set it to `false` if you do not want to enable Dependabot Alerts. The same goes for `enableDependabotUpdates` for Dependabot Security Updates, `enableSecretScanning` for Secret Scanning, and `enableCodeScanning` for Code Scanning (CodeQL). Finally set `createIssue` to `true` if you would like to create an issue on the repository with the text found in the `./src/utils/text/issueText.ts` directory.
 
 **NOTE:** The account that generated the PAT needs to have `write` access or higher over any repository that you include within the `repos` key.
 
 ### Step Two
 
-Run the script which enables Code Scanning (and/or Dependabot/Secret Scanning) on your repository by running:
+Run the script which enables Code Scanning (and/or Dependabot Alerts/Dependabot Security Updates/Secret Scanning) on your repository by running:
 
 ```bash
 yarn run start // or npm run start
