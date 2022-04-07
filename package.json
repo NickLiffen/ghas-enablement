@@ -46,7 +46,7 @@
   "author": "Nick Liffen",
   "license": "ISC",
   "engines": {
-    "node": "16"
+    "node": ">=16"
   },
   "dependencies": {
     "@octokit/auth-app": "^3.6.1",
