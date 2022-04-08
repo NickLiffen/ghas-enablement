@@ -12,6 +12,7 @@ import { enableGHAS } from "./enableGHAS.js";
 import { enableDependabotAlerts } from "./enableDependabotAlerts";
 import { enableDependabotFixes } from "./enableDependabotUpdates";
 import { enableIssueCreation } from "./enableIssueCreation";
+import { enableActions } from "./enableActions";
 import repos from "../../bin/repos.json";
 
 import { Octokit } from "./octokitTypes";
@@ -67,6 +68,8 @@ export const worker = async (): Promise<unknown> => {
 
       // Kick off the process for enabling Code Scanning
       if (enableCodeScanning) {
+        // if enabling Code Scanning, let's go ahead and enable Actions
+        await enableActions(owner, repo, client);
         const defaultBranch = await findDefulatBranch(owner, repo, client);
         const defaultBranchSHA = await findDefulatBranchSHA(
           defaultBranch,
