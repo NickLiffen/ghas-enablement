@@ -13,7 +13,6 @@ let MyOctokit = Octokit.plugin(paginateRest, retry, throttling);
 export const restClient = async (testPlugin?: any): Promise<unknown> => {
   try {
     const auth = (await generateAuth()) as string;
-
     if (testPlugin) {
       MyOctokit = Octokit.plugin(testPlugin, retry, throttling);
     }
