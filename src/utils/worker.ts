@@ -15,7 +15,7 @@ import { enableIssueCreation } from "./enableIssueCreation";
 import repos from "../../bin/repos.json";
 
 import { Octokit } from "./octokitTypes";
-import { inform } from "./globals.js";
+import { inform,dryRun,useRegex,repoIncludeRegex,repoExcludeRegex } from "./globals.js";
 
 export const worker = async (): Promise<unknown> => {
   const client = (await octokit()) as Octokit;
@@ -44,6 +44,37 @@ export const worker = async (): Promise<unknown> => {
       } = repos[orgIndex].repos[repoIndex];
 
       const [owner, repo] = repoName.split("/");
+      
+      var matches=true;
+      if (useRegex && repoIncludeRegex != "" ) {
+          var re = new RegExp(repoIncludeRegex,"i");
+          if (repo.match(re)) {
+             matches=true;
+          } else {
+             matches=false;
+          }
+      }
+      if (useRegex && repoExcludeRegex != "" ) {
+          var re = new RegExp(repoExcludeRegex,"i");
+          if (repo.match(re)) {
+             matches=false;
+          } else {
+             matches=true;
+          }
+      }
+      if (matches == false) {
+         inform(
+          `Skipping repo ${repo} due to regex check`
+         );
+         continue;
+      }
+
+      if (dryRun) {
+        inform(
+         `DRY_RUN: Would run on repo ${repo}`
+        );
+        continue;
+      }
 
       // If Code Scanning or Secret Scanning need to be enabled, let's go ahead and enable GHAS first
       enableCodeScanning || enableSecretScanning
@@ -67,26 +98,34 @@ export const worker = async (): Promise<unknown> => {
 
       // Kick off the process for enabling Code Scanning
       if (enableCodeScanning) {
-        const defaultBranch = await findDefulatBranch(owner, repo, client);
-        const defaultBranchSHA = await findDefulatBranchSHA(
-          defaultBranch,
-          owner,
-          repo,
-          client
+        try {
+          const defaultBranch = await findDefulatBranch(owner, repo, client);
+          const defaultBranchSHA = await findDefulatBranchSHA(
+            defaultBranch,
+            owner,
+            repo,
+            client
+          );
+          const ref = await createBranch(defaultBranchSHA, owner, repo, client);
+          await commitFileMac(owner, repo, ref);
+          const pullRequestURL = await createPullRequest(
+            defaultBranch,
+            ref,
+            owner,
+            repo,
+            client
+          );
+          if (createIssue) {
+            await enableIssueCreation(pullRequestURL, owner, repo, client);
+          }
+          await writeToFile(pullRequestURL);
+      } catch (err: unknown) {
+        inform(
+          `Had an error, skipping ${repo}: ${err}`
         );
-        const ref = await createBranch(defaultBranchSHA, owner, repo, client);
-        await commitFileMac(owner, repo, ref);
-        const pullRequestURL = await createPullRequest(
-          defaultBranch,
-          ref,
-          owner,
-          repo,
-          client
-        );
-        if (createIssue) {
-          await enableIssueCreation(pullRequestURL, owner, repo, client);
-        }
-        await writeToFile(pullRequestURL);
+        continue;
+      }
+
       }
     }
   }
