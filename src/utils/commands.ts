@@ -1,11 +1,6 @@
 import { commands } from "../../types/common";
 
-import {
-  destDir,
-  user,
-  windestDir,
-  tempDIR
-} from "./globals";
+import { destDir, user, windestDir, tempDIR } from "./globals";
 
 export const codespacesCommands = (
   owner: string,
@@ -221,11 +216,11 @@ export const windowsCommands = (
 };
 
 export const wslLinuxCommands = (
-    owner: string,
-    repo: string,
-    branch: string,
-    fileName: string,
-    baseURL: string
+  owner: string,
+  repo: string,
+  branch: string,
+  fileName: string,
+  baseURL: string
 ): commands => {
   const commands = [
     {

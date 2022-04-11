@@ -5,9 +5,21 @@ import delay from "delay";
 
 import { existsSync } from "fs";
 
-import { inform, error, isWindows, isLinux, baseURL, platform } from "./globals";
+import {
+  inform,
+  error,
+  isWindows,
+  isLinux,
+  baseURL,
+  platform,
+} from "./globals";
 
-import { macCommands, windowsCommands, codespacesCommands, wslLinuxCommands } from "./commands";
+import {
+  macCommands,
+  windowsCommands,
+  codespacesCommands,
+  wslLinuxCommands,
+} from "./commands";
 
 import { execFile as ImportedExec } from "child_process";
 
@@ -32,7 +44,10 @@ export const commitFileMac = async (
   let index: number;
   let isCodespace = false as boolean;
 
-  const authBaseURL = baseURL!.replace("https://", `https://x-access-token:${authToken}@`) as string;
+  const authBaseURL = baseURL!.replace(
+    "https://",
+    `https://x-access-token:${authToken}@`
+  ) as string;
   const regExpExecArray = /[^/]*$/.exec(refs);
   const branch = regExpExecArray ? regExpExecArray[0] : "";
 
@@ -53,12 +68,30 @@ export const commitFileMac = async (
     /* Codespaces is also a linux environment, so this check has to happen first */
     gitCommands =
       isWindows === true
-        ? (windowsCommands(owner, repo, branch, fileName, authBaseURL) as commands)
+        ? (windowsCommands(
+            owner,
+            repo,
+            branch,
+            fileName,
+            authBaseURL
+          ) as commands)
         : isCodespace === true
-        ? (codespacesCommands(owner, repo, branch, fileName, authBaseURL) as commands)
+        ? (codespacesCommands(
+            owner,
+            repo,
+            branch,
+            fileName,
+            authBaseURL
+          ) as commands)
         : isLinux === true
-        ? (wslLinuxCommands(owner, repo, branch, fileName, authBaseURL) as commands)
-        : (macCommands(owner, repo, branch, fileName, authBaseURL) as commands)
+        ? (wslLinuxCommands(
+            owner,
+            repo,
+            branch,
+            fileName,
+            authBaseURL
+          ) as commands)
+        : (macCommands(owner, repo, branch, fileName, authBaseURL) as commands);
     inform(gitCommands);
   } catch (err) {
     error(err);

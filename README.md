@@ -181,7 +181,7 @@ You do not need to do the above if you are not running it from a Codespace.
 
 ## Running as a (scheduled) GitHub workflow
 
-Since this tool uses a PAT or GitHub App Authentication wherever authentication is required, it can be run unattended. You can see in the example 
+Since this tool uses a PAT or GitHub App Authentication wherever authentication is required, it can be run unattended. You can see in the example
 below how you could run the tool in a scheduled GitHub workflow. Instead of using the `.env`
 file you can configure all the variables from the `.env.sample` directly as environment variables. This will allow you to
 (easily) make use of GitHub action secrets for the PAT or GitHub App credentials.
@@ -189,7 +189,7 @@ file you can configure all the variables from the `.env.sample` directly as envi
 ```yaml
 on:
   schedule:
-    - cron:  '5 16 * * 1'
+    - cron: "5 16 * * 1"
 
 env:
   APP_ID: ${{ secrets.GHAS_ENABLEMENT_APP_ID }}
@@ -223,6 +223,7 @@ jobs:
         env:
           LANGUAGE_TO_CHECK: "javascript"
 ```
+
 You can duplicate the last step for the other languages commonly used within your enterprise/organisation.
 If you didn't configure the tool as a GitHub App, you can remove all the `APP_*` and set `GITHUB_API_TOKEN` instead.
 Above we rely on the sample codeql file for javascript included in this repository. Alternatively you could add this workflow to a repository

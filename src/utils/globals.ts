@@ -11,7 +11,7 @@ const rs = randomstring.generate({
 }) as string;
 
 export const isWindows = platform === "win32";
-export const isLinux = platform ==="linux";
+export const isLinux = platform === "linux";
 
 export const baseRestApiURL =
   process.env.GHES == "true"
@@ -36,10 +36,10 @@ export const error = Debug("ghas:error") as Debug.Debugger;
 export const destDir = "Desktop" as string;
 export const windestDir = "Documents" as string;
 export const user =
-    isLinux === true
-      ? process.env.USER
-      : isWindows === true
-        ? process.cwd().split("\\")[2] as string
-        : process.cwd().split("/")[2] as string;
+  isLinux === true
+    ? process.env.USER
+    : isWindows === true
+    ? (process.cwd().split("\\")[2] as string)
+    : (process.cwd().split("/")[2] as string);
 export const reposFileLocation = "./bin/repos.json" as string;
 export const orgsFileLocation = "./bin/organizations.json" as string;
