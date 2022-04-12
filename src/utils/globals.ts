@@ -31,19 +31,17 @@ export const tempDIR = "tempGitLocations" as string;
 export const path = "./github/workflows" as string;
 export const inform = Debug("ghas:inform") as Debug.Debugger;
 export const error = Debug("ghas:error") as Debug.Debugger;
-export const windestDir = "Documents" as string;
-export const winUser = process.cwd().split("\\")[2] as string;
 export const reposFileLocation = "./bin/repos.json" as string;
 export const orgsFileLocation = "./bin/organizations.json" as string;
 export const platform = os.platform() as string;
 export const destDir =
-  platform === "win32" ? "Documents" : ("Desktop" as string);
+  platform === "win32" ? ("Documents" as string) : ("Desktop" as string);
 export const user =
   platform === "win32"
-    ? process.cwd().split("\\")[2]
+    ? (process.cwd().split("\\")[2] as string)
     : (process.cwd().split("/")[2] as string);
 export const root = existsSync("/vscode")
-  ? "workspaces"
+  ? ("workspaces" as string)
   : platform === "win32" || platform === "darwin"
-  ? "Users"
+  ? ("Users" as string)
   : ("home" as string);

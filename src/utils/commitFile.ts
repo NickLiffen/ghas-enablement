@@ -3,23 +3,9 @@
 import util from "util";
 import delay from "delay";
 
-import { existsSync } from "fs";
+import { inform, error, platform, root, baseURL } from "./globals";
 
-import {
-  inform,
-  error,
-  isWindows,
-  isLinux,
-  baseURL,
-  platform,
-} from "./globals";
-
-import {
-  macCommands,
-  windowsCommands,
-  codespacesCommands,
-  wslLinuxCommands,
-} from "./commands";
+import { generalCommands, codespacesCommands } from "./commands";
 
 import { execFile as ImportedExec } from "child_process";
 
@@ -27,10 +13,14 @@ import { response, commands } from "../../types/common";
 
 const execFile = util.promisify(ImportedExec);
 
+inform(`Platform detected: ${platform}`);
+
 if (platform !== "win32" && platform !== "darwin" && platform !== "linux") {
   error("You can only use either windows or mac machine!");
   throw new Error(
-    "We detected an OS that wasn't Windows, Linux or Mac. Right now, these are the only three OS's supported. Log an issue on the repository for wider support"
+    "We detected an OS that wasn't Windows, Linux or Mac. Right now, these " +
+      "are the only three OS's supported. Log an issue on the repository for " +
+      "wider support"
   );
 }
 
@@ -42,7 +32,6 @@ export const commitFileMac = async (
 ): Promise<response> => {
   let gitCommands: commands;
   let index: number;
-  let isCodespace = false as boolean;
 
   const authBaseURL = baseURL!.replace(
     "https://",
@@ -50,11 +39,6 @@ export const commitFileMac = async (
   ) as string;
   const regExpExecArray = /[^/]*$/.exec(refs);
   const branch = regExpExecArray ? regExpExecArray[0] : "";
-
-  /* This is the check to see if we are running in a Codespace are not. */
-  if (existsSync("/vscode")) {
-    isCodespace = true;
-  }
 
   const {
     env: { LANGUAGE_TO_CHECK: language },
@@ -67,31 +51,9 @@ export const commitFileMac = async (
   try {
     /* Codespaces is also a linux environment, so this check has to happen first */
     gitCommands =
-      isWindows === true
-        ? (windowsCommands(
-            owner,
-            repo,
-            branch,
-            fileName,
-            authBaseURL
-          ) as commands)
-        : isCodespace === true
-        ? (codespacesCommands(
-            owner,
-            repo,
-            branch,
-            fileName,
-            authBaseURL
-          ) as commands)
-        : isLinux === true
-        ? (wslLinuxCommands(
-            owner,
-            repo,
-            branch,
-            fileName,
-            authBaseURL
-          ) as commands)
-        : (macCommands(owner, repo, branch, fileName, authBaseURL) as commands);
+      root === "workspaces"
+        ? (codespacesCommands(owner, repo, branch, fileName, authBaseURL) as commands)
+        : (generalCommands(owner, repo, branch, fileName, authBaseURL) as commands);
     inform(gitCommands);
   } catch (err) {
     error(err);
@@ -99,18 +61,58 @@ export const commitFileMac = async (
   }
 
   for (index = 0; index < gitCommands.length; index++) {
-    const { stdout, stderr } = await execFile(
-      gitCommands[index].command,
-      gitCommands[index].args,
-      {
-        cwd: gitCommands[index].cwd,
-      }
+    inform(
+      [
+        "Executing: ",
+        gitCommands[index].command,
+        gitCommands[index].args,
+        "in",
+        gitCommands[index].cwd,
+      ].join(" ")
     );
-    if (stderr) {
-      error(stderr);
+    // Adding try/catch so we can whitelist
+    try {
+      const { stdout, stderr } = await execFile(
+        gitCommands[index].command,
+        gitCommands[index].args,
+        {
+          cwd: gitCommands[index].cwd,
+          shell: true,
+        }
+      );
+      if (stderr) {
+        error(stderr);
+      }
+      inform(stdout);
+      await delay(1000);
+    } catch (err: any) {
+      inform(`Whitelist returns: ${whiteListed(err.message)}`);
+      if (!whiteListed(err.message)) {
+        throw err;
+      }
     }
-    inform(stdout);
-    await delay(1000);
   }
   return { status: 200, message: "success" };
 };
+
+/**
+ *
+ * @param errorMsg    The string error message captured
+ * @returns           A boolean determined by the existance or lack of a
+ *                    whitelist match.
+ */
+function whiteListed(errorMsg: string): boolean {
+  const whiteList = [
+    "The system cannot find the file specified",
+    "already exists",
+  ];
+
+  const contains = whiteList.some((searchTerm) => {
+    if (errorMsg.includes(searchTerm)) {
+      inform(`The error is whitelisted. Continuing...`);
+      return true;
+    }
+    return false;
+  });
+  return contains;
+}
