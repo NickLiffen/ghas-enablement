@@ -12,6 +12,8 @@ import { enableGHAS } from "./enableGHAS.js";
 import { enableDependabotAlerts } from "./enableDependabotAlerts";
 import { enableDependabotFixes } from "./enableDependabotUpdates";
 import { enableIssueCreation } from "./enableIssueCreation";
+import { auth as generateAuth } from "./clients";
+
 import repos from "../../bin/repos.json";
 
 import { Octokit } from "./octokitTypes";
@@ -75,7 +77,8 @@ export const worker = async (): Promise<unknown> => {
           client
         );
         const ref = await createBranch(defaultBranchSHA, owner, repo, client);
-        await commitFileMac(owner, repo, ref);
+        const authToken = (await generateAuth()) as string;
+        await commitFileMac(owner, repo, ref, authToken);
         const pullRequestURL = await createPullRequest(
           defaultBranch,
           ref,

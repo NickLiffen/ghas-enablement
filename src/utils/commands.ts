@@ -1,19 +1,13 @@
 import { commands } from "../../types/common";
 
-import {
-  destDir,
-  user,
-  winUser,
-  windestDir,
-  tempDIR,
-  baseURL,
-} from "./globals";
+import { destDir, user, windestDir, tempDIR } from "./globals";
 
 export const codespacesCommands = (
   owner: string,
   repo: string,
   branch: string,
-  fileName: string
+  fileName: string,
+  baseURL: string
 ): commands => {
   const commands = [
     {
@@ -85,7 +79,8 @@ export const macCommands = (
   owner: string,
   repo: string,
   branch: string,
-  fileName: string
+  fileName: string,
+  baseURL: string
 ): commands => {
   const commands = [
     {
@@ -154,18 +149,19 @@ export const windowsCommands = (
   owner: string,
   repo: string,
   branch: string,
-  fileName: string
+  fileName: string,
+  baseURL: string
 ): commands => {
   const commands = [
     {
       command: "mkdir",
       args: ["-p", `${tempDIR}`],
-      cwd: `/Users/${winUser}/${windestDir}`,
+      cwd: `/Users/${user}/${windestDir}`,
     },
     {
       command: "git",
       args: ["clone", `${baseURL}/${owner}/${repo}.git`],
-      cwd: `/Users/${winUser}/${windestDir}/${tempDIR}`,
+      cwd: `/Users/${user}/${windestDir}/${tempDIR}`,
     },
     {
       command: "git",
@@ -175,45 +171,108 @@ export const windowsCommands = (
     {
       command: "mkdir",
       args: ["-p", ".github/workflows"],
-      cwd: `/Users/${winUser}/${windestDir}/${tempDIR}/${repo}`,
+      cwd: `/Users/${user}/${windestDir}/${tempDIR}/${repo}`,
     },
     {
       command: "cp",
       args: [
         `./bin/workflows/${fileName}`,
-        `c:\\Users\\${winUser}\\${windestDir}\\${tempDIR}/${repo}\\.github\\workflows\\`,
+        `c:\\Users\\${user}\\${windestDir}\\${tempDIR}/${repo}\\.github\\workflows\\`,
       ],
       cwd: process.cwd(),
     },
     {
       command: "rm",
       args: ["-rf", '"./-p/"'],
-      cwd: `/Users/${winUser}/${windestDir}/${tempDIR}/${repo}`,
+      cwd: `/Users/${user}/${windestDir}/${tempDIR}/${repo}`,
     },
     {
       command: "git",
       args: ["add", `.github/workflows/${fileName}`],
-      cwd: `/Users/${winUser}/${windestDir}/${tempDIR}/${repo}`,
+      cwd: `/Users/${user}/${windestDir}/${tempDIR}/${repo}`,
     },
     {
       command: "git",
       args: ["commit", "-m", '"Commit CodeQL File"'],
-      cwd: `/Users/${winUser}/${windestDir}/${tempDIR}/${repo}`,
+      cwd: `/Users/${user}/${windestDir}/${tempDIR}/${repo}`,
     },
     {
       command: "git",
       args: ["push", "origin", `${branch}`],
-      cwd: `/Users/${winUser}/${windestDir}/${tempDIR}/${repo}`,
+      cwd: `/Users/${user}/${windestDir}/${tempDIR}/${repo}`,
     },
     {
       command: "rm",
       args: ["-rf", `"./${tempDIR}/"`],
-      cwd: `/Users/${winUser}/${windestDir}/`,
+      cwd: `/Users/${user}/${windestDir}/`,
     },
     {
       command: "rm",
       args: ["-rf", '"./-p/"'],
-      cwd: `/Users/${winUser}/${windestDir}`,
+      cwd: `/Users/${user}/${windestDir}`,
+    },
+  ] as commands;
+  return commands;
+};
+
+export const wslLinuxCommands = (
+  owner: string,
+  repo: string,
+  branch: string,
+  fileName: string,
+  baseURL: string
+): commands => {
+  const commands = [
+    {
+      command: "mkdir",
+      args: ["-p", `${tempDIR}`],
+      cwd: `/home/${user}`,
+    },
+    {
+      command: "git",
+      args: ["clone", `${baseURL}/${owner}/${repo}.git`],
+      cwd: `/home/${user}/${tempDIR}`,
+    },
+    {
+      command: "git",
+      args: ["checkout", "-b", `${branch}`],
+      cwd: `/home/${user}/${tempDIR}/${repo}`,
+    },
+    {
+      command: "mkdir",
+      args: ["-p", ".github/workflows"],
+      cwd: `/home/${user}/${tempDIR}/${repo}`,
+    },
+    {
+      command: "cp",
+      args: [
+        `./bin/workflows/${fileName}`,
+        `/home/${user}/${tempDIR}/${repo}/.github/workflows/`,
+      ],
+      cwd: process.cwd(),
+    },
+    {
+      command: "mv",
+      args: [
+        `./.github/workflows/${fileName}`,
+        `./.github/workflows/codeql-analysis.yml`,
+      ],
+      cwd: `/home/${user}/${tempDIR}/${repo}`,
+    },
+    {
+      command: "git",
+      args: ["add", ".github/workflows/codeql-analysis.yml"],
+      cwd: `/home/${user}/${tempDIR}/${repo}`,
+    },
+    {
+      command: "git",
+      args: ["commit", "-m", '"Commit CodeQL File"'],
+      cwd: `/home/${user}/${tempDIR}/${repo}`,
+    },
+    {
+      command: "git",
+      args: ["push", "--set-upstream", "origin", `${branch}`],
+      cwd: `/home/${user}/${tempDIR}/${repo}`,
     },
   ] as commands;
   return commands;

@@ -19,7 +19,7 @@ There are two main actions this tool does:
 Goes and collects repositories that will have Code Scanning(CodeQL)/Secret Scanning/Dependabot Alerts/Dependabot Security Updates enabled. There are three main ways these repositories are collected.
 
 - Collect the repositories where the primary language matches a specific value. For example, if you provide JavaScript, all repositories will be collected where the primary language is, Javascript.
-- Collect the repositories to which a user has administrative access, or a GitHub App has access.
+- Collect the repositories to which a user (PAT) has administrative access, or a GitHub App has access.
 - Manually create `repos.json`.
 
 If you select option 1, the script will return all repositories in the language you specify (which you have access to). The repositories collected from this script are then stored within a `repos.json` file. If you specify option 2, the script will return all repositories you are an administrator over. The third option is to define the `repos.json` manually. We don't recommend this, but it's possible. If you want to go down this path, first run one of the above options for collecting repository information automatically, look at the structure, and build your fine of the laid out format.
@@ -49,11 +49,11 @@ If you pick Dependabot Security Updates:
 - [Node v16](https://nodejs.org/en/download/) or higher installed.
 - [Yarn](https://yarnpkg.com/)\*
 - [TypeScript](https://www.typescriptlang.org/download)
-- [Git](https://git-scm.com/downloads) installed on the user's machine running this tool.
-- Someone who has at least admin access over the repositories they want to enable Code Scanning on. Or, access to GitHub App credentails which has access to the repositories you want to enable Code Scanning on
+- [Git](https://git-scm.com/downloads) installed on the (user's) machine running this tool.
+- A Personal Access Token (PAT) that has at least admin access over the repositories they want to enable Code Scanning on or GitHub App credentials which have access to the repositories you want to enable Code Scanning on.
 - Some basic software development skills, e.g., can navigate their way around a terminal or command prompt.
 
-* You can use `npm` but for the sake of this `README.md`; we are going to standardise the commands on yarn. These are easily replacable though with `npm` commands.
+* You can use `npm` but for the sake of this `README.md`; we are going to standardise the commands on yarn. These are easily replaceable though with `npm` commands.
 
 ## Set up Instructions
 
@@ -175,17 +175,67 @@ There are some key considerations which you will need to put into place if you a
   }
 ```
 
-The reason you need this within your `.devcontainer/devcontainer.json` file is the `GITHUB_TOKEN` tied to the Codepsace will need to access other repositories within your organisation which this script may interact with. You will need to create a new Codespace **after** you have added the above and pushed it to your repository.
+The reason you need this within your `.devcontainer/devcontainer.json` file is the `GITHUB_TOKEN` tied to the Codespace will need to access other repositories within your organisation which this script may interact with. You will need to create a new Codespace **after** you have added the above and pushed it to your repository.
 
 You do not need to do the above if you are not running it from a Codespace.
+
+## Running as a (scheduled) GitHub workflow
+
+Since this tool uses a PAT or GitHub App Authentication wherever authentication is required, it can be run unattended. You can see in the example
+below how you could run the tool in a scheduled GitHub workflow. Instead of using the `.env`
+file you can configure all the variables from the `.env.sample` directly as environment variables. This will allow you to
+(easily) make use of GitHub action secrets for the PAT or GitHub App credentials.
+
+```yaml
+on:
+  schedule:
+    - cron: "5 16 * * 1"
+
+env:
+  APP_ID: ${{ secrets.GHAS_ENABLEMENT_APP_ID }}
+  APP_CLIENT_ID: ${{ secrets.GHAS_ENABLEMENT_APP_CLIENT_ID }}
+  APP_CLIENT_SECRET: ${{ secrets.GHAS_ENABLEMENT_APP_CLIENT_SECRET }}
+  APP_PRIVATE_KEY: ${{ secrets.GHAS_ENABLEMENT_APP_PRIVATE_KEY }}
+  ENABLE_ON: "codescanning,secretscanning,dependabot,dependabotupdates"
+  DEBUG: "ghas:*"
+  CREATE_ISSUE: "false"
+  GHES: "false"
+  # Organization specific variables
+  APP_INSTALLATION_ID: "12345678"
+  GITHUB_ORG: "my-target-org"
+
+jobs:
+  enable-security-javascript:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          repository: NickLiffen/ghas-enablement
+      - name: Get dependencies and configure
+        run: |
+          yarn
+          git config --global user.name "ghas-enablement"
+          git config --global user.email "ghas.enablement@example.com"
+      - name: Enable security on organization (javascript)
+        run: |
+          npm run getRepos
+          npm run start
+        env:
+          LANGUAGE_TO_CHECK: "javascript"
+```
+
+You can duplicate the last step for the other languages commonly used within your enterprise/organisation.
+If you didn't configure the tool as a GitHub App, you can remove all the `APP_*` and set `GITHUB_API_TOKEN` instead.
+Above we rely on the sample codeql file for javascript included in this repository. Alternatively you could add this workflow to a repository
+containing your customized codeql files and use those to overwrite the samples.
 
 ## Found an Issue?
 
 Create an issue within the repository and make it to `@nickliffen`. Key things to mention within your issue:
 
-- Windows or Mac
+- Windows, Linux, Codespaces or Mac
 - What version of NodeJS you are running.
-- Print any logs that appear on the terminal or command prompt
+- Add any logs that appeared when you ran into the issue.
 
 ## Want to Contribute?
 
