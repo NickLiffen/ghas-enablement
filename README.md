@@ -93,7 +93,7 @@ mv .env.sample .env
 
 11. If you are enabling Code Scanning (CodeQL), check the `codeql-analysis.yml` file. This is a sample file; please configure this file to suit your repositories needs.
 
-12. Run `yarn add` or `npm install`, which will install the necessary dependencies.
+12. Run `yarn install` or `npm install`, which will install the necessary dependencies.
 
 13. Run `yarn run build` or `npm run build`, which will create the JavaScript bundle from TypeScript.
 
