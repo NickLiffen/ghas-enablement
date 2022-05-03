@@ -10,7 +10,8 @@ import { response } from "../../types/common";
 export const enableSecretScanningAlerts = async (
   owner: string,
   repo: string,
-  octokit: Octokit
+  octokit: Octokit,
+  enablePushProtection: boolean
 ): Promise<response> => {
   const requestParamsEnableSecretScanning = {
     owner,
@@ -20,6 +21,17 @@ export const enableSecretScanningAlerts = async (
     },
     security_and_analysis: { secret_scanning: { status: "enabled" } },
   } as updateReposParameters;
+
+  /* If the user wants push protection, this will add it to the request. */
+  if (enablePushProtection) {
+    const pushProtection = {
+      secret_scanning: { status: "enabled" },
+      secret_scanning_push_protection: { enabled: "true" },
+    };
+    requestParamsEnableSecretScanning.security_and_analysis = pushProtection;
+  }
+
+  console.log(requestParamsEnableSecretScanning.security_and_analysis);
 
   try {
     const { status } = (await octokit.request(

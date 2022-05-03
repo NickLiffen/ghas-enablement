@@ -84,6 +84,11 @@ const getRepositoryInOrganizationPaginate = async (
 
     const enable = process.env.ENABLE_ON as string;
 
+    if (enable.includes("pushprotection") && !enable.includes("secretscanning"))
+      throw new Error(
+        "You cannot enable pushprotection without enabling secretscanning"
+      );
+
     results.forEach((element) => {
       return paginatedData.push({
         enableDependabot: enable.includes("dependabot") as boolean,
@@ -92,6 +97,7 @@ const getRepositoryInOrganizationPaginate = async (
         ) as boolean,
         enableSecretScanning: enable.includes("secretscanning") as boolean,
         enableCodeScanning: enable.includes("codescanning") as boolean,
+        enablePushProtection: enable.includes("pushprotection") as boolean,
         createIssue:
           process.env.CREATE_ISSUE === "true" ? true : (false as boolean),
         repo: element.nameWithOwner,

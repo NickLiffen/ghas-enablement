@@ -41,6 +41,7 @@ export const worker = async (): Promise<unknown> => {
         enableDependabot,
         enableDependabotUpdates,
         enableSecretScanning,
+        enablePushProtection,
         createIssue,
         enableCodeScanning,
       } = repos[orgIndex].repos[repoIndex];
@@ -64,7 +65,12 @@ export const worker = async (): Promise<unknown> => {
 
       // Kick off the process for enabling Secret Scanning
       enableSecretScanning
-        ? await enableSecretScanningAlerts(owner, repo, client)
+        ? await enableSecretScanningAlerts(
+            owner,
+            repo,
+            client,
+            enablePushProtection
+          )
         : null;
 
       // Kick off the process for enabling Code Scanning
