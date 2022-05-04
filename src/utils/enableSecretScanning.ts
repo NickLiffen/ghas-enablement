@@ -31,8 +31,6 @@ export const enableSecretScanningAlerts = async (
     requestParamsEnableSecretScanning.security_and_analysis = pushProtection;
   }
 
-  console.log(requestParamsEnableSecretScanning.security_and_analysis);
-
   try {
     const { status } = (await octokit.request(
       "PATCH /repos/{owner}/{repo}",
