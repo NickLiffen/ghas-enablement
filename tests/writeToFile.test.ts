@@ -26,7 +26,7 @@ describe("Write to File", () => {
   it("Successly writes to filesystem", async () => {
     await writeToFile(pullRequestURL);
     fs.readFile("prs.txt", "utf8", (err, data) => {
-      if (err) console.log(err);
+      if (err) console.error(err);
       expect(data).toStrictEqual(pullRequestURL);
     });
   });
@@ -34,7 +34,7 @@ describe("Write to File", () => {
   it("Successfully writes Repo List", async () => {
     await createReposListFile(reposList);
     fs.readFile("repos.json", "utf8", (err, data) => {
-      if (err) console.log(err);
+      if (err) console.error(err);
       expect(data).toStrictEqual(JSON.stringify(reposList));
     });
   });

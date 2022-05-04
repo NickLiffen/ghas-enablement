@@ -21,6 +21,7 @@ export type usersWriteAdminRepos = {
   enableSecretScanning: boolean;
   enableCodeScanning: boolean;
   createIssue: boolean;
+  enablePushProtection: boolean;
   repo: string;
 };
 

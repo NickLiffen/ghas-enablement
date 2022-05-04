@@ -26,7 +26,7 @@ If you select option 1, the script will return all repositories in the language 
 
 **Part Two:**
 
-Loops over the repositories found within the `repos.json` file and enables Code Scanning(CodeQL)/Secret Scanning/Dependabot Alerts/Dependabot Security Updates.
+Loops over the repositories found within the `repos.json` file and enables Code Scanning(CodeQL)/Secret Scanning/Dependabot Alerts/Dependabot Security Updates/Secret Scanning Push Protection.
 
 If you pick Code Scanning:
 
@@ -137,12 +137,13 @@ Create a file called `repos.json` within the `./bin/` directory. This file needs
     "enableSecretScanning": "boolean",
     "enableCodeScanning": "boolean",
     "createIssue": "boolean",
+    "enablePushProtection": "boolean",
     "repo": "string <org/repo>",
   }
 ]
 ```
 
-As you can see, the object takes six keys: `repo`, `enableDependabot`, `enableDependabotUpdates`, `enableSecretScanning`, `enableCodeScanning`, and `enableCodeScanning`. Set `repo` to the name of the repository name where you would like to run this script on. Set `enableDependabot` to `true` if you would also like to enable Dependabot Alerts on that repo; set it to `false` if you do not want to enable Dependabot Alerts. The same goes for `enableDependabotUpdates` for Dependabot Security Updates, `enableSecretScanning` for Secret Scanning, and `enableCodeScanning` for Code Scanning (CodeQL). Finally set `createIssue` to `true` if you would like to create an issue on the repository with the text found in the `./src/utils/text/issueText.ts` directory.
+As you can see, the object takes six keys: `repo`, `enableDependabot`, `enableDependabotUpdates`, `enableSecretScanning`, `enableCodeScanning`, and `enableCodeScanning`. Set `repo` to the name of the repository name where you would like to run this script on. Set `enableDependabot` to `true` if you would also like to enable Dependabot Alerts on that repo; set it to `false` if you do not want to enable Dependabot Alerts. The same goes for `enableDependabotUpdates` for Dependabot Security Updates, `enableSecretScanning` for Secret Scanning, `pushprotection` for Secret Scanning push protection, and `enableCodeScanning` for Code Scanning (CodeQL). Finally set `createIssue` to `true` if you would like to create an issue on the repository with the text found in the `./src/utils/text/issueText.ts` directory.
 
 **NOTE:** The account that generated the PAT needs to have `write` access or higher over any repository that you include within the `repos` key.
 
