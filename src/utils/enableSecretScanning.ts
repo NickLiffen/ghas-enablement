@@ -26,7 +26,7 @@ export const enableSecretScanningAlerts = async (
   if (enablePushProtection) {
     const pushProtection = {
       secret_scanning: { status: "enabled" },
-      secret_scanning_push_protection: { enabled: "true" },
+      secret_scanning_push_protection: { status: "enabled" },
     };
     requestParamsEnableSecretScanning.security_and_analysis = pushProtection;
   }
