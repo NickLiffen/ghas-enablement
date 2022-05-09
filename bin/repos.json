@@ -1,0 +1,16 @@
+[
+  {
+    "login": "org",
+    "repos": [
+      {
+        "enableDependabot": false,
+        "enableDependabotUpdates": false,
+        "enableSecretScanning": false,
+        "enableCodeScanning": true,
+        "enablePushProtection": false,
+        "createIssue": true,
+        "repo": "org/repo"
+      }
+    ]
+  }
+]
