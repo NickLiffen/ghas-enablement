@@ -3,9 +3,9 @@
 import util from "util";
 import delay from "delay";
 
-import { inform, error, platform, root, baseURL } from "./globals";
+import { inform, error, platform, baseURL } from "./globals";
 
-import { generalCommands, codespacesCommands } from "./commands";
+import { generalCommands } from "./commands";
 
 import { execFile as ImportedExec } from "child_process";
 
@@ -18,9 +18,9 @@ inform(`Platform detected: ${platform}`);
 if (platform !== "win32" && platform !== "darwin" && platform !== "linux") {
   error("You can only use either windows or mac machine!");
   throw new Error(
-    "We detected an OS that wasn't Windows, Linux or Mac. Right now, these " +
-      "are the only three OS's supported. Log an issue on the repository for " +
-      "wider support"
+    `We detected an OS that wasn't Windows, Linux or Mac. Right now, these
+    are the only three OS's supported. Log an issue on the repository for
+    wider support`
   );
 }
 
@@ -49,11 +49,13 @@ export const commitFileMac = async (
     : "codeql-analysis-standard.yml";
 
   try {
-    /* Codespaces is also a linux environment, so this check has to happen first */
-    gitCommands =
-      root === "workspaces"
-        ? (codespacesCommands(owner, repo, branch, fileName, authBaseURL) as commands)
-        : (generalCommands(owner, repo, branch, fileName, authBaseURL) as commands);
+    gitCommands = generalCommands(
+      owner,
+      repo,
+      branch,
+      fileName,
+      authBaseURL
+    ) as commands;
     inform(gitCommands);
   } catch (err) {
     error(err);

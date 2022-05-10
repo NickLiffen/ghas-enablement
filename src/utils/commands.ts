@@ -1,67 +1,6 @@
 import { commands } from "../../types/common";
 
-import { destDir, user, tempDIR, platform, root } from "./globals";
-
-export const codespacesCommands = (
-  owner: string,
-  repo: string,
-  branch: string,
-  fileName: string,
-  baseURL: string
-): commands => {
-  const commands = [
-    {
-      command: "mkdir",
-      args: ["-p", `${destDir}/${tempDIR}`],
-      cwd: `/${root}`,
-    },
-    {
-      command: "git",
-      args: ["clone", `${baseURL}/${owner}/${repo}.git`],
-      cwd: `/${root}/${destDir}/${tempDIR}`,
-    },
-    {
-      command: "git",
-      args: ["checkout", "-b", `${branch}`],
-      cwd: `/${root}/${destDir}/${tempDIR}/${repo}`,
-    },
-    {
-      command: "mkdir",
-      args: ["-p", ".github/workflows"],
-      cwd: `/${root}/${destDir}/${tempDIR}/${repo}`,
-    },
-    {
-      command: "cp",
-      args: [
-        `./bin/workflows/${fileName}`,
-        `/${root}/${destDir}/${tempDIR}/${repo}/` +
-          `.github/workflows/codeql-analysis.yml`,
-      ],
-      cwd: process.cwd(),
-    },
-    {
-      command: "git",
-      args: ["add", ".github/workflows/codeql-analysis.yml"],
-      cwd: `/${root}/${destDir}/${tempDIR}/${repo}`,
-    },
-    {
-      command: "git",
-      args: ["commit", "-m", '"Commit CodeQL File"'],
-      cwd: `/${root}/${destDir}/${tempDIR}/${repo}`,
-    },
-    {
-      command: "git",
-      args: ["push", "--set-upstream", "origin", `${branch}`],
-      cwd: `/${root}/${destDir}/${tempDIR}/${repo}`,
-    },
-    {
-      command: "rm",
-      args: ["-rf", `${destDir}`],
-      cwd: `/${root}`,
-    },
-  ] as commands;
-  return commands;
-};
+import { destDir, tempDIR, platform } from "./globals";
 
 export const generalCommands = (
   owner: string,
@@ -78,12 +17,12 @@ export const generalCommands = (
         ...(platform === "win32" ? ["/Q", "/S"] : ["-rf"]),
         winSeparator(`./${tempDIR}`, platform),
       ],
-      cwd: `/${root}/${user}/${destDir}/`,
+      cwd: `/${destDir}/`,
     },
     {
       command: "mkdir",
       args: [`${tempDIR}`],
-      cwd: `/${root}/${user}/${destDir}`,
+      cwd: `/${destDir}`,
     },
     {
       command: "git",
@@ -93,12 +32,12 @@ export const generalCommands = (
           : ["clone"]),
         `${baseURL}/${owner}/${repo}.git`,
       ],
-      cwd: `/${root}/${user}/${destDir}/${tempDIR}`,
+      cwd: `/${destDir}/${tempDIR}`,
     },
     {
       command: "git",
       args: ["checkout", "-b", `${branch}`],
-      cwd: `/${root}/${user}/${destDir}/${tempDIR}/${repo}`,
+      cwd: `/${destDir}/${tempDIR}/${repo}`,
     },
     {
       command: "mkdir",
@@ -106,14 +45,14 @@ export const generalCommands = (
         ...(platform === "win32" ? [] : ["-p"]),
         [winSeparator(".github/workflows", platform)],
       ],
-      cwd: `/${root}/${user}/${destDir}/${tempDIR}/${repo}`,
+      cwd: `/${destDir}/${tempDIR}/${repo}`,
     },
     {
       command: platform === "win32" ? "copy" : "cp",
       args: [
         winSeparator(`./bin/workflows/${fileName}`, platform),
         winSeparator(
-          `/${root}/${user}/${destDir}/${tempDIR}/${repo}/` +
+          `/${destDir}/${tempDIR}/${repo}/` +
             ".github/workflows/codeql-analysis.yml",
           platform
         ),
@@ -126,17 +65,17 @@ export const generalCommands = (
         "add",
         winSeparator(".github/workflows/codeql-analysis.yml", platform),
       ],
-      cwd: `/${root}/${user}/${destDir}/${tempDIR}/${repo}`,
+      cwd: `/${destDir}/${tempDIR}/${repo}`,
     },
     {
       command: "git",
       args: ["commit", "-m", '"Commit CodeQL File"'],
-      cwd: `/${root}/${user}/${destDir}/${tempDIR}/${repo}`,
+      cwd: `/${destDir}/${tempDIR}/${repo}`,
     },
     {
       command: "git",
       args: ["push", "--set-upstream", "origin", `${branch}`],
-      cwd: `/${root}/${user}/${destDir}/${tempDIR}/${repo}`,
+      cwd: `/${destDir}/${tempDIR}/${repo}`,
     },
     {
       command: platform === "win32" ? "rmdir" : "rm",
@@ -144,7 +83,7 @@ export const generalCommands = (
         ...(platform === "win32" ? ["/Q", "/S"] : ["-rf"]),
         winSeparator(`./${tempDIR}/`, platform),
       ],
-      cwd: `/${root}/${user}/${destDir}/`,
+      cwd: `/${destDir}/`,
     },
   ] as commands;
   return commands;

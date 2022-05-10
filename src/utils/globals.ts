@@ -34,14 +34,18 @@ export const error = Debug("ghas:error") as Debug.Debugger;
 export const reposFileLocation = "./bin/repos.json" as string;
 export const orgsFileLocation = "./bin/organizations.json" as string;
 export const platform = os.platform() as string;
-export const destDir =
-  platform === "win32" ? ("Documents" as string) : ("Desktop" as string);
-export const user =
+const user =
   platform === "win32"
     ? (process.cwd().split("\\")[2] as string)
     : (process.cwd().split("/")[2] as string);
-export const root = existsSync("/vscode")
+const root = existsSync("/vscode") // Requires user
   ? ("workspaces" as string)
   : platform === "win32" || platform === "darwin"
-  ? ("Users" as string)
-  : ("home" as string);
+  ? (`Users/${user}` as string)
+  : (`home/${user}` as string);
+export const destDir =
+  process.env.TEMP_DIR != ""
+    ? process.env.TEMP_DIR
+    : existsSync("/vscode") // Requires root
+    ? ("workspaces" as string)
+    : (`${root}/Desktop` as string);
