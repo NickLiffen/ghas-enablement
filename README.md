@@ -19,8 +19,8 @@ There are two main actions this tool does:
 Goes and collects repositories that will have Code Scanning(CodeQL)/Secret Scanning/Dependabot Alerts/Dependabot Security Updates enabled. There are three main ways these repositories are collected.
 
 - Collect the repositories where the primary language matches a specific value. For example, if you provide JavaScript, all repositories will be collected where the primary language is, Javascript.
-- Collect the repositories to which a user (PAT) has administrative access, or a GitHub App has access.
-- Manually create `repos.json`.
+- Collect the repositories to which a user has administrative access, or a GitHub App has access.
+- Manually create `repos.json` or rename `repos-sample.json` -> `repos.json` in the bin folder.
 
 If you select option 1, the script will return all repositories in the language you specify (which you have access to). The repositories collected from this script are then stored within a `repos.json` file. If you specify option 2, the script will return all repositories you are an administrator over. The third option is to define the `repos.json` manually. We don't recommend this, but it's possible. If you want to go down this path, first run one of the above options for collecting repository information automatically, look at the structure, and build your fine of the laid out format.
 
@@ -93,7 +93,7 @@ mv .env.sample .env
 
 11. If you are enabling Code Scanning (CodeQL), check the `codeql-analysis.yml` file. This is a sample file; please configure this file to suit your repositories needs.
 
-12. Run `yarn add` or `npm install`, which will install the necessary dependencies.
+12. Run `yarn install` or `npm install`, which will install the necessary dependencies.
 
 13. Run `yarn run build` or `npm run build`, which will create the JavaScript bundle from TypeScript.
 

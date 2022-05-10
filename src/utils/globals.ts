@@ -1,17 +1,15 @@
 import randomstring from "randomstring";
 
 import Debug from "debug";
-import os from "os";
 
-export const platform = os.platform();
+import { existsSync } from "fs";
+
+import os from "os";
 
 const rs = randomstring.generate({
   length: 5,
   charset: "alphabetic",
 }) as string;
-
-export const isWindows = platform === "win32";
-export const isLinux = platform === "linux";
 
 export const baseRestApiURL =
   process.env.GHES == "true"
@@ -33,13 +31,21 @@ export const tempDIR = "tempGitLocations" as string;
 export const path = "./github/workflows" as string;
 export const inform = Debug("ghas:inform") as Debug.Debugger;
 export const error = Debug("ghas:error") as Debug.Debugger;
-export const destDir = "Desktop" as string;
-export const windestDir = "Documents" as string;
-export const user =
-  isLinux === true
-    ? process.env.USER
-    : isWindows === true
-    ? (process.cwd().split("\\")[2] as string)
-    : (process.cwd().split("/")[2] as string);
 export const reposFileLocation = "./bin/repos.json" as string;
 export const orgsFileLocation = "./bin/organizations.json" as string;
+export const platform = os.platform() as string;
+const user =
+  platform === "win32"
+    ? (process.cwd().split("\\")[2] as string)
+    : (process.cwd().split("/")[2] as string);
+const root = existsSync("/vscode") // Requires user
+  ? ("workspaces" as string)
+  : platform === "win32" || platform === "darwin"
+  ? (`Users/${user}` as string)
+  : (`home/${user}` as string);
+export const destDir =
+  process.env.TEMP_DIR != ""
+    ? process.env.TEMP_DIR
+    : existsSync("/vscode") // Requires root
+    ? ("workspaces" as string)
+    : (`${root}/Desktop` as string);
