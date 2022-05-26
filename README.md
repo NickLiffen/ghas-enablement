@@ -20,7 +20,7 @@ Goes and collects repositories that will have Code Scanning(CodeQL)/Secret Scann
 
 - Collect the repositories where the primary language matches a specific value. For example, if you provide JavaScript, all repositories will be collected where the primary language is, Javascript.
 - Collect the repositories to which a user has administrative access, or a GitHub App has access.
-- Manually create `repos.json` or rename `repos-sample.json` -> `repos.json` in the bin folder.
+- Manually create `repos.json` or copy the `repos-sample.json` to `repos.json` in the bin folder.
 
 If you select option 1, the script will return all repositories in the language you specify (which you have access to). The repositories collected from this script are then stored within a `repos.json` file. If you specify option 2, the script will return all repositories you are an administrator over. The third option is to define the `repos.json` manually. We don't recommend this, but it's possible. If you want to go down this path, first run one of the above options for collecting repository information automatically, look at the structure, and build your fine of the laid out format.
 
@@ -74,7 +74,7 @@ cd ghas-enablement
 4.  Rename the `.env.sample` to `.env`. On a Mac, this can be done via the following terminal command:
 
 ```bash
-mv .env.sample .env
+cp .env.sample .env
 ```
 
 5. Update the `.env` with the required values. Please pick one of the authentication methods for interacting with GitHub. You can either fill in the `GITHUB_API_TOKEN` with a PAT that has access to the Org. OR, fill in all the values required for a GitHub App. **Note**: It is recommended to pick the GitHub App choice if running on thousands of repositories, as this gives you more API requests versus a PAT.
