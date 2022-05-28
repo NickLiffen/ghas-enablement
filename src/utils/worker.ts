@@ -13,6 +13,7 @@ import { enableDependabotAlerts } from "./enableDependabotAlerts";
 import { enableDependabotFixes } from "./enableDependabotUpdates";
 import { enableIssueCreation } from "./enableIssueCreation";
 import { auth as generateAuth } from "./clients";
+import { checkIfCodeQLHasAlreadyRanOnRepo } from "./checkCodeQLEnablement";
 
 import repos from "../../bin/repos.json";
 
@@ -75,27 +76,35 @@ export const worker = async (): Promise<unknown> => {
 
       // Kick off the process for enabling Code Scanning
       if (enableCodeScanning) {
-        const defaultBranch = await findDefulatBranch(owner, repo, client);
-        const defaultBranchSHA = await findDefulatBranchSHA(
-          defaultBranch,
+        // First, let's check and see if CodeQL has already ran on that repository. If it has, we don't need to do anything.
+        const codeQLAlreadyRan = await checkIfCodeQLHasAlreadyRanOnRepo(
           owner,
           repo,
           client
         );
-        const ref = await createBranch(defaultBranchSHA, owner, repo, client);
-        const authToken = (await generateAuth()) as string;
-        await commitFileMac(owner, repo, ref, authToken);
-        const pullRequestURL = await createPullRequest(
-          defaultBranch,
-          ref,
-          owner,
-          repo,
-          client
-        );
-        if (createIssue) {
-          await enableIssueCreation(pullRequestURL, owner, repo, client);
+        if (!codeQLAlreadyRan) {
+          const defaultBranch = await findDefulatBranch(owner, repo, client);
+          const defaultBranchSHA = await findDefulatBranchSHA(
+            defaultBranch,
+            owner,
+            repo,
+            client
+          );
+          const ref = await createBranch(defaultBranchSHA, owner, repo, client);
+          const authToken = (await generateAuth()) as string;
+          await commitFileMac(owner, repo, ref, authToken);
+          const pullRequestURL = await createPullRequest(
+            defaultBranch,
+            ref,
+            owner,
+            repo,
+            client
+          );
+          if (createIssue) {
+            await enableIssueCreation(pullRequestURL, owner, repo, client);
+          }
+          await writeToFile(pullRequestURL);
         }
-        await writeToFile(pullRequestURL);
       }
     }
   }

@@ -4,7 +4,7 @@ import {
   Octokit,
 } from "./octokitTypes";
 
-export const checkCodeQLEnablement = async (
+export const checkIfCodeQLHasAlreadyRanOnRepo = async (
   owner: string,
   repo: string,
   octokit: Octokit
@@ -19,8 +19,8 @@ export const checkCodeQLEnablement = async (
       "GET /repos/{owner}/{repo}/code-scanning/analyses",
       requestParams
     )) as checkCodeScanningAnalysesResponse;
-    if (data.length === 0) return true;
-    return false;
+    if (data.length === 0) return false;
+    return true;
   } catch (e) {
     return true;
   }
