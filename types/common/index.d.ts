@@ -1,3 +1,16 @@
+export type reposFile = {
+  login: stirng;
+  repos: {
+    enableDependabot: boolean;
+    enableDependabotUpdates: boolean;
+    enableSecretScanning: boolean;
+    enableCodeScanning: boolean;
+    enablePushProtection: boolean;
+    createIssue: boolean;
+    repo: string;
+  }[];
+}[];
+
 export type gitCommands = {
   command: string;
   args: string[];
