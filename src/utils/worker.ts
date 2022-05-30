@@ -18,7 +18,7 @@ import { auth as generateAuth } from "./clients";
 import { checkIfCodeQLHasAlreadyRanOnRepo } from "./checkCodeQLEnablement";
 
 import { Octokit } from "./octokitTypes";
-import { inform } from "./globals.js";
+import { inform, reposFileLocation } from "./globals.js";
 import { reposFile } from "../../types/common/index.js";
 
 export const worker = async (): Promise<unknown> => {
@@ -31,7 +31,7 @@ export const worker = async (): Promise<unknown> => {
 
   // Read the repos.json file and get the list of repos using fs.readFileSync, handle errors, if empty file return error, if file exists and is not empty JSON.parse it and return the list of repos
   try {
-    file = readFileSync("../../bin/repos.json", "utf8");
+    file = readFileSync(reposFileLocation, "utf8");
     if (file === "") {
       throw new Error(
         "We found your repos.json but it was empty, please run `yarn run getRepos` to collect the repos to run this script on."
@@ -102,7 +102,15 @@ export const worker = async (): Promise<unknown> => {
           repo,
           client
         );
+
+        inform(
+          `Has ${owner}/${repo} had a CodeQL scan uploaded? ${codeQLAlreadyRan}`
+        );
+
         if (!codeQLAlreadyRan) {
+          inform(
+            `Has ${owner}/${repo} hasn't had a CodeQL Scan, going to run CodeQL enablement`
+          );
           const defaultBranch = await findDefulatBranch(owner, repo, client);
           const defaultBranchSHA = await findDefulatBranchSHA(
             defaultBranch,

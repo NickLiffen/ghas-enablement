@@ -20,7 +20,6 @@ Goes and collects repositories that will have Code Scanning(CodeQL)/Secret Scann
 
 - Collect the repositories where the primary language matches a specific value. For example, if you provide JavaScript, all repositories will be collected where the primary language is, Javascript.
 - Collect the repositories to which a user has administrative access, or a GitHub App has access.
-- Manually create `repos.json` or copy the `repos-sample.json` to `repos.json` in the bin folder.
 
 If you select option 1, the script will return all repositories in the language you specify (which you have access to). The repositories collected from this script are then stored within a `repos.json` file. If you specify option 2, the script will return all repositories you are an administrator over. The third option is to define the `repos.json` manually. We don't recommend this, but it's possible. If you want to go down this path, first run one of the above options for collecting repository information automatically, look at the structure, and build your fine of the laid out format.
 
