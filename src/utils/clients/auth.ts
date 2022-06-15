@@ -32,7 +32,7 @@ export const auth = async (): Promise<string | Error> => {
   const auth = createAppAuth(options);
 
   try {
-    const { token } = await auth({ type: "installation" });
+    const { token } = await auth({ type: "installation", refresh: true });
     return token;
   } catch (err: any) {
     console.error("Error within function (githubAuth)", err.message);
