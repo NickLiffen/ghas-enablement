@@ -1,3 +1,4 @@
+import { RequestError } from "@octokit/request-error";
 import {
   checkCodeScanningAnalysesParameters,
   checkCodeScanningAnalysesResponse,
@@ -23,6 +24,7 @@ export const checkIfCodeQLHasAlreadyRanOnRepo = async (
     if (data.length === 0) return false;
     return true;
   } catch (e) {
-    return true;
+    if(e instanceof RequestError){
+      if(e.status == 404) return false;  // 404 result means no codeQL scans found
   }
 };
