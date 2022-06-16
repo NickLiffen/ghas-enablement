@@ -29,7 +29,7 @@ export const client = async (): Promise<Octokit> => {
   if (env.GITHUB_API_TOKEN) {
     return new MyOctokit({
       auth: env.GITHUB_API_TOKEN,
-      ...baseOcttokitOptions,
+      ...baseOctokitOptions,
     });
   } else if (env.APP_ID && env.APP_PRIVATE_KEY && env.APP_INSTALLATION_ID) {
     return new MyOctokit({
@@ -42,7 +42,7 @@ export const client = async (): Promise<Octokit> => {
           10
         ) as number,
       },
-      ...baseOcttokitOptions,
+      ...baseOctokitOptions,
     });
   } else {
     throw new Error(
