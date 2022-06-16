@@ -1,6 +1,8 @@
-import { graphql, GraphQlQueryResponseData } from "@octokit/graphql";
+import { client as octokit } from "./clients";
 
-import { graphQLClient as octokit } from "./clients";
+import { Octokit } from "@octokit/core";
+
+import { GraphQlQueryResponseData } from "@octokit/graphql";
 
 import {
   GraphQLQueryResponse,
@@ -11,7 +13,7 @@ import { filterAsync } from "./filterAsync";
 import { error, inform } from "./globals";
 
 const performRepositoryQuery = async (
-  client: typeof graphql,
+  client: Octokit,
   query: string,
   slug: string,
   after: string | null
@@ -24,7 +26,10 @@ const performRepositoryQuery = async (
           nodes,
         },
       },
-    } = (await client(query, { slug, after })) as GraphQlQueryResponseData;
+    } = (await client.graphql(query, {
+      slug,
+      after,
+    })) as GraphQlQueryResponseData;
     return [hasNextPage, endCursor, nodes];
   } catch (err) {
     error(err);
@@ -33,7 +38,7 @@ const performRepositoryQuery = async (
 };
 
 const getRepositoryInOrganizationPaginate = async (
-  client: typeof graphql,
+  client: Octokit,
   slug: string,
   query: string,
   paginatedData = [] as usersWriteAdminReposArray,

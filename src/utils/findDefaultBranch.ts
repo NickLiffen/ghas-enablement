@@ -1,6 +1,6 @@
 import { error, inform } from "./globals";
 
-import { Octokit } from "./octokitTypes";
+import { Octokit } from "@octokit/core";
 
 import {
   listDefaultBranchParameters,

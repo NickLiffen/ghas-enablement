@@ -5,7 +5,7 @@ dotenv.config({ path: __dirname + "/../.env" });
 import { error } from "./utils/globals";
 
 import { index } from "./utils/getOrganisationsInEnterprise";
-import { graphQLClient as octokit } from "./utils/clients";
+import { client as octokit } from "./utils/clients";
 
 async function start() {
   try {

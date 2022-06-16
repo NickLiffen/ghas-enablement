@@ -1,4 +1,6 @@
-import { graphql, GraphQlQueryResponseData } from "@octokit/graphql";
+import { Octokit } from "@octokit/core";
+
+import { GraphQlQueryResponseData } from "@octokit/graphql";
 
 import { getOrganisationsQuery } from "./graphql";
 import { createFile } from "./writeToFile";
@@ -11,7 +13,7 @@ import {
 } from "../../types/common";
 
 const performOrganisationsQuery = async (
-  client: typeof graphql,
+  client: Octokit,
   query: string,
   slug: string,
   after: string | null
@@ -24,7 +26,10 @@ const performOrganisationsQuery = async (
           nodes,
         },
       },
-    } = (await client(query, { slug, after })) as GraphQlQueryResponseData;
+    } = (await client.graphql(query, {
+      slug,
+      after,
+    })) as GraphQlQueryResponseData;
     return [hasNextPage, endCursor, nodes];
   } catch (err) {
     console.error(err);
@@ -33,7 +38,7 @@ const performOrganisationsQuery = async (
 };
 
 const getOrganisationsInEnterprise = async (
-  client: typeof graphql,
+  client: Octokit,
   slug: string,
   query: string,
   paginatedData = [] as orgsInEnterpriseArray,
@@ -72,7 +77,7 @@ const getOrganisationsInEnterprise = async (
   }
 };
 
-export const index = async (client: typeof graphql): Promise<void> => {
+export const index = async (client: Octokit): Promise<void> => {
   try {
     const slug = process.env.GITHUB_ENTERPRISE
       ? process.env.GITHUB_ENTERPRISE
