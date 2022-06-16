@@ -5,6 +5,8 @@ import {
 
 import { Octokit } from "@octokit/core";
 
+import { RequestError } from "@octokit/request-error";
+
 export const checkIfCodeQLHasAlreadyRanOnRepo = async (
   owner: string,
   repo: string,
@@ -23,6 +25,9 @@ export const checkIfCodeQLHasAlreadyRanOnRepo = async (
     if (data.length === 0) return false;
     return true;
   } catch (e) {
+    if (e instanceof RequestError) {
+      if (e.status == 404) return false; // 404 result means no codeQL scans found
+    }
     return true;
   }
 };
