@@ -13,7 +13,7 @@ import { OctokitOptions } from "@octokit/core/dist-types/types";
 
 export const client = async (): Promise<Octokit> => {
   const MyOctokit = Octokit.plugin(paginateRest, retry, throttling);
-  const baseOcttokitOptions = {
+  const baseOctokitOptions = {
     baseUrl,
     request: { retries: 3 },
     throttle: {
