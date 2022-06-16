@@ -26,5 +26,7 @@ export const checkIfCodeQLHasAlreadyRanOnRepo = async (
   } catch (e) {
     if(e instanceof RequestError){
       if(e.status == 404) return false;  // 404 result means no codeQL scans found
+    }
+    return true;
   }
 };
