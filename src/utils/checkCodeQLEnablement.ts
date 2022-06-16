@@ -6,8 +6,6 @@ import {
 
 import { Octokit } from "@octokit/core";
 
-import { RequestError } from "@octokit/request-error";
-
 export const checkIfCodeQLHasAlreadyRanOnRepo = async (
   owner: string,
   repo: string,
