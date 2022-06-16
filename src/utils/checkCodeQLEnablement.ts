@@ -1,8 +1,9 @@
 import {
   checkCodeScanningAnalysesParameters,
   checkCodeScanningAnalysesResponse,
-  Octokit,
 } from "./octokitTypes";
+
+import { Octokit } from "@octokit/core";
 
 export const checkIfCodeQLHasAlreadyRanOnRepo = async (
   owner: string,

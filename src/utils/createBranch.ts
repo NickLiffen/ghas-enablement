@@ -2,7 +2,7 @@ import { ref, error, inform } from "./globals";
 
 import { createRefParameters, createRefResponse } from "./octokitTypes";
 
-import { Octokit } from "./octokitTypes";
+import { Octokit } from "@octokit/core";
 
 export const createBranch = async (
   sha: string,

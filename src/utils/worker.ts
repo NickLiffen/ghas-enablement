@@ -8,7 +8,7 @@ import { createBranch } from "./createBranch.js";
 import { enableSecretScanningAlerts } from "./enableSecretScanning";
 import { createPullRequest } from "./createPullRequest.js";
 import { writeToFile } from "./writeToFile.js";
-import { restClient as octokit } from "./clients";
+import { client as octokit } from "./clients";
 import { commitFileMac } from "./commitFile.js";
 import { enableGHAS } from "./enableGHAS.js";
 import { enableDependabotAlerts } from "./enableDependabotAlerts";
@@ -17,18 +17,17 @@ import { enableIssueCreation } from "./enableIssueCreation";
 import { auth as generateAuth } from "./clients";
 import { checkIfCodeQLHasAlreadyRanOnRepo } from "./checkCodeQLEnablement";
 
-import { Octokit } from "./octokitTypes";
+import { Octokit } from "@octokit/core";
 import { inform, reposFileLocation } from "./globals.js";
 import { reposFile } from "../../types/common/index.js";
 
 export const worker = async (): Promise<unknown> => {
-  const client = (await octokit()) as Octokit;
   let res;
   let orgIndex: number;
   let repoIndex: number;
   let repos: reposFile;
   let file: string;
-
+  const client = (await octokit()) as Octokit;
   // Read the repos.json file and get the list of repos using fs.readFileSync, handle errors, if empty file return error, if file exists and is not empty JSON.parse it and return the list of repos
   try {
     file = readFileSync(reposFileLocation, "utf8");

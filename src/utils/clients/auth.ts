@@ -30,10 +30,10 @@ export const auth = async (): Promise<string | Error> => {
   } as StrategyOptions;
 
   const auth = createAppAuth(options);
-
   try {
-    const { token } = await auth({ type: "installation" });
-    return token;
+    const data = await auth({ type: "installation", refresh: true });
+    console.log(data);
+    return data.token;
   } catch (err: any) {
     console.error("Error within function (githubAuth)", err.message);
     throw new Error(

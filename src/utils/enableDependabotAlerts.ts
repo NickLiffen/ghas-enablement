@@ -1,6 +1,6 @@
 import { inform, error } from "./globals";
 
-import { Octokit } from "./octokitTypes";
+import { Octokit } from "@octokit/core";
 
 import {
   createVulnerabilityAlertsParameters,
