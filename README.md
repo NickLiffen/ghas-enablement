@@ -126,18 +126,24 @@ This script only returns repositories where CodeQL results have not already been
 
 **OPTION 3**
 
-Create a file called `repos.json` within the `./bin/` directory. This file needs to have an array of objects. The structure of the objects should look like this:
+Create a file called `repos.json` within the `./bin/` directory. This file needs to have an array of organization objects, each with its own array of repository objects. The structure of the objects should look like this:
 
 ```JSON
 [
   {
-    "enableDependabot": "boolean",
-    "enableDependabotUpdates": "boolean",
-    "enableSecretScanning": "boolean",
-    "enableCodeScanning": "boolean",
-    "createIssue": "boolean",
-    "enablePushProtection": "boolean",
-    "repo": "string <org/repo>",
+    "login": "string <org>",
+    "repos":
+    [
+      {
+        "enableDependabot": "boolean",
+        "enableDependabotUpdates": "boolean",
+        "enableSecretScanning": "boolean",
+        "enableCodeScanning": "boolean",
+        "createIssue": "boolean",
+        "enablePushProtection": "boolean",
+        "repo": "string <org/repo>",
+      }
+    ]
   }
 ]
 ```
