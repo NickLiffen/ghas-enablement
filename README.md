@@ -68,7 +68,7 @@ git clone https://github.com/NickLiffen/ghas-enablement.git
 cd ghas-enablement
 ```
 
-3.  Generate your choosen authentication stratergy. You are either able to use a [GitHub App](https://docs.github.com/en/developers/apps/getting-started-with-apps/about-apps) or a [Personal Access Token (PAT)](https://github.com/settings/tokens/new). The GitHub App needs to have permissions of `read and write` of `pull requests`, `issues`, `administration`, `contents`. The GitHub PAT needs access to `repo` and `read:org` only. (if you are running `yarn run getOrgs` you will also need the `read:enterprise` scope).
+3.  Generate your choosen authentication stratergy. You are either able to use a [GitHub App](https://docs.github.com/en/developers/apps/getting-started-with-apps/about-apps) or a [Personal Access Token (PAT)](https://github.com/settings/tokens/new). The GitHub App needs to have permissions of `read and write` of `pull requests`, `issues`, `administration`, `contents`, `workflows`. The GitHub PAT needs access to `repo` and `read:org` only. (if you are running `yarn run getOrgs` you will also need the `read:enterprise` scope).
 
 4.  Rename the `.env.sample` to `.env`. On a Mac, this can be done via the following terminal command:
 
@@ -84,7 +84,7 @@ cp .env.sample .env
 
 7. Update the `LANGUAGE_TO_CHECK` value found within the `.env`. Remove the `XXXX` and replace that with the language you would like to use as a filter when collecting repositories. **Note**: Please make sure these are lowercase values, such as: `javascript`, `python`, `go`, `ruby`, etc.
 
-8. Decide what you want to enable. Update the `ENABLE_ON` value to choose what you want to enable on the repositories found within the `repos.json`. This can be one or multiple values. If you are enabling just code scanning (CodeQL) you will need to set `ENABLE_ON=codescanning`, if you are enabling everything, you will need to set `ENABLE_ON=codescanning,secretscanning,dependabot,dependabotupdates`. You can pick one, two or three. The format is a comma seperated list.
+8. Decide what you want to enable. Update the `ENABLE_ON` value to choose what you want to enable on the repositories found within the `repos.json`. This can be one or multiple values. If you are enabling just code scanning (CodeQL) you will need to set `ENABLE_ON=codescanning`, if you are enabling everything, you will need to set `ENABLE_ON=codescanning,secretscanning,pushprotection,dependabot,dependabotupdates`. You can pick one, two or three. The format is a comma seperated list.
 
 9. **OPTIONAL**: Update the `CREATE_ISSUE` value to `true/false` depending on if you would like to create an issue explaining purpose of the PR. We recommend this, as it will help explain why the PR was create; and give some context. However, this is optional. The text which is in the issue can be modified and found here: `./src/utils/text/`.
 
@@ -202,7 +202,7 @@ env:
   APP_CLIENT_ID: ${{ secrets.GHAS_ENABLEMENT_APP_CLIENT_ID }}
   APP_CLIENT_SECRET: ${{ secrets.GHAS_ENABLEMENT_APP_CLIENT_SECRET }}
   APP_PRIVATE_KEY: ${{ secrets.GHAS_ENABLEMENT_APP_PRIVATE_KEY }}
-  ENABLE_ON: "codescanning,secretscanning,dependabot,dependabotupdates"
+  ENABLE_ON: "codescanning,secretscanning,pushprotection,dependabot,dependabotupdates"
   DEBUG: "ghas:*"
   CREATE_ISSUE: "false"
   GHES: "false"
@@ -228,6 +228,7 @@ jobs:
           npm run start
         env:
           LANGUAGE_TO_CHECK: "javascript"
+          TEMP_DIR: ${{ github.workspace }}
 ```
 
 You can duplicate the last step for the other languages commonly used within your enterprise/organisation.
