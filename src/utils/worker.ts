@@ -108,7 +108,7 @@ export const worker = async (): Promise<unknown> => {
 
         if (!codeQLAlreadyRan) {
           inform(
-            `Has ${owner}/${repo} hasn't had a CodeQL Scan, going to run CodeQL enablement`
+            `As ${owner}/${repo} hasn't had a CodeQL Scan, going to run CodeQL enablement`
           );
           const defaultBranch = await findDefulatBranch(owner, repo, client);
           const defaultBranchSHA = await findDefulatBranchSHA(
