@@ -62,6 +62,7 @@ export const worker = async (): Promise<unknown> => {
         enableDependabotUpdates,
         enableSecretScanning,
         enablePushProtection,
+        primaryLanguage,
         createIssue,
         enableCodeScanning,
       } = repos[orgIndex].repos[repoIndex];
@@ -93,8 +94,8 @@ export const worker = async (): Promise<unknown> => {
           )
         : null;
 
-      // Kick off the process for enabling Code Scanning
-      if (enableCodeScanning) {
+      // Kick off the process for enabling Code Scanning only if it is set to be enabled AND the primary language for the repo exists. If it doesn't exist that means CodeQL doesn't support it.
+      if (enableCodeScanning && primaryLanguage != "no-language") {
         // First, let's check and see if CodeQL has already ran on that repository. If it has, we don't need to do anything.
         const codeQLAlreadyRan = await checkIfCodeQLHasAlreadyRanOnRepo(
           owner,
@@ -119,7 +120,7 @@ export const worker = async (): Promise<unknown> => {
           );
           const ref = await createBranch(defaultBranchSHA, owner, repo, client);
           const authToken = (await generateAuth()) as string;
-          await commitFileMac(owner, repo, ref, authToken);
+          await commitFileMac(owner, repo, primaryLanguage, ref, authToken);
           const pullRequestURL = await createPullRequest(
             defaultBranch,
             ref,

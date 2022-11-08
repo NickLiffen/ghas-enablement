@@ -28,7 +28,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: ["java"]
+        language: ["csharp"]
 
     steps:
       - name: Checkout repository
@@ -40,13 +40,6 @@ jobs:
         with:
           languages: ${{ matrix.language }}
           queries: security-extended, security-and-quality
-
-      # If you need to use a specific version of java uncomment this and set the version and distribution to what you need
-      # - name: Setup Java Version
-      #   uses: actions/setup-java@vx.x.x
-      #   with:
-      #     java-version: xx
-      #     distribution: 'xxxxxx'
 
       - name: Autobuild
         uses: github/codeql-action/autobuild@v2

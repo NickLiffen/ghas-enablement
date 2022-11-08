@@ -27,6 +27,7 @@ if (platform !== "win32" && platform !== "darwin" && platform !== "linux") {
 export const commitFileMac = async (
   owner: string,
   repo: string,
+  primaryLanguage: string,
   refs: string,
   authToken: string
 ): Promise<response> => {
@@ -43,10 +44,15 @@ export const commitFileMac = async (
   const {
     env: { LANGUAGE_TO_CHECK: language },
   } = process;
+  let codeQLLanguage = language;
+  if (!codeQLLanguage && primaryLanguage != "no-language") {
+    codeQLLanguage = primaryLanguage;
+  }
+  if (!codeQLLanguage) {
+    return { status: 500, message: "no language on repo" };
+  }
 
-  const fileName = language
-    ? `codeql-analysis-${language}.yml`
-    : "codeql-analysis-standard.yml";
+  const fileName = `codeql-analysis-${codeQLLanguage}.yml`;
 
   try {
     gitCommands = generalCommands(
