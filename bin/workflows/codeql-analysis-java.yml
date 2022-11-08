@@ -39,7 +39,7 @@ jobs:
         uses: github/codeql-action/init@v2
         with:
           languages: ${{ matrix.language }}
-          queries: security-extended, security-and-quality
+          queries: security-extended
 
       # If you need to use a specific version of java uncomment this and set the version and distribution to what you need
       # - name: Setup Java Version
@@ -54,12 +54,11 @@ jobs:
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v2
         with:
-        # If you would like to have the scanning results uploaded as a SARIF artifcat uncomment the below lines
-        # output: code-scanning-results
+          output: code-scanning-results
 
-      # - name: Upload SARIF as a Build Artifact
-      #   uses: actions/upload-artifact@v3.1.0
-      #   with:
-      #     name: sarif
-      #     path: code-scanning-results
-      #     retention-days: 7
+      - name: Upload SARIF as a Build Artifact
+        uses: actions/upload-artifact@v3.1.0
+        with:
+          name: sarif
+          path: code-scanning-results
+          retention-days: 7
