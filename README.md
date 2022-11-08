@@ -6,7 +6,7 @@ The purpose of this tool is to help enable GitHub Advanced Security (GHAS) acros
 
 ## Context
 
-The primary motivator for this utility is CodeQL. It is incredibly time-consuming to enable CodeQL across multiple repositories. Additionally, no API allows write access into the `.github/workflow/*` directory. So this means teams have to write various scripts with variating results. This tool provides a tried and proven way of doing that.
+The primary motivator for this utility is CodeQL. It is incredibly time-consuming to enable CodeQL across multiple repositories. Additionally, no API allows write access to the `.github/workflow/` directory. So this means teams have to write various scripts with varying results. This tool provides a tried and proven way of doing that.
 
 Secret Scanning & Dependabot is also hard to enable if you only want to enable it on specific repositories versus everything. This tool allows you to do that easily.
 
@@ -16,7 +16,7 @@ There are two main actions this tool does:
 
 **Part One:**
 
-Goes and collects repositories that will have Code Scanning(CodeQL)/Secret Scanning/Dependabot Alerts/Dependabot Security Updates enabled. There are three main ways these repositories are collected.
+Goes and collects repositories that will have Code Scanning (CodeQL)/Secret Scanning/Dependabot Alerts/Dependabot Security Updates enabled. There are three main ways these repositories are collected.
 
 - Collect the repositories where the primary language matches a specific value. For example, if you provide JavaScript, all repositories will be collected where the primary language is, Javascript.
 - Collect the repositories to which a user has administrative access, or a GitHub App has access.
@@ -43,7 +43,7 @@ If you pick Dependabot Security Updates:
 
 - Loops over the repositories found within the `repos.json` file. Dependabot Security Updates is then enabled on these repositories.
 
-## Prerequisite
+## Prerequisites
 
 - [Node v16](https://nodejs.org/en/download/) or higher installed.
 - [Yarn](https://yarnpkg.com/)\*
@@ -58,35 +58,35 @@ If you pick Dependabot Security Updates:
 
 1.  Clone this repository onto your local machine.
 
-```bash
-git clone https://github.com/NickLiffen/ghas-enablement.git
-```
+    ```bash
+    git clone https://github.com/NickLiffen/ghas-enablement.git
+    ```
 
 2.  Change the directory to the repository you have just installed.
 
-```bash
-cd ghas-enablement
-```
+    ```bash
+    cd ghas-enablement
+    ```
 
-3.  Generate your choosen authentication stratergy. You are either able to use a [GitHub App](https://docs.github.com/en/developers/apps/getting-started-with-apps/about-apps) or a [Personal Access Token (PAT)](https://github.com/settings/tokens/new). The GitHub App needs to have permissions of `read and write` of `administration`, `Code scanning alerts`, `contents`, `issues`, `pull requests`, `workflows`. The GitHub PAT needs access to `repo`, `workflow` and `read:org` only. (if you are running `yarn run getOrgs` you will also need the `read:enterprise` scope).
+3.  Generate your chosen authentication strategy. You are either able to use a [GitHub App](https://docs.github.com/en/developers/apps/getting-started-with-apps/about-apps) or a [Personal Access Token (PAT)](https://github.com/settings/tokens/new). The GitHub App needs to have permissions of `read and write` of `administration`, `Code scanning alerts`, `contents`, `issues`, `pull requests`, `workflows`. The GitHub PAT needs access to `repo`, `workflow` and `read:org` only. (if you are running `yarn run getOrgs` you will also need the `read:enterprise` scope).
 
-4.  Rename the `.env.sample` to `.env`. On a Mac, this can be done via the following terminal command:
+4.  Copy the `.env.sample` to `.env`. On a Mac, this can be done via the following terminal command:
 
-```bash
-cp .env.sample .env
-```
+    ```bash
+    cp .env.sample .env
+    ```
 
 5. Update the `.env` with the required values. Please pick one of the authentication methods for interacting with GitHub. You can either fill in the `GITHUB_API_TOKEN` with a PAT that has access to the Org. OR, fill in all the values required for a GitHub App. **Note**: It is recommended to pick the GitHub App choice if running on thousands of repositories, as this gives you more API requests versus a PAT.
 
    - If using a GitHub App, either paste in the value as-is in the `APP_PRIVATE_KEY` in the field surrounded by double quotes (the key will take up multiple lines), or convert the private key to a single line surrounded in double quotes by replacing the new line character with `\n` (In VS Code on Mac, you can use `⌃ + Enter` to find/replace the new line character)
 
-6. Update the `GITHUB_ORG` value found within the `.env`. Remove the `XXXX` and replace that with the name of the GitHub Organisation you would like to use as part of this script. **NOTE**: If you are running this across multiple organisations within an enterprise, you can not set the `GITHUB_ORG` variable and instead set the `GITHUB_ENTERPRISE` one with the name of the enterprise. You can then run `yarn run getOrgs`, which will collect all the organisations dynamically. This will mean you don't have to hardcode one. However, for most use cases, simply hardcoding the specific org within the `GITHUB_ORG` variable where you would like this script run will be the job.
+6. Update the `GITHUB_ORG` value found within the `.env`. Remove the `XXXX` and replace that with the name of the GitHub Organisation you would like to use as part of this script. **NOTE**: If you are running this across multiple organisations within an enterprise, you can not set the `GITHUB_ORG` variable and instead set the `GITHUB_ENTERPRISE` one with the name of the enterprise. You can then run `yarn run getOrgs`, which will collect all the organisations dynamically. This will mean you don't have to hardcode one. However, for most use cases, simply hardcoding the specific org within the `GITHUB_ORG` variable where you would like this script to run will work.
 
 7. Update the `LANGUAGE_TO_CHECK` value found within the `.env`. Remove the `XXXX` and replace that with the language you would like to use as a filter when collecting repositories. **Note**: Please make sure these are lowercase values, such as: `javascript`, `python`, `go`, `ruby`, etc.
 
-8. Decide what you want to enable. Update the `ENABLE_ON` value to choose what you want to enable on the repositories found within the `repos.json`. This can be one or multiple values. If you are enabling just code scanning (CodeQL) you will need to set `ENABLE_ON=codescanning`, if you are enabling everything, you will need to set `ENABLE_ON=codescanning,secretscanning,pushprotection,dependabot,dependabotupdates`. You can pick one, two or three. The format is a comma seperated list.
+8. Decide what you want to enable. Update the `ENABLE_ON` value to choose what you want to enable on the repositories found within the `repos.json`. This can be one or multiple values. If you are enabling just code scanning (CodeQL) you will need to set `ENABLE_ON=codescanning`, if you are enabling everything, you will need to set `ENABLE_ON=codescanning,secretscanning,pushprotection,dependabot,dependabotupdates`. You can pick one, two or three. The format is a comma-seperated list.
 
-9. **OPTIONAL**: Update the `CREATE_ISSUE` value to `true/false` depending on if you would like to create an issue explaining purpose of the PR. We recommend this, as it will help explain why the PR was create; and give some context. However, this is optional. The text which is in the issue can be modified and found here: `./src/utils/text/`.
+9. **OPTIONAL**: Update the `CREATE_ISSUE` value to `true/false` depending on if you would like to create an issue explaining the purpose of the PR. We recommend this, as it will help explain why the PR was created; and give some context. However, this is optional. The text which is in the issue can be modified and found here: `./src/utils/text/`.
 
 10. **OPTIONAL**: If you are a GHES customer, then you will need to set the `GHES` env to `true` and then set `GHES_SERVER_BASE_URL` to the URL of your GHES instance. E.G `https://octodemo.com`.
 
@@ -135,12 +135,12 @@ Create a file called `repos.json` within the `./bin/` directory. This file needs
     "repos":
     [
       {
+        "createIssue": "boolean",
+        "enableCodeScanning": "boolean",
         "enableDependabot": "boolean",
         "enableDependabotUpdates": "boolean",
-        "enableSecretScanning": "boolean",
-        "enableCodeScanning": "boolean",
-        "createIssue": "boolean",
         "enablePushProtection": "boolean",
+        "enableSecretScanning": "boolean",
         "repo": "string <org/repo>",
       }
     ]
@@ -148,7 +148,7 @@ Create a file called `repos.json` within the `./bin/` directory. This file needs
 ]
 ```
 
-As you can see, the object takes six keys: `repo`, `enableDependabot`, `enableDependabotUpdates`, `enableSecretScanning`, `enableCodeScanning`, and `enableCodeScanning`. Set `repo` to the name of the repository name where you would like to run this script on. Set `enableDependabot` to `true` if you would also like to enable Dependabot Alerts on that repo; set it to `false` if you do not want to enable Dependabot Alerts. The same goes for `enableDependabotUpdates` for Dependabot Security Updates, `enableSecretScanning` for Secret Scanning, `pushprotection` for Secret Scanning push protection, and `enableCodeScanning` for Code Scanning (CodeQL). Finally set `createIssue` to `true` if you would like to create an issue on the repository with the text found in the `./src/utils/text/issueText.ts` directory.
+As you can see, the object takes a number of boolean keys: `createIssue`, `enableCodeScanning`, `enableDependabot`, `enableDependabotUpdates`, `enablePushProtection`, and `enableSecretScanning`, along with a single string key, namely, `repo`. Set `repo` to the name of the repository name where you would like to run this script. Set `enableDependabot` to `true` if you would also like to enable Dependabot Alerts on that repo; set it to `false` if you do not want to enable Dependabot Alerts. The same goes for `enableDependabotUpdates` for Dependabot Security Updates, `enableSecretScanning` for Secret Scanning, `pushprotection` for Secret Scanning push protection, and `enableCodeScanning` for Code Scanning (CodeQL). Finally set `createIssue` to `true` if you would like to create an issue on the repository with the text found in the `./src/utils/text/issueText.ts` file to supplement the PR.
 
 **NOTE:** The account that generated the PAT needs to have `write` access or higher over any repository that you include within the `repos` key.
 
@@ -166,7 +166,7 @@ After the script has run, please head to your `~/Desktop` directory and delete t
 
 ## Running this within a Codespace?
 
-There are some key considerations which you will need to put into place if you are running this script within a GitHub Codespace:
+There are some key considerations that you will need to put into place if you are running this script within a GitHub Codespace:
 
 1. You will need to add the following snippet to the `.devcontainer/devcontainer.json`:
 
