@@ -4,17 +4,21 @@
 # You may wish to alter this file to override the set of languages analyzed,
 # or to provide custom queries or build logic.
 #
-
+# ******** NOTE ********
+# We have attempted to detect the languages in your repository. Please check
+# the `language` matrix defined below to confirm you have the correct set of
+# supported CodeQL languages.
+#
 name: "CodeQL"
 
 on:
   push:
-    branches: [main, master]
+    branches: ["master", "main"]
   pull_request:
     # The branches below must be a subset of the branches above
-    branches: [main, master]
+    branches: ["master", "main"]
   schedule:
-    - cron: "28 5 * * 3"
+    - cron: "27 4 * * 5"
 
 jobs:
   analyze:
@@ -29,6 +33,8 @@ jobs:
       fail-fast: false
       matrix:
         language: ["cpp"]
+        # CodeQL supports [ 'cpp', 'csharp', 'go', 'java', 'javascript', 'python', 'ruby' ]
+        # Learn more about CodeQL language support at https://aka.ms/codeql-docs/language-support
 
     steps:
       - name: Checkout repository
@@ -39,13 +45,10 @@ jobs:
         uses: github/codeql-action/init@v2
         with:
           languages: ${{ matrix.language }}
-          queries: security-extended
+          queries: security-extended # security-and-quality
           # If you wish to specify custom queries, you can do so here or in a config file.
           # By default, queries listed here will override any specified in a config file.
           # Prefix the list here with "+" to use these queries and those in the config file.
-
-          # Details on CodeQL's query packs refer to : https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-queries-in-ql-packs
-          # queries: security-extended,security-and-quality
 
       # Autobuild attempts to build any compiled languages  (C/C++, C#, Go, or Java).
       # If this step fails, then you should remove it and run the build manually (see below)
