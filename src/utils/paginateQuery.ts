@@ -11,7 +11,7 @@ import {
 
 import { filterAsync } from "./filterAsync";
 import { error, inform } from "./globals";
-import { getcodeQLLanguage } from "./collectRepos";
+import { getcodeQLLanguage } from "./getcodeQLLanguage";
 
 const performRepositoryQuery = async (
   client: Octokit,
@@ -138,7 +138,7 @@ export const paginateQuery = async (
       slug,
       graphQuery
     );
-    return data;
+    return data.filter(({ primaryLanguage: pl }) => pl !== "no-language");
   } catch (err) {
     error(err);
     throw err;
