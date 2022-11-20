@@ -7,6 +7,7 @@ export type reposFile = {
     enableCodeScanning: boolean;
     enablePushProtection: boolean;
     createIssue: boolean;
+    primaryLanguage: string;
     repo: string;
   }[];
 }[];
@@ -33,8 +34,9 @@ export type usersWriteAdminRepos = {
   enableDependabotUpdates: boolean;
   enableSecretScanning: boolean;
   enableCodeScanning: boolean;
-  createIssue: boolean;
   enablePushProtection: boolean;
+  createIssue: boolean;
+  primaryLanguage: string;
   repo: string;
 };
 

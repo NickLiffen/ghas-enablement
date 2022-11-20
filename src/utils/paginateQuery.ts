@@ -11,6 +11,7 @@ import {
 
 import { filterAsync } from "./filterAsync";
 import { error, inform } from "./globals";
+import { getcodeQLLanguage } from "./getcodeQLLanguage";
 
 const performRepositoryQuery = async (
   client: Octokit,
@@ -103,6 +104,7 @@ const getRepositoryInOrganizationPaginate = async (
         enableSecretScanning: enable.includes("secretscanning") as boolean,
         enableCodeScanning: enable.includes("codescanning") as boolean,
         enablePushProtection: enable.includes("pushprotection") as boolean,
+        primaryLanguage: getcodeQLLanguage(element.primaryLanguage?.name || ""),
         createIssue:
           process.env.CREATE_ISSUE === "true" ? true : (false as boolean),
         repo: element.nameWithOwner,
@@ -136,7 +138,7 @@ export const paginateQuery = async (
       slug,
       graphQuery
     );
-    return data;
+    return data.filter(({ primaryLanguage: pl }) => pl !== "no-language");
   } catch (err) {
     error(err);
     throw err;
