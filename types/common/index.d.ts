@@ -1,5 +1,5 @@
 export type reposFile = {
-  login: stirng;
+  login: string;
   repos: {
     enableDependabot: boolean;
     enableDependabotUpdates: boolean;
