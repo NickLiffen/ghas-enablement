@@ -29,7 +29,7 @@ Loops over the repositories found within the `repos.json` file and enables Code 
 
 If you pick Code Scanning:
 
-- Loops over the repositories found within the `repos.json` file. A pull request gets created on that repository with the `codeql-analysis.yml` found in the root of this repository. For convenience, all pull requests made will be stored within the `prs.txt` file, where you can see and manually review the pull requests after the script has run.
+- Loops over the repositories found within the `repos.json` file. A pull request gets created on that repository with the `codeql-analysis-${language}.yml` found in the `bin/workflows` directory. The `${language}` will be replaced at runtime with the primary language of the repository. For convenience, all pull requests made will be stored within the `prs.txt` file, where you can see and manually review the pull requests after the script has run.
 
 If you pick Secret Scanning:
 
