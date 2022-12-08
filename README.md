@@ -45,7 +45,7 @@ If you pick Dependabot Security Updates:
 
 ## Prerequisites
 
-- [Node v16](https://nodejs.org/en/download/) or higher installed.
+- [Node v18](https://nodejs.org/en/download/) or higher installed.
 - [Yarn](https://yarnpkg.com/)\*
 - [TypeScript](https://www.typescriptlang.org/download)
 - [Git](https://git-scm.com/downloads) installed on the (user's) machine running this tool.
@@ -76,17 +76,17 @@ If you pick Dependabot Security Updates:
     cp .env.sample .env
     ```
 
-5. Update the `.env` with the required values. Please pick one of the authentication methods for interacting with GitHub. You can either fill in the `GITHUB_API_TOKEN` with a PAT that has access to the Org. OR, fill in all the values required for a GitHub App. **Note**: It is recommended to pick the GitHub App choice if running on thousands of repositories, as this gives you more API requests versus a PAT.
+5.  Update the `.env` with the required values. Please pick one of the authentication methods for interacting with GitHub. You can either fill in the `GITHUB_API_TOKEN` with a PAT that has access to the Org. OR, fill in all the values required for a GitHub App. **Note**: It is recommended to pick the GitHub App choice if running on thousands of repositories, as this gives you more API requests versus a PAT.
 
-   - If using a GitHub App, either paste in the value as-is in the `APP_PRIVATE_KEY` in the field surrounded by double quotes (the key will take up multiple lines), or convert the private key to a single line surrounded in double quotes by replacing the new line character with `\n` (In VS Code on Mac, you can use `⌃ + Enter` to find/replace the new line character)
+    - If using a GitHub App, either paste in the value as-is in the `APP_PRIVATE_KEY` in the field surrounded by double quotes (the key will take up multiple lines), or convert the private key to a single line surrounded in double quotes by replacing the new line character with `\n` (In VS Code on Mac, you can use `⌃ + Enter` to find/replace the new line character)
 
-6. Update the `GITHUB_ORG` value found within the `.env`. Remove the `XXXX` and replace that with the name of the GitHub Organisation you would like to use as part of this script. **NOTE**: If you are running this across multiple organisations within an enterprise, you can not set the `GITHUB_ORG` variable and instead set the `GITHUB_ENTERPRISE` one with the name of the enterprise. You can then run `yarn run getOrgs`, which will collect all the organisations dynamically. This will mean you don't have to hardcode one. However, for most use cases, simply hardcoding the specific org within the `GITHUB_ORG` variable where you would like this script to run will work.
+6.  Update the `GITHUB_ORG` value found within the `.env`. Remove the `XXXX` and replace that with the name of the GitHub Organisation you would like to use as part of this script. **NOTE**: If you are running this across multiple organisations within an enterprise, you can not set the `GITHUB_ORG` variable and instead set the `GITHUB_ENTERPRISE` one with the name of the enterprise. You can then run `yarn run getOrgs`, which will collect all the organisations dynamically. This will mean you don't have to hardcode one. However, for most use cases, simply hardcoding the specific org within the `GITHUB_ORG` variable where you would like this script to run will work.
 
-7. Update the `LANGUAGE_TO_CHECK` value found within the `.env`. Remove the `XXXX` and replace that with the language you would like to use as a filter when collecting repositories. **Note**: Please make sure these are lowercase values, such as: `javascript`, `python`, `go`, `ruby`, etc.
+7.  Update the `LANGUAGE_TO_CHECK` value found within the `.env`. Remove the `XXXX` and replace that with the language you would like to use as a filter when collecting repositories. **Note**: Please make sure these are lowercase values, such as: `javascript`, `python`, `go`, `ruby`, etc.
 
-8. Decide what you want to enable. Update the `ENABLE_ON` value to choose what you want to enable on the repositories found within the `repos.json`. This can be one or multiple values. If you are enabling just code scanning (CodeQL) you will need to set `ENABLE_ON=codescanning`, if you are enabling everything, you will need to set `ENABLE_ON=codescanning,secretscanning,pushprotection,dependabot,dependabotupdates`. You can pick one, two or three. The format is a comma-seperated list.
+8.  Decide what you want to enable. Update the `ENABLE_ON` value to choose what you want to enable on the repositories found within the `repos.json`. This can be one or multiple values. If you are enabling just code scanning (CodeQL) you will need to set `ENABLE_ON=codescanning`, if you are enabling everything, you will need to set `ENABLE_ON=codescanning,secretscanning,pushprotection,dependabot,dependabotupdates`. You can pick one, two or three. The format is a comma-seperated list.
 
-9. **OPTIONAL**: Update the `CREATE_ISSUE` value to `true/false` depending on if you would like to create an issue explaining the purpose of the PR. We recommend this, as it will help explain why the PR was created; and give some context. However, this is optional. The text which is in the issue can be modified and found here: `./src/utils/text/`.
+9.  **OPTIONAL**: Update the `CREATE_ISSUE` value to `true/false` depending on if you would like to create an issue explaining the purpose of the PR. We recommend this, as it will help explain why the PR was created; and give some context. However, this is optional. The text which is in the issue can be modified and found here: `./src/utils/text/`.
 
 10. **OPTIONAL**: If you are a GHES customer, then you will need to set the `GHES` env to `true` and then set `GHES_SERVER_BASE_URL` to the URL of your GHES instance. E.G `https://octodemo.com`.
 
