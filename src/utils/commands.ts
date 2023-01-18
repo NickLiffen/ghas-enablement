@@ -63,6 +63,7 @@ export const generalCommands = (
       command: "git",
       args: [
         "add",
+        "--sparse",
         winSeparator(".github/workflows/codeql-analysis.yml", platform),
       ],
       cwd: `/${destDir}/${tempDIR}/${repo}`,
