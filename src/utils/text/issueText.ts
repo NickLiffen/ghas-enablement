@@ -15,13 +15,13 @@ The purpose of this issue is:
 
 1) Give you some context as to why this pull request was created.
 2) Provide you with some links to help you understand what CodeQL and GitHub Advanced Security are.
-3) Help you with some 
+3) Help you with some initial setup requirements.
 
-As a company, we are moving towards CodeQL for our static analysis tool. We didn't want to go and raise a pull request for every repository manually, and we didn't expect you to have to go and manually create a pull request for every single repositor either. So here is a pull request for you to review and hopefully approve!
+As a company, we are moving towards CodeQL for our static analysis tool. We didn't want to go and raise a pull request for every repository manually, and we didn't expect you to have to go and manually create a pull request for every single repository either. So here is a pull request for you to review and hopefully approve!
 
 We are rolling out CodeQL per language/user, so if you have only got a pull request for a few of your repositories, not to worry, more will come soon. 
 
-Hopefully, you should see a nice green status tick next to CodeQL within the status section of the pull request. However, if you haven't, that's understandable. We have taken the best guess approach at configuring CodeQL for you, but 1) we are still maturing, and 2) codeql can differ repository by repository. 
+Hopefully, you should see a nice green status tick next to CodeQL within the status section of the pull request. However, if you haven't, that's understandable. We have taken the best guess approach at configuring CodeQL for you, but 1) we are still maturing, and 2) CodeQL can differ repository by repository. 
 
 If you have a red X next to CodeQL, that means that CodeQL is not configured for your repository. You may need to go ahead and edit the codeql-analysis.yml file to get it working with your build process/codebase. Some information on that can be found below:
 
