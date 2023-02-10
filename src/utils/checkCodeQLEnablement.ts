@@ -21,7 +21,6 @@ export const checkIfCodeQLHasAlreadyRanOnRepo = async (
       requestParams
     )) as checkCodeScanningAnalysesResponse;
     // If there are no analysis, the result is not a list and data.length will return undefined.
-    console.log(data);
     if (data.length > 0) return true;
     return false;
   } catch (e: any) {
