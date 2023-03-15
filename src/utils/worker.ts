@@ -14,8 +14,7 @@ import { enableGHAS } from "./enableGHAS.js";
 import { enableDependabotAlerts } from "./enableDependabotAlerts";
 import { enableDependabotFixes } from "./enableDependabotUpdates";
 import { enableIssueCreation } from "./enableIssueCreation";
-import { enableActions } from "./enableActions";
-import repos from "../../bin/repos.json";
+import { enableActionsOnRepo } from "./enableActions";
 import { auth as generateAuth } from "./clients";
 import { checkIfCodeQLHasAlreadyRanOnRepo } from "./checkCodeQLEnablement";
 
@@ -67,6 +66,7 @@ export const worker = async (): Promise<unknown> => {
         primaryLanguage,
         createIssue,
         enableCodeScanning,
+        enableActions,
       } = repos[orgIndex].repos[repoIndex];
 
       const [owner, repo] = repoName.split("/");
@@ -96,6 +96,9 @@ export const worker = async (): Promise<unknown> => {
           )
         : null;
 
+      // If they want to enable Actions
+      enableActions ? await enableActionsOnRepo(owner, repo, client) : null;
+
       // Kick off the process for enabling Code Scanning only if it is set to be enabled AND the primary language for the repo exists. If it doesn't exist that means CodeQL doesn't support it.
       if (enableCodeScanning && primaryLanguage != "no-language") {
         // First, let's check and see if CodeQL has already ran on that repository. If it has, we don't need to do anything.
@@ -113,8 +116,6 @@ export const worker = async (): Promise<unknown> => {
           inform(
             `As ${owner}/${repo} hasn't had a CodeQL Scan, going to run CodeQL enablement`
           );
-          // if enabling Code Scanning, let's go ahead and enable Actions
-          await enableActions(owner, repo, client);
           const defaultBranch = await findDefulatBranch(owner, repo, client);
           const defaultBranchSHA = await findDefulatBranchSHA(
             defaultBranch,
