@@ -3,13 +3,9 @@
 import util from "util";
 import delay from "delay";
 
-import { existsSync } from "fs";
+import { inform, error, platform, baseURL } from "./globals";
 
-import os from "os";
-
-import { inform, error } from "./globals";
-
-import { macCommands, windowsCommands, codespacesCommands } from "./commands";
+import { generalCommands } from "./commands";
 
 import { execFile as ImportedExec } from "child_process";
 
@@ -17,48 +13,55 @@ import { response, commands } from "../../types/common";
 
 const execFile = util.promisify(ImportedExec);
 
-const platform = os.platform();
+inform(`Platform detected: ${platform}`);
 
-const isWindows = platform === "win32";
 if (platform !== "win32" && platform !== "darwin" && platform !== "linux") {
   error("You can only use either windows or mac machine!");
   throw new Error(
-    "We detected an OS that wasn't Windows, Linux or Mac. Right now, these are the only three OS's supported. Log an issue on the repository for wider support"
+    `We detected an OS that wasn't Windows, Linux or Mac. Right now, these
+    are the only three OS's supported. Log an issue on the repository for
+    wider support`
   );
 }
 
 export const commitFileMac = async (
   owner: string,
   repo: string,
-  refs: string
+  primaryLanguage: string,
+  refs: string,
+  authToken: string
 ): Promise<response> => {
   let gitCommands: commands;
   let index: number;
-  let isCodespace = false as boolean;
 
+  const authBaseURL = baseURL!.replace(
+    "https://",
+    `https://x-access-token:${authToken}@`
+  ) as string;
   const regExpExecArray = /[^/]*$/.exec(refs);
   const branch = regExpExecArray ? regExpExecArray[0] : "";
-
-  /* This is the check to see if we are running in a Codespace are not. */
-  if (existsSync("/vscode")) {
-    isCodespace = true;
-  }
 
   const {
     env: { LANGUAGE_TO_CHECK: language },
   } = process;
+  let codeQLLanguage = language;
+  if (!codeQLLanguage && primaryLanguage != "no-language") {
+    codeQLLanguage = primaryLanguage;
+  }
+  if (!codeQLLanguage) {
+    return { status: 500, message: "no language on repo" };
+  }
 
-  const fileName = language
-    ? `codeql-analysis-${language}.yml`
-    : "codeql-analysis-standard.yml";
+  const fileName = `codeql-analysis-${codeQLLanguage}.yml`;
 
   try {
-    gitCommands =
-      isWindows === true
-        ? (windowsCommands(owner, repo, branch, fileName) as commands)
-        : isWindows === false && isCodespace === false
-        ? (macCommands(owner, repo, branch, fileName) as commands)
-        : (codespacesCommands(owner, repo, branch, fileName) as commands);
+    gitCommands = generalCommands(
+      owner,
+      repo,
+      branch,
+      fileName,
+      authBaseURL
+    ) as commands;
     inform(gitCommands);
   } catch (err) {
     error(err);
@@ -66,18 +69,58 @@ export const commitFileMac = async (
   }
 
   for (index = 0; index < gitCommands.length; index++) {
-    const { stdout, stderr } = await execFile(
-      gitCommands[index].command,
-      gitCommands[index].args,
-      {
-        cwd: gitCommands[index].cwd,
-      }
+    inform(
+      [
+        "Executing: ",
+        gitCommands[index].command,
+        gitCommands[index].args,
+        "in",
+        gitCommands[index].cwd,
+      ].join(" ")
     );
-    if (stderr) {
-      error(stderr);
+    // Adding try/catch so we can whitelist
+    try {
+      const { stdout, stderr } = await execFile(
+        gitCommands[index].command,
+        gitCommands[index].args,
+        {
+          cwd: gitCommands[index].cwd,
+          shell: true,
+        }
+      );
+      if (stderr) {
+        error(stderr);
+      }
+      inform(stdout);
+      await delay(1000);
+    } catch (err: any) {
+      inform(`Whitelist returns: ${whiteListed(err.message)}`);
+      if (!whiteListed(err.message)) {
+        throw err;
+      }
     }
-    inform(stdout);
-    await delay(1000);
   }
   return { status: 200, message: "success" };
 };
+
+/**
+ *
+ * @param errorMsg    The string error message captured
+ * @returns           A boolean determined by the existance or lack of a
+ *                    whitelist match.
+ */
+function whiteListed(errorMsg: string): boolean {
+  const whiteList = [
+    "The system cannot find the file specified",
+    "already exists",
+  ];
+
+  const contains = whiteList.some((searchTerm) => {
+    if (errorMsg.includes(searchTerm)) {
+      inform(`The error is whitelisted. Continuing...`);
+      return true;
+    }
+    return false;
+  });
+  return contains;
+}

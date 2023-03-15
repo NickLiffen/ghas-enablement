@@ -1,3 +1,17 @@
+export type reposFile = {
+  login: string;
+  repos: {
+    enableDependabot: boolean;
+    enableDependabotUpdates: boolean;
+    enableSecretScanning: boolean;
+    enableCodeScanning: boolean;
+    enablePushProtection: boolean;
+    createIssue: boolean;
+    primaryLanguage: string;
+    repo: string;
+  }[];
+}[];
+
 export type gitCommands = {
   command: string;
   args: string[];
@@ -20,7 +34,9 @@ export type usersWriteAdminRepos = {
   enableDependabotUpdates: boolean;
   enableSecretScanning: boolean;
   enableCodeScanning: boolean;
+  enablePushProtection: boolean;
   createIssue: boolean;
+  primaryLanguage: string;
   repo: string;
 };
 

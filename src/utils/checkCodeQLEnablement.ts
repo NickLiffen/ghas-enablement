@@ -1,10 +1,11 @@
 import {
   checkCodeScanningAnalysesParameters,
   checkCodeScanningAnalysesResponse,
-  Octokit,
 } from "./octokitTypes";
 
-export const checkCodeQLEnablement = async (
+import { Octokit } from "@octokit/core";
+
+export const checkIfCodeQLHasAlreadyRanOnRepo = async (
   owner: string,
   repo: string,
   octokit: Octokit
@@ -19,9 +20,11 @@ export const checkCodeQLEnablement = async (
       "GET /repos/{owner}/{repo}/code-scanning/analyses",
       requestParams
     )) as checkCodeScanningAnalysesResponse;
-    if (data.length === 0) return true;
+    // If there are no analysis, the result is not a list and data.length will return undefined.
+    if (data.length > 0) return true;
     return false;
-  } catch (e) {
+  } catch (e: any) {
+    if (e.status == 404) return false; // 404 result means no codeQL scans found
     return true;
   }
 };

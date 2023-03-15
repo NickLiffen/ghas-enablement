@@ -1,6 +1,8 @@
-import { graphql, GraphQlQueryResponseData } from "@octokit/graphql";
+import { client as octokit } from "./clients";
 
-import { graphQLClient as octokit } from "./clients";
+import { Octokit } from "@octokit/core";
+
+import { GraphQlQueryResponseData } from "@octokit/graphql";
 
 import {
   GraphQLQueryResponse,
@@ -9,9 +11,10 @@ import {
 
 import { filterAsync } from "./filterAsync";
 import { error, inform } from "./globals";
+import { getcodeQLLanguage } from "./getcodeQLLanguage";
 
 const performRepositoryQuery = async (
-  client: typeof graphql,
+  client: Octokit,
   query: string,
   slug: string,
   after: string | null
@@ -24,7 +27,10 @@ const performRepositoryQuery = async (
           nodes,
         },
       },
-    } = (await client(query, { slug, after })) as GraphQlQueryResponseData;
+    } = (await client.graphql(query, {
+      slug,
+      after,
+    })) as GraphQlQueryResponseData;
     return [hasNextPage, endCursor, nodes];
   } catch (err) {
     error(err);
@@ -33,7 +39,7 @@ const performRepositoryQuery = async (
 };
 
 const getRepositoryInOrganizationPaginate = async (
-  client: typeof graphql,
+  client: Octokit,
   slug: string,
   query: string,
   paginatedData = [] as usersWriteAdminReposArray,
@@ -84,6 +90,11 @@ const getRepositoryInOrganizationPaginate = async (
 
     const enable = process.env.ENABLE_ON as string;
 
+    if (enable.includes("pushprotection") && !enable.includes("secretscanning"))
+      throw new Error(
+        "You cannot enable pushprotection without enabling secretscanning"
+      );
+
     results.forEach((element) => {
       return paginatedData.push({
         enableDependabot: enable.includes("dependabot") as boolean,
@@ -92,6 +103,8 @@ const getRepositoryInOrganizationPaginate = async (
         ) as boolean,
         enableSecretScanning: enable.includes("secretscanning") as boolean,
         enableCodeScanning: enable.includes("codescanning") as boolean,
+        enablePushProtection: enable.includes("pushprotection") as boolean,
+        primaryLanguage: getcodeQLLanguage(element.primaryLanguage?.name || ""),
         createIssue:
           process.env.CREATE_ISSUE === "true" ? true : (false as boolean),
         repo: element.nameWithOwner,
@@ -125,7 +138,7 @@ export const paginateQuery = async (
       slug,
       graphQuery
     );
-    return data;
+    return data.filter(({ primaryLanguage: pl }) => pl !== "no-language");
   } catch (err) {
     error(err);
     throw err;

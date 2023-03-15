@@ -8,13 +8,7 @@ export const auth = async (): Promise<string | Error> => {
     return env.GITHUB_API_TOKEN;
   }
   /* Checking if they have supplied all the required informaiton to generate a GitHub App */
-  if (
-    !env.APP_ID ||
-    !env.APP_PRIVATE_KEY ||
-    !env.APP_INSTALLATION_ID ||
-    !env.APP_CLIENT_ID ||
-    !env.APP_CLIENT_SECRET
-  ) {
+  if (!env.APP_ID || !env.APP_PRIVATE_KEY || !env.APP_INSTALLATION_ID) {
     throw new Error(
       "You have not specified a Personal Access Token or all the requried variables for a GitHub App. Please re-check the documentation"
     );
@@ -25,15 +19,13 @@ export const auth = async (): Promise<string | Error> => {
     appId: env.APP_ID as string,
     privateKey: env.APP_PRIVATE_KEY as string,
     installationId: parseInt(env.APP_INSTALLATION_ID as string, 10) as number,
-    clientId: env.APP_CLIENT_ID as string,
-    clientSecret: env.APP_CLIENT_SECRET as string,
   } as StrategyOptions;
 
   const auth = createAppAuth(options);
-
   try {
-    const { token } = await auth({ type: "installation" });
-    return token;
+    const data = await auth({ type: "installation" });
+    console.log(data);
+    return data.token;
   } catch (err: any) {
     console.error("Error within function (githubAuth)", err.message);
     throw new Error(

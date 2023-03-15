@@ -1,6 +1,6 @@
 import { promises as fs } from "fs";
 
-import { Octokit } from "./octokitTypes";
+import { Octokit } from "@octokit/core";
 
 import { putFileInPathParameters, putFileInPathResponse } from "./octokitTypes";
 

@@ -1,6 +1,6 @@
 import { issueText } from "./text/issueText";
 
-import { Octokit } from "./octokitTypes";
+import { Octokit } from "@octokit/core";
 
 export const enableIssueCreation = async (
   pr: string,
