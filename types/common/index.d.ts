@@ -6,6 +6,7 @@ export type reposFile = {
     enableSecretScanning: boolean;
     enableCodeScanning: boolean;
     enablePushProtection: boolean;
+    enableActions: boolean;
     createIssue: boolean;
     primaryLanguage: string;
     repo: string;
@@ -35,6 +36,7 @@ export type usersWriteAdminRepos = {
   enableSecretScanning: boolean;
   enableCodeScanning: boolean;
   enablePushProtection: boolean;
+  enableActions: boolean;
   createIssue: boolean;
   primaryLanguage: string;
   repo: string;

@@ -14,6 +14,7 @@ import { enableGHAS } from "./enableGHAS.js";
 import { enableDependabotAlerts } from "./enableDependabotAlerts";
 import { enableDependabotFixes } from "./enableDependabotUpdates";
 import { enableIssueCreation } from "./enableIssueCreation";
+import { enableActionsOnRepo } from "./enableActions";
 import { auth as generateAuth } from "./clients";
 import { checkIfCodeQLHasAlreadyRanOnRepo } from "./checkCodeQLEnablement";
 
@@ -65,6 +66,7 @@ export const worker = async (): Promise<unknown> => {
         primaryLanguage,
         createIssue,
         enableCodeScanning,
+        enableActions,
       } = repos[orgIndex].repos[repoIndex];
 
       const [owner, repo] = repoName.split("/");
@@ -93,6 +95,9 @@ export const worker = async (): Promise<unknown> => {
             enablePushProtection
           )
         : null;
+
+      // If they want to enable Actions
+      enableActions ? await enableActionsOnRepo(owner, repo, client) : null;
 
       // Kick off the process for enabling Code Scanning only if it is set to be enabled AND the primary language for the repo exists. If it doesn't exist that means CodeQL doesn't support it.
       if (enableCodeScanning && primaryLanguage != "no-language") {

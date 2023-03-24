@@ -104,6 +104,7 @@ const getRepositoryInOrganizationPaginate = async (
         enableSecretScanning: enable.includes("secretscanning") as boolean,
         enableCodeScanning: enable.includes("codescanning") as boolean,
         enablePushProtection: enable.includes("pushprotection") as boolean,
+        enableActions: enable.includes("actions") as boolean,
         primaryLanguage: getcodeQLLanguage(element.primaryLanguage?.name || ""),
         createIssue:
           process.env.CREATE_ISSUE === "true" ? true : (false as boolean),
