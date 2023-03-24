@@ -28,8 +28,8 @@ If you select option 1, the script will return all repositories in the language 
 Loops over the repositories found within the `repos.json` file and enables Code Scanning(CodeQL)/Secret Scanning/Secret Scanning Push Protection/Dependabot Alerts/Dependabot Security Updates.
 
 - If you pick Code Scanning:
-  - Loops over the repositories found within the `repos.json` file. A pull request gets created on that repository with the `codeql-analysis-${language}.yml` found in the `bin/workflows` directory. 
-  - The `${language}` will be replaced at runtime with the primary language of the repository. 
+  - Loops over the repositories found within the `repos.json` file. A pull request gets created on that repository with the `codeql-analysis-${language}.yml` found in the `bin/workflows` directory.
+  - The `${language}` will be replaced at runtime with the primary language of the repository.
   - For convenience, all pull requests made will be stored within the `prs.txt` file, where you can see and manually review the pull requests after the script has run.
 - If you pick Secret Scanning:
   - Loops over the repositories found within the `repos.json` file. Secret Scanning is then enabled on these repositories.
@@ -40,7 +40,7 @@ Loops over the repositories found within the `repos.json` file and enables Code 
 - If you pick Dependabot Security Updates:
   - Loops over the repositories found within the `repos.json` file. Dependabot Security Updates is then enabled on these repositories.
 - If you pick Actions:
-  - Loops over the repositories found within the `repos.json` file. Actions is then enabled on these repositories. 
+  - Loops over the repositories found within the `repos.json` file. Actions is then enabled on these repositories.
   - This is useful if you want to ensure that the Code Scanning workflow can run and Actions isn't disabled.
 - If you pick Create Issue:
   - Loops over the repositories found within the `repos.json` file. An issue will be created with the [following text](./src/utils/text/issueText.ts).
