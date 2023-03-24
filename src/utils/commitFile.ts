@@ -11,6 +11,8 @@ import { execFile as ImportedExec } from "child_process";
 
 import { response, commands } from "../../types/common";
 
+import { getcodeQLLanguage } from "./getcodeQLLanguage";
+
 const execFile = util.promisify(ImportedExec);
 
 inform(`Platform detected: ${platform}`);
@@ -44,7 +46,7 @@ export const commitFileMac = async (
   const {
     env: { LANGUAGE_TO_CHECK: language },
   } = process;
-  let codeQLLanguage = language;
+  let codeQLLanguage = getcodeQLLanguage(language || "");
   if (!codeQLLanguage && primaryLanguage != "no-language") {
     codeQLLanguage = primaryLanguage;
   }
