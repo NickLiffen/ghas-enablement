@@ -11,8 +11,14 @@ export const getcodeQLLanguage = (primaryLanguage: string): string => {
     case "javascript":
       codeQLLang = "javascript";
       break;
+    case "typescript":
+      codeQLLang = "javascript"; // use javascript for typescript
+      break;
     case "java":
       codeQLLang = "java";
+      break;
+    case "kotlin":
+      codeQLLang = "java"; // use java for kotlin
       break;
     case "go":
       codeQLLang = "go";
