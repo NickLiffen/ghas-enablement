@@ -16,7 +16,7 @@ There are two main actions this tool does:
 
 **Part One:**
 
-Goes and collects repositories that will have Code Scanning (CodeQL)/Secret Scanning/Dependabot Alerts/Dependabot Security Updates enabled. There are three main ways these repositories are collected.
+Goes and collects repositories that will have Code Scanning (CodeQL)/Secret Scanning/Secret Scanning Push Protection/Dependabot Alerts/Dependabot Security Updates enabled. There are three main ways these repositories are collected.
 
 - Collect the repositories where the primary language matches a specific value. For example, if you provide JavaScript, all repositories will be collected where the primary language is, Javascript.
 - Collect the repositories to which a user has administrative access, or a GitHub App has access.
@@ -25,7 +25,7 @@ If you select option 1, the script will return all repositories in the language 
 
 **Part Two:**
 
-Loops over the repositories found within the `repos.json` file and enables Code Scanning(CodeQL)/Secret Scanning/Dependabot Alerts/Dependabot Security Updates/Secret Scanning Push Protection.
+Loops over the repositories found within the `repos.json` file and enables Code Scanning(CodeQL)/Secret Scanning/Secret Scanning Push Protection/Dependabot Alerts/Dependabot Security Updates.
 
 If you pick Code Scanning:
 
@@ -34,6 +34,10 @@ If you pick Code Scanning:
 If you pick Secret Scanning:
 
 - Loops over the repositories found within the `repos.json` file. Secret Scanning is then enabled on these repositories.
+
+If you pick Push Protections:
+
+- Loops over the repositories found within the `repos.json` file. Secret Scanning Push Protection is then enabled on these repositories.
 
 If you pick Dependabot Alerts:
 
@@ -45,7 +49,11 @@ If you pick Dependabot Security Updates:
 
 If you pick Actions:
 
-- Loops over the repositories found within the `repos.json` file. Actions is enabled on these repositories. This is useful if you want to ensure that the Code Scanning workflow can run and Actions isn't disabled.
+- Loops over the repositories found within the `repos.json` file. Actions is then enabled on these repositories. This is useful if you want to ensure that the Code Scanning workflow can run and Actions isn't disabled.
+
+If you pick Create Issue:
+
+- Loops over the repositories found within the `repos.json` file. An issue will be created with the [following text](./src/utils/text/issueText.ts) alerting repository maintainers that a pull request for CodeQL was created, along with other helpful resources.
 
 ## Prerequisites
 
@@ -86,11 +94,11 @@ If you pick Actions:
 
 6.  Update the `GITHUB_ORG` value found within the `.env`. Remove the `XXXX` and replace that with the name of the GitHub Organisation you would like to use as part of this script. **NOTE**: If you are running this across multiple organisations within an enterprise, you can not set the `GITHUB_ORG` variable and instead set the `GITHUB_ENTERPRISE` one with the name of the enterprise. You can then run `yarn run getOrgs`, which will collect all the organisations dynamically. This will mean you don't have to hardcode one. However, for most use cases, simply hardcoding the specific org within the `GITHUB_ORG` variable where you would like this script to run will work.
 
-7.  Update the `LANGUAGE_TO_CHECK` value found within the `.env`. Remove the `XXXX` and replace that with the language you would like to use as a filter when collecting repositories. **Note**: Please make sure these are lowercase values, such as: `javascript`, `python`, `go`, `ruby`, etc.
+7.  Update the `LANGUAGE_TO_CHECK` value found within the `.env`. Remove the `XXXX` and replace that with the language you would like to use as a filter when collecting repositories. **Note**: Please make sure these are lowercase values, such as: `javascript`, `python`, `go`, `ruby`, `c#`, etc.
 
 8.  Decide what you want to enable. Update the `ENABLE_ON` value to choose what you want to enable on the repositories found within the `repos.json`. This can be one or multiple values. If you are enabling just code scanning (CodeQL) you will need to set `ENABLE_ON=codescanning`, if you are enabling everything, you will need to set `ENABLE_ON=codescanning,secretscanning,pushprotection,dependabot,dependabotupdates,actions`. You can pick one, two or three. The format is a comma-seperated list.
 
-9.  **OPTIONAL**: Update the `CREATE_ISSUE` value to `true/false` depending on if you would like to create an issue explaining the purpose of the PR. We recommend this, as it will help explain why the PR was created; and give some context. However, this is optional. The text which is in the issue can be modified and found here: `./src/utils/text/`.
+9.  **OPTIONAL**: Update the `CREATE_ISSUE` value to `true/false` depending on if you would like to create an issue explaining the purpose of the PR. We recommend this, as it will help explain why the PR was created; and give some context. However, this is optional. The text which is in the issue can be modified and found [here](./src/utils/text/issueText.ts): `./src/utils/text/`.
 
 10. **OPTIONAL**: If you are a GHES customer, then you will need to set the `GHES` env to `true` and then set `GHES_SERVER_BASE_URL` to the URL of your GHES instance. E.G `https://octodemo.com`.
 
@@ -111,7 +119,7 @@ The first step is collecting the repositories you would like to run this script 
 **OPTION 1** (Preferred)
 
 ```bash
-yarn run getRepos // In the `.env` set the `LANGUAGE_TO_CHECK=` to the language. E.G `python`, `javascript`, `go`, etc.
+yarn run getRepos // In the `.env` set the `LANGUAGE_TO_CHECK=` to the language. E.G `python`, `javascript`, `go`, `ruby`, `c#`, etc.
 ```
 
 When using GitHub Actions, we commonly find (especially for non-build languages such as JavaScript) that the `codeql-analysis.yml` file is repeatable and consistent across multiple repositories of the same language. About 80% of the time, teams can reuse the same workflow files for the same language. For Java, C++ that number drops down to about 60% of the time. But the reason why we recommend enabling Code Scanning at bulk via language is the `codeql-analysis.yml` file you propose within the pull request has the highest chance of being most accurate. Even if the file needs changing, the team reviewing the pull request would likely only need to make small changes. We recommend you run this command first to get a list of repositories to enable Code Scanning. After running the command, you are welcome to modify this file. Just make sure it's a valid JSON file if you do edit.
@@ -145,6 +153,7 @@ Create a file called `repos.json` within the `./bin/` directory. This file needs
         "enableDependabotUpdates": "boolean",
         "enablePushProtection": "boolean",
         "enableSecretScanning": "boolean",
+        "enableActions": "boolean",
         "repo": "string <org/repo>",
       }
     ]
@@ -152,7 +161,7 @@ Create a file called `repos.json` within the `./bin/` directory. This file needs
 ]
 ```
 
-As you can see, the object takes a number of boolean keys: `createIssue`, `enableCodeScanning`, `enableDependabot`, `enableDependabotUpdates`, `enablePushProtection`, and `enableSecretScanning`, along with a single string key, namely, `repo`. Set `repo` to the name of the repository name where you would like to run this script. Set `enableDependabot` to `true` if you would also like to enable Dependabot Alerts on that repo; set it to `false` if you do not want to enable Dependabot Alerts. The same goes for `enableDependabotUpdates` for Dependabot Security Updates, `enableSecretScanning` for Secret Scanning, `pushprotection` for Secret Scanning push protection, and `enableCodeScanning` for Code Scanning (CodeQL). Finally set `createIssue` to `true` if you would like to create an issue on the repository with the text found in the `./src/utils/text/issueText.ts` file to supplement the PR.
+As you can see, the object takes a number of boolean keys: `createIssue`, `enableCodeScanning`, `enableDependabot`, `enableDependabotUpdates`, `enablePushProtection`, `enableSecretScanning`, and `enableActions` along with a single string key, namely, `repo`. Set `repo` to the name of the repository name where you would like to run this script. Set `enableDependabot` to `true` if you would also like to enable Dependabot Alerts on that repo; set it to `false` if you do not want to enable Dependabot Alerts. The same goes for `enableDependabotUpdates` for Dependabot Security Updates, `enableSecretScanning` for Secret Scanning, `pushprotection` for Secret Scanning push protection, `enableCodeScanning` for Code Scanning (CodeQL), and `enableActions` to enable Actions. Finally set `createIssue` to `true` if you would like to create an issue on the repository with the text found in the `./src/utils/text/issueText.ts` [file](./src/utils/text/issueText.ts) to supplement the PR.
 
 **NOTE:** The account that generated the PAT needs to have `write` access or higher over any repository that you include within the `repos` key.
 
@@ -206,7 +215,7 @@ env:
   APP_CLIENT_ID: ${{ secrets.GHAS_ENABLEMENT_APP_CLIENT_ID }}
   APP_CLIENT_SECRET: ${{ secrets.GHAS_ENABLEMENT_APP_CLIENT_SECRET }}
   APP_PRIVATE_KEY: ${{ secrets.GHAS_ENABLEMENT_APP_PRIVATE_KEY }}
-  ENABLE_ON: "codescanning,secretscanning,pushprotection,dependabot,dependabotupdates"
+  ENABLE_ON: "codescanning,secretscanning,pushprotection,dependabot,dependabotupdates,actions"
   DEBUG: "ghas:*"
   CREATE_ISSUE: "false"
   GHES: "false"
@@ -218,7 +227,7 @@ jobs:
   enable-security-javascript:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           repository: NickLiffen/ghas-enablement
       - name: Get dependencies and configure
