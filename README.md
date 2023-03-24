@@ -16,7 +16,7 @@ There are two main actions this tool does:
 
 **Part One:**
 
-Goes and collects repositories that will have Code Scanning (CodeQL)/Secret Scanning/Secret Scanning Push Protection/Dependabot Alerts/Dependabot Security Updates enabled. There are three main ways these repositories are collected.
+Goes and collects repositories that will have Code Scanning (CodeQL)/Secret Scanning/Secret Scanning Push Protection/Dependabot Alerts/Dependabot Security Updates/Actions enabled. There are three main ways these repositories are collected.
 
 - Collect the repositories where the primary language matches a specific value. For example, if you provide JavaScript, all repositories will be collected where the primary language is, Javascript.
 - Collect the repositories to which a user has administrative access, or a GitHub App has access.
@@ -125,7 +125,7 @@ This script only returns repositories where CodeQL results have not already been
 yarn run getRepos # or npm run getRepos
 ```
 
-Similar to step one, another automated approach is to enable by user access (i.e., enable for all repositories the PAT has access to). This approach will be a little less accurate as the `codeql-analysis.yml` file will most certainly need changing between a Python project and a Java project (if you are enabling CodeQL). But the file you propose is going to be a good start. After running the command, you are welcome to modify the `./bin/repos.json` file. Just make sure it's a valid JSON file before saving.
+Similar to step one, another automated approach is to enable by user access (i.e., enable for all repositories the user/PAT has administrative access to). This approach will be a little less accurate as the `codeql-analysis.yml` file will most certainly need changing between a Python project and a Java project (if you are enabling CodeQL). But the file you propose is going to be a good start. After running the command, you are welcome to modify the `./bin/repos.json` file. Just make sure it's a valid JSON file before saving.
 
 This script only returns repositories where CodeQL results have not already been uploaded to code scanning. If any CodeQL results have been uploaded to a repositories code scanning feature, that repository will not be returned to this list. The motivation behind this is not to raise pull requests on repositories where CodeQL has already been enabled.
 
