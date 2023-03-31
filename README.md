@@ -170,6 +170,55 @@ This will run a script, and you should see output text appearing on your screen.
 
 After the script has run, please head to your `~/Desktop` directory and delete the `tempGitLocations` directory that has been automatically created.
 
+## Running this with the CLI
+
+The `cli.sh` is a Bash script that wraps the funcitonalities of this tool. It is intented to augment the tool's functionality and make it easier to use in order to achieve a controlled GHAS rollout. The script is located in the root directory of this repository.
+
+The CLI interface helps fulfil the follow use cases:
+
+### Use Case 1: Enable GHAS on all repositories in all your organizations
+
+1. Create a GitHub Personal Access Token (PAT).
+2. Start the CLI by running `./cli.sh` in the root directory of this repository.
+3. Select the `5. Configure option` to create your `.env`
+
+- Fill in the PAT
+- Fill in the GHAS features you would like to enable
+- Fill in the programming languages you want to filter on (optional)
+- If you are using a GitHub Enterprise Server, fill in the URL of your instance (leave empty if you are using GitHub.com)
+- Select your temporary directory (or leave it to the tool to create one)
+
+4. Select the `1. Get Organizations in your Enterprise` option to get a list of all your organizations.
+5. Select the `2. Enable features for Organization - For all repos at once` option to enable selected GHAS features.
+6. When asked to select an organization, type `all` to select all organizations.
+7. Select the `4. Print progress` option to check the progress and confirm that all organizations have been processed.
+
+## Use Case 2: Enable GHAS on all repositories in a controlled fashion: organization by organization
+
+1. Create a GitHub Personal Access Token (PAT).
+2. Start the CLI by running `./cli.sh` in the root directory of this repository.
+3. Select the `5. Configure option` to create your `.env`
+
+- Fill in the PAT
+- Fill in the GHAS features you would like to enable
+- Fill in the programming languages you want to filter on (optional)
+- If you are using a GitHub Enterprise Server, fill in the URL of your instance (leave empty if you are using GitHub.com)
+- Select your temporary directory (or leave it to the tool to create one)
+
+4. Select the `1. Get Organizations in your Enterprise` option to get a list of all your organizations.
+5. Select the `2. Enable features for Organization - For all repos at once` option to enable selected GHAS features.
+6. When asked to select an organization, type `next` to see the next 10 organizations that GHAS haven't been enabled on.
+7. Type in the name of the organization you want to enable selected GHAS features on.
+8. Select the `4. Print progress` option to check the progress and confirm that all organizations have been processed.
+9. Repeat steps 5-7 until all organizations you have processed all organizations.
+
+Notes:
+
+- The CLI will automatically create a `.env` file in the root directory of this repository. This file contains the configuration for the tool. You can edit this file to change the configuration of the tool manually. You don't need to run the `5. Configure option` to change the configuration.
+- You can choose to use `3. Enable features for Organization - Per repo` instead of the `2. Enable features for Organization - For all repos at once`. This option will make more API calls as it enables the features per repository. The result will be the same if you are GHEC user, however if you are a GHES user, you will not be able to enable `dependabotupdates` with the `3. Enable features for Organization - Per repo`.
+- The `2. Enable features for Organization - For all repos at once` works for GHES 3.7 and above.
+- Enabling `codescanning` with the `2. Enable features for Organization - For all repos at once` option will use the (Code Scanning Default Setup)[https://github.blog/2023-01-09-default-setup-a-new-way-to-enable-github-code-scanning/]. This is not yet available on GHES.
+
 ## Running this within a Codespace?
 
 There are some key considerations that you will need to put into place if you are running this script within a GitHub Codespace:

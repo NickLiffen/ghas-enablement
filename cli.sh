@@ -33,7 +33,7 @@ function getOrgs {
 
 function enableOnOrgPerRepo {
     echo -e "${CYAN}Type in the name of the organization you want to enable features for:${RESET} "
-    echo -e "${GREY}Type 'next' to see the next page of organizations to select one${RESET}"
+    echo -e "${GREY}Type 'next' to see the next 10 organizations to select one${RESET}"
     echo -e "${GREY}Type 'all' to enable on all organizations found${RESET}"
     echo -e "${GREY}Type 'exit' to exit${RESET}"
 
@@ -72,7 +72,7 @@ function enableOnOrgPerRepo {
 
 function enableOnOrgAllRepos {
     echo -e "${CYAN}Type in the name of the organization you want to enable features for:${RESET} "
-    echo -e "${GREY}Type 'next' to see the next page of organizations${RESET}"
+    echo -e "${GREY}Type 'next' to see the next 10 organizations${RESET}"
     echo -e "${GREY}Type 'all' to enable on all organizations found${RESET}"
     echo -e "${GREY}Type 'exit' to exit${RESET}"
 
@@ -80,7 +80,7 @@ function enableOnOrgAllRepos {
         read -p "${CYAN} -> ${RESET}"  orgName
         
         if [ "$orgName" == "next" ]; then
-            cat ./bin/organizations.work.json | jq -c '.[] | select(.completed != true)' | jq -c '.login' | sed 's/"//g' | sed 's/,//g' | sed 's/ //g'
+            cat ./bin/organizations.work.json | jq -c '.[] | select(.completed != true)' | jq -c '.login' | sed 's/"//g' | sed 's/,//g' | sed 's/ //g' | head -n 10
         elif [ "$orgName" == "exit" ]; then
             break
         elif [ "$orgName" == "all" ]; then
@@ -135,7 +135,8 @@ function printProgress {
 function configure {
     read -p "${CYAN}Enter your admin PAT: ${RESET}" adminPat
     read -p "${CYAN}Enter the features you want to enable: ${RESET}" features
-    read -p "${CYAN}Enter your GHES URL (leave empty if it is GHEC):${RESET}" ghesUrl
+    read -p "${CYAN}Enter programing language if you want to fliter: (press enter for all languages) ${RESET}" language
+    read -p "${CYAN}Enter your GHES URL (press enter if it is GHEC):${RESET}" ghesUrl
     read -p "${CYAN}Temp working directory (press enter to create /tmp/ghas-enablement): ${RESET}" tempDir
     if [ -z "$ghesUrl" ]; then
         sed -i '' -e "s/GHES_SERVER_BASE_URL=.*/GHES_SERVER_BASE_URL=/g" .env
@@ -146,6 +147,7 @@ function configure {
     fi
     sed -i '' -e "s/GITHUB_API_TOKEN=.*/GITHUB_API_TOKEN=$adminPat/g" .env
     sed -i '' -e "s/ENABLE_ON=.*/ENABLE_ON=$features/g" .env
+    sed -i '' -e "s/LANGUAGE_TO_CHECK=.*/LANGUAGE_TO_CHECK=$language/g" .env
 
     if [ -z "$tempDir" ]; then
         mkdir -p /tmp/ghas-enablement
