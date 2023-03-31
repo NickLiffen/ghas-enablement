@@ -1,6 +1,5 @@
 import { inform, error } from "./globals";
 import { Octokit } from "@octokit/core";
-//import { client as Octokit } from "../utils/clients";
 import {
   createActionsOrgParameters,
   createActionsOrgResponse,
