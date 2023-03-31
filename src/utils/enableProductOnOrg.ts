@@ -48,7 +48,7 @@ export const enableActionsOnAllOrgRepos = async (
 
   try {
     const { status } = (await octokit.request(
-      "POST /orgs/{org}/actions/{enablement}",
+      "POST /orgs/{org}/actions/permissions",
       requestParams
     )) as createActionsOrgResponse;
     inform(`Enabled Actions for ${org}. Status: ${status}`);
