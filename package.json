@@ -13,6 +13,7 @@
     "test": "npx jest --coverage --verbose",
     "getRepos": "npm run build && node ./lib/getRepos.js",
     "getOrgs": "npm run build && node ./lib/getOrgs.js",
+    "enableOrg": "npm run build && node ./lib/enableOrg.js",
     "start": "npm run build && node ./lib/enable.js"
   },
   "keywords": [
