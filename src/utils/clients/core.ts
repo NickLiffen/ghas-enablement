@@ -11,11 +11,11 @@ import { throttling } from "@octokit/plugin-throttling";
 import { paginateRest } from "@octokit/plugin-paginate-rest";
 import { OctokitOptions } from "@octokit/core/dist-types/types";
 
-export const client = async (): Promise<Octokit> => {
+export const client = async (retrySeconds?: number): Promise<Octokit> => {
   const MyOctokit = Octokit.plugin(paginateRest, retry, throttling);
   const baseOctokitOptions = {
     baseUrl,
-    request: { retries: 3 },
+    request: { retries: 3, retryAfter: retrySeconds || 1 },
     throttle: {
       onRateLimit: (options: RateLimitOptions) => {
         return options.request.retryCount <= 3;
