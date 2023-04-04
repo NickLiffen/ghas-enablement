@@ -16,6 +16,7 @@ RESET=$(tput sgr0)
 # If it doesn't exist, copy the .env.example file to .env
 if [ ! -f .env ]; then
     cp .env.sample .env
+    echo -e "${YELLOW}Info: .env file was created as it was not found in the directory. Please use '5. Configure' to set the values in it or exit this script and setup the values by editing the file directly.${RESET}"
 fi
 
 ## Check if .bin/repos.json exists
