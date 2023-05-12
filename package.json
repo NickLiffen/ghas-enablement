@@ -11,9 +11,9 @@
     "lint:check": "npx eslint '**/*.{ts,json}'",
     "lint:write": "npx eslint --fix '**/*.{ts,json}'",
     "test": "npx jest --coverage --verbose",
-    "getRepos": "npm run build && node ./lib/getRepos.js",
-    "getOrgs": "npm run build && node ./lib/getOrgs.js",
-    "enableOrg": "npm run build && node ./lib/enableOrg.js",
+    "getRepos": "node ./lib/getRepos.js",
+    "getOrgs": "node ./lib/getOrgs.js",
+    "enableOrg": "node ./lib/enableOrg.js",
     "start": "npm run build && node ./lib/enable.js"
   },
   "keywords": [
@@ -60,6 +60,7 @@
     "debug": "^4.3.4",
     "delay": "^5.0.0",
     "dotenv": "^16.0.3",
+    "node": "^19.8.1",
     "randomstring": "^1.2.3"
   }
 }

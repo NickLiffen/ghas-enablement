@@ -6,6 +6,7 @@ import { error, inform } from "./utils/globals";
 import {
   enableActionsOnAllOrgRepos,
   enableSecurityProductOnAllOrgRepos,
+  enableAutomaticSecurityProductForNewRepos,
 } from "./utils/enableProductOnOrg";
 import { client as octokit } from "./utils/clients";
 
@@ -14,6 +15,14 @@ async function start() {
     const enable = (process.env.ENABLE_ON?.split(",") || []) as string[];
     const org = process.env.GITHUB_ORG || "";
     const client = await octokit(3);
+
+    // set a boolean flag 'automatic' if enable has the value 'automatic' and remove it from enable
+    let automatic = false;
+    const index = enable.indexOf("automatic");
+    if (index !== -1) {
+      enable.splice(index, 1);
+      automatic = true;
+    }
 
     // mapping to map the input to the correct product name
     const mapping: { [key: string]: string } = {
@@ -26,6 +35,21 @@ async function start() {
       codescanning: "code_scanning_default_setup",
     };
     const parsedEnable = enable.map((product) => mapping[product]);
+
+    // mapping to input if automatic for new repos is set
+    let parsedAutomatic: string[] = [];
+    if (automatic) {
+      const mapping: { [key: string]: string } = {
+        dependabot_alerts: "secret_scanning_push_protection",
+        dependabot_security_updates:
+          "dependabot_security_updates_enabled_for_new_repositories",
+        advanced_security: "advanced_security_enabled_for_new_repositories",
+        secret_scanning: "secret_scanning_enabled_for_new_repositories",
+        secret_scanning_push_protection:
+          "secret_scanning_push_protection_enabled_for_new_repositories",
+      };
+      parsedAutomatic = parsedEnable.map((product) => mapping[product]);
+    }
 
     if (org.trim() === "")
       throw new Error(
@@ -56,14 +80,17 @@ async function start() {
     }
 
     if (
+      parsedEnable.includes("advanced_securtiy") ||
       parsedEnable.includes("secret_scanning") ||
-      enable.includes("code_scanning_default_setup")
+      parsedEnable.includes("code_scanning_default_setup")
     ) {
       await enableSecurityProductOnAllOrgRepos(
         org,
         "advanced_security",
         client
       );
+      // remove advanced_security from the list of products to enable
+      parsedEnable.splice(parsedEnable.indexOf("advanced_security"), 1);
     }
 
     for (const product of parsedEnable) {
@@ -72,6 +99,15 @@ async function start() {
       } else {
         await enableSecurityProductOnAllOrgRepos(org, product, client);
       }
+    }
+
+    // if automatic is set, enable the automatic security features on new repos
+    if (automatic) {
+      await enableAutomaticSecurityProductForNewRepos(
+        org,
+        parsedAutomatic,
+        client
+      );
     }
   } catch (err) {
     error(err);
