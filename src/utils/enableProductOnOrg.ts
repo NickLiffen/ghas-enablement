@@ -5,6 +5,8 @@ import {
   createActionsOrgResponse,
   createSecurtyProductUpdatesParameters,
   createSecurtyProductUpdatesResponse,
+  updateOrgParameters,
+  updateOrgResponse,
 } from "./octokitTypes";
 import { response } from "../../types/common";
 
@@ -79,6 +81,38 @@ export const enableGHASOnAllOrgRepos = async (
   } catch (err) {
     error(
       `Problem enabling GHAS Updates on the following organization: ${requestParams.org}. The error was: ${err}`
+    );
+    throw err;
+  }
+};
+
+export const enableAutomaticSecurityProductForNewRepos = async (
+  org: string,
+  automatic_security_product: string[],
+  octokit: Octokit
+): Promise<response> => {
+  // Create an object with the feature names and values
+  const params = automatic_security_product.reduce((acc, curr) => {
+    acc[curr] = true;
+    return acc;
+  }, {} as { [key: string]: any });
+
+  // Add the org to the updateOrgParameters object
+  params.org = org;
+
+  try {
+    const { status } = (await octokit.request("PATCH /orgs/{org}", {
+      org: params.org,
+      ...params,
+    } as updateOrgParameters)) as updateOrgResponse;
+
+    inform(
+      `Enabled automatic enablement of the selected products for new repositories ${org}. Status: ${status}`
+    );
+    return { status, message: "Enabled" } as response;
+  } catch (err) {
+    error(
+      `Problem enabling automatic enablement for new repos for selected se ${params.org}. The error was: ${err}`
     );
     throw err;
   }

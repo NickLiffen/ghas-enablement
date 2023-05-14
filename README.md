@@ -93,11 +93,13 @@ Loops over the repositories found within the `repos.json` file and enables Code 
 
 10. **OPTIONAL**: If you are a GHES customer, then you will need to set the `GHES` env to `true` and then set `GHES_SERVER_BASE_URL` to the URL of your GHES instance. E.G `https://octodemo.com`.
 
-11. If you are enabling Code Scanning (CodeQL), check the `codeql-analysis.yml` file. This is a sample file; please configure this file to suit your repositories needs.
+11. **OPTIONAL**: If you are planning to enable features on an Organization level using the `yarn run enableOrg` then you additionally have the option `ENABLE_ON=...,automatic` to set also `Automatically enable for new repositories` for each product.
 
-12. Run `yarn install` or `npm install`, which will install the necessary dependencies.
+12. If you are enabling Code Scanning (CodeQL), check the `codeql-analysis.yml` file. This is a sample file; please configure this file to suit your repositories needs.
 
-13. Run `yarn run build` or `npm run build`, which will create the JavaScript bundle from TypeScript.
+13. Run `yarn install` or `npm install`, which will install the necessary dependencies.
+
+14. Run `yarn run build` or `npm run build`, which will create the JavaScript bundle from TypeScript.
 
 ## How to use?
 

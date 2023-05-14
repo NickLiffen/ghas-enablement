@@ -91,6 +91,10 @@ export type createActionsOrgParameters =
 export type createActionsOrgResponse =
   Endpoints["PUT /orgs/{org}/actions/permissions"]["response"];
 
+export type updateOrgParameters = Endpoints["PATCH /orgs/{org}"]["parameters"];
+
+export type updateOrgResponse = Endpoints["PATCH /orgs/{org}"]["response"];
+
 export type putFileInPathParameters =
   Endpoints["PUT /repos/{owner}/{repo}/contents/{path}"]["parameters"];
 export type putFileInPathResponse =
