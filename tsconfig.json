@@ -4,7 +4,6 @@
   "exclude": ["lib", "node_modules"],
   "compilerOptions": {
     "typeRoots": ["./types", "node_modules/@types"],
-    "moduleResolution": "node",
     "outDir": "./lib",
     "noUnusedLocals": true,
     "noUnusedParameters": true,

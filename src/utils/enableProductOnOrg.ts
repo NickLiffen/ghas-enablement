@@ -3,7 +3,6 @@ import { Octokit } from "@octokit/core";
 import {
   createActionsOrgParameters,
   createActionsOrgResponse,
-  createSecurtyProductUpdatesParameters,
   createSecurtyProductUpdatesResponse,
   updateOrgParameters,
   updateOrgResponse,
@@ -19,16 +18,18 @@ export const enableSecurityProductOnAllOrgRepos = async (
     org: org,
     security_product: security_product,
     enablement: "enable_all",
-  } as createSecurtyProductUpdatesParameters;
+  } as any;
 
   try {
     const { status } = (await octokit.request(
       "POST /orgs/{org}/{security_product}/{enablement}",
       requestParams
     )) as createSecurtyProductUpdatesResponse;
+
     inform(
       `Enabled ${requestParams.security_product} for ${org}. Status: ${status}`
     );
+
     return { status, message: "Enabled" } as response;
   } catch (err) {
     error(

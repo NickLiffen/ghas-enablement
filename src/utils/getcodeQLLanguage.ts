@@ -35,6 +35,9 @@ export const getcodeQLLanguage = (primaryLanguage: string): string => {
     case "ruby":
       codeQLLang = "ruby";
       break;
+    case "swift":
+      codeQLLang = "swift";
+      break;
     default:
       codeQLLang = "no-language";
       break;
