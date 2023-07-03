@@ -4,8 +4,6 @@ import { env } from "process";
 
 import { baseRestApiURL as baseUrl } from "../globals";
 
-import { RateLimitOptions } from "../../../types/common";
-
 import { retry } from "@octokit/plugin-retry";
 import { throttling } from "@octokit/plugin-throttling";
 import { paginateRest } from "@octokit/plugin-paginate-rest";
@@ -17,12 +15,19 @@ export const client = async (retrySeconds?: number): Promise<Octokit> => {
     baseUrl,
     request: { retries: 3, retryAfter: retrySeconds || 1 },
     throttle: {
-      onRateLimit: (options: RateLimitOptions) => {
-        return options.request.retryCount <= 3;
+      onRateLimit: (retryAfter, options: any) => {
+        console.log(`Options ${JSON.stringify(options)}`);
+        if (options.request.retryCount === 0) {
+          console.log(`Retrying after ${retryAfter} seconds!`);
+          return true;
+        }
       },
-      onAbuseLimit: () => {
-        return true;
+      onSecondaryRateLimit: (options) => {
+        console.log(`Options ${JSON.stringify(options)}`);
       },
+    },
+    retry: {
+      doNotRetry: ["429"],
     },
   } as OctokitOptions;
 

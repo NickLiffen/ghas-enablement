@@ -1,7 +1,7 @@
 /* eslint-disable no-alert, no-await-in-loop */
 
 import util from "util";
-import delay from "delay";
+import { setTimeout } from "node:timers/promises";
 
 import { inform, error, platform, baseURL } from "./globals";
 
@@ -47,7 +47,7 @@ export const commitFileMac = async (
     env: { LANGUAGE_TO_CHECK: language },
   } = process;
   let codeQLLanguage = getcodeQLLanguage(language || "");
-  if (!codeQLLanguage && primaryLanguage != "no-language") {
+  if (!codeQLLanguage || codeQLLanguage === "no-language") {
     codeQLLanguage = primaryLanguage;
   }
   if (!codeQLLanguage) {
@@ -94,7 +94,7 @@ export const commitFileMac = async (
         error(stderr);
       }
       inform(stdout);
-      await delay(1000);
+      await setTimeout(1000);
     } catch (err: any) {
       inform(`Whitelist returns: ${whiteListed(err.message)}`);
       if (!whiteListed(err.message)) {
