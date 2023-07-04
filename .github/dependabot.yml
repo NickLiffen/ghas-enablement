@@ -7,9 +7,9 @@ updates:
     reviewers:
       - "nickliffen"
     groups:
-       dependencies:
-          patterns:
-            - "*" 
+      dependencies:
+        patterns:
+          - "*"
   - package-ecosystem: npm
     directory: /
     schedule:
@@ -17,6 +17,6 @@ updates:
     reviewers:
       - "nickliffen"
     groups:
-       dependencies:
-          patterns:
-            - "*" 
+      dependencies:
+        patterns:
+          - "*"
