@@ -1,4 +1,4 @@
-{
+g{
   "extends": "@tsconfig/node18/tsconfig.json",
   "include": ["./src/*.ts"],
   "exclude": ["lib", "node_modules"],
