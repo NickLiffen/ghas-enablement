@@ -48,7 +48,7 @@ Loops over the repositories found within the `repos.json` file and enables Code 
 
 ## Prerequisites
 
-- [Node v18](https://nodejs.org/en/download/) or higher installed.
+- [Node v20](https://nodejs.org/en/download/) or higher installed.
 - [Yarn](https://yarnpkg.com/)\*
 - [TypeScript](https://www.typescriptlang.org/download)
 - [Git](https://git-scm.com/downloads) installed on the (user's) machine running this tool.
