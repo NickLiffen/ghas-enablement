@@ -17,7 +17,7 @@ const performRepositoryQuery = async (
   client: Octokit,
   query: string,
   slug: string,
-  after: string | null
+  after: string | null,
 ): Promise<GraphQLQueryResponse> => {
   try {
     const {
@@ -43,14 +43,14 @@ const getRepositoryInOrganizationPaginate = async (
   slug: string,
   query: string,
   paginatedData = [] as usersWriteAdminReposArray,
-  ec = null as string | null
+  ec = null as string | null,
 ): Promise<usersWriteAdminReposArray> => {
   try {
     const [hasNextPage, endCursor, nodes] = await performRepositoryQuery(
       client,
       query,
       slug,
-      ec
+      ec,
     );
 
     /* If (the viewerPermission is set to NULL OR the viewerPermission is set to ADMIN) 
@@ -65,7 +65,7 @@ const getRepositoryInOrganizationPaginate = async (
       } = value;
       const { name } = primaryLanguage || { name: "no-language" };
       inform(
-        `Repo Name: ${nameWithOwner} Permission: ${viewerPermission} Archived: ${isArchived} Language: ${name} Visibility: ${visibility}`
+        `Repo Name: ${nameWithOwner} Permission: ${viewerPermission} Archived: ${isArchived} Language: ${name} Visibility: ${visibility}`,
       );
       const languageCheck = process.env.LANGUAGE_TO_CHECK
         ? name.toLocaleLowerCase() === `${process.env.LANGUAGE_TO_CHECK}`
@@ -85,21 +85,21 @@ const getRepositoryInOrganizationPaginate = async (
     });
 
     inform(
-      `Found ${results.length} repositories that met the valid criteria in the organisation ${slug}. Out of ${nodes.length}.`
+      `Found ${results.length} repositories that met the valid criteria in the organisation ${slug}. Out of ${nodes.length}.`,
     );
 
     const enable = process.env.ENABLE_ON as string;
 
     if (enable.includes("pushprotection") && !enable.includes("secretscanning"))
       throw new Error(
-        "You cannot enable pushprotection without enabling secretscanning"
+        "You cannot enable pushprotection without enabling secretscanning",
       );
 
     results.forEach((element) => {
       return paginatedData.push({
         enableDependabot: enable.includes("dependabot") as boolean,
         enableDependabotUpdates: enable.includes(
-          "dependabotupdates"
+          "dependabotupdates",
         ) as boolean,
         enableSecretScanning: enable.includes("secretscanning") as boolean,
         enableCodeScanning: enable.includes("codescanning") as boolean,
@@ -118,7 +118,7 @@ const getRepositoryInOrganizationPaginate = async (
         slug,
         query,
         paginatedData,
-        endCursor
+        endCursor,
       );
     }
     return paginatedData;
@@ -130,14 +130,14 @@ const getRepositoryInOrganizationPaginate = async (
 
 export const paginateQuery = async (
   slug: string,
-  graphQuery: string
+  graphQuery: string,
 ): Promise<usersWriteAdminReposArray> => {
   try {
     const client = await octokit();
     const data = await getRepositoryInOrganizationPaginate(
       client,
       slug,
-      graphQuery
+      graphQuery,
     );
     return data.filter(({ primaryLanguage: pl }) => pl !== "no-language");
   } catch (err) {

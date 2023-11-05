@@ -14,7 +14,7 @@ export async function getOrganizationFromLocalFile() {
     return { status: 200, data: organizations } as getOrgLocalFileResponse;
   } catch (e) {
     inform(
-      `Could not find file: ${orgsFileLocation}. Assuming no organizations have been collected.`
+      `Could not find file: ${orgsFileLocation}. Assuming no organizations have been collected.`,
     );
     return { status: 404, data: null } as getOrgLocalFileResponse;
   }

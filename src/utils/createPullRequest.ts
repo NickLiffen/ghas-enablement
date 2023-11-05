@@ -12,7 +12,7 @@ export const createPullRequest = async (
   refs: string,
   owner: string,
   repo: string,
-  octokit: Octokit
+  octokit: Octokit,
 ): Promise<string> => {
   const regExpExecArray = /[^/]*$/.exec(refs);
   const head = regExpExecArray ? regExpExecArray[0] : "";
@@ -30,17 +30,17 @@ export const createPullRequest = async (
       data: { html_url: htmlURL },
     } = (await octokit.request(
       "POST /repos/{owner}/{repo}/pulls",
-      requestParams
+      requestParams,
     )) as createPullRequestResponse;
 
     inform(
-      `Pull request created on the following repository ${repo}?. The PR URL is: ${htmlURL}`
+      `Pull request created on the following repository ${repo}?. The PR URL is: ${htmlURL}`,
     );
 
     return htmlURL as string;
   } catch (err: unknown) {
     error(
-      `Problem creating pull request on the following repository: ${requestParams.repo}. The error was: ${err}`
+      `Problem creating pull request on the following repository: ${requestParams.repo}. The error was: ${err}`,
     );
     throw err;
   }

@@ -24,7 +24,7 @@ export const writeToFile = async (prURL: string): Promise<response> => {
 };
 export const createFile = async (
   list: orgsInEnterpriseArray | usersWriteAdminReposArray,
-  fileLocation: string
+  fileLocation: string,
 ): Promise<response> => {
   try {
     const writeFile = promisify(fs.writeFile);

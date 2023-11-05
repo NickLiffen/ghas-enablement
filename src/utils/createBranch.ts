@@ -8,7 +8,7 @@ export const createBranch = async (
   sha: string,
   owner: string,
   repo: string,
-  octokit: Octokit
+  octokit: Octokit,
 ): Promise<string> => {
   const requestParams = {
     owner,
@@ -22,17 +22,17 @@ export const createBranch = async (
       data: { ref: newBranchRef },
     } = (await octokit.request(
       "POST /repos/{owner}/{repo}/git/refs",
-      requestParams
+      requestParams,
     )) as createRefResponse;
 
     inform(
-      `Branch (ref) created on the following repository ${repo}?. The branch reference is: ${newBranchRef}`
+      `Branch (ref) created on the following repository ${repo}?. The branch reference is: ${newBranchRef}`,
     );
 
     return newBranchRef as string;
   } catch (err: unknown) {
     error(
-      `Problem creating branch (ref) on the following repository: ${requestParams.repo}. The error was: ${err}`
+      `Problem creating branch (ref) on the following repository: ${requestParams.repo}. The error was: ${err}`,
     );
     throw err;
   }

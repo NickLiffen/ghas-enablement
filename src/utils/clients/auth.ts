@@ -10,7 +10,7 @@ export const auth = async (): Promise<string | Error> => {
   /* Checking if they have supplied all the required informaiton to generate a GitHub App */
   if (!env.APP_ID || !env.APP_PRIVATE_KEY || !env.APP_INSTALLATION_ID) {
     throw new Error(
-      "You have not specified a Personal Access Token or all the requried variables for a GitHub App. Please re-check the documentation"
+      "You have not specified a Personal Access Token or all the requried variables for a GitHub App. Please re-check the documentation",
     );
   }
 
@@ -29,7 +29,7 @@ export const auth = async (): Promise<string | Error> => {
   } catch (err: any) {
     console.error("Error within function (githubAuth)", err.message);
     throw new Error(
-      "We failed to generate a token from the credentials provided on the GitHub App. Please re-check the credentails provided."
+      "We failed to generate a token from the credentials provided on the GitHub App. Please re-check the credentails provided.",
     );
   }
 };

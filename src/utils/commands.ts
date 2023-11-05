@@ -7,7 +7,7 @@ export const generalCommands = (
   repo: string,
   branch: string,
   fileName: string,
-  baseURL: string
+  baseURL: string,
 ): commands => {
   const commands = [
     // Clean the workspace
@@ -54,7 +54,7 @@ export const generalCommands = (
         winSeparator(
           `/${destDir}/${tempDIR}/${repo}/` +
             ".github/workflows/codeql-analysis.yml",
-          platform
+          platform,
         ),
       ],
       cwd: process.cwd(),

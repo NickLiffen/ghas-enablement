@@ -10,7 +10,7 @@ import {
 export const findDefulatBranch = async (
   owner: string,
   repo: string,
-  octokit: Octokit
+  octokit: Octokit,
 ): Promise<string> => {
   const requestParams = {
     owner,
@@ -22,17 +22,17 @@ export const findDefulatBranch = async (
       data: { default_branch: defaultBranch },
     } = (await octokit.request(
       "GET /repos/{owner}/{repo}",
-      requestParams
+      requestParams,
     )) as listDefaultBranchResponse;
 
     inform(
-      `Found default branch on the following repository: ${repo}. The default branch is: ${defaultBranch}`
+      `Found default branch on the following repository: ${repo}. The default branch is: ${defaultBranch}`,
     );
 
     return defaultBranch as string;
   } catch (err) {
     error(
-      `Problem finding default branch on the following repository: ${requestParams.repo}. The error was: ${err}`
+      `Problem finding default branch on the following repository: ${requestParams.repo}. The error was: ${err}`,
     );
     throw err;
   }

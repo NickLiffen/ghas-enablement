@@ -38,7 +38,7 @@ describe("Default Branch SHA", () => {
       () =>
         new Promise((resolve) => {
           resolve(data);
-        })
+        }),
     );
 
     const response = await findDefulatBranchSHA(defaultBranch, repo, client);
@@ -54,7 +54,7 @@ describe("Default Branch SHA", () => {
       () =>
         new Promise(() => {
           throw new Error("Error finding default branch SHA");
-        })
+        }),
     );
 
     try {

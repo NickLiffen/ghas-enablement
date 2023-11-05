@@ -38,7 +38,7 @@ describe("Commit File", () => {
       () =>
         new Promise((resolve) => {
           resolve(data);
-        })
+        }),
     );
 
     const response = (await putFileInBranch(refs, repo, client)) as string;
@@ -54,7 +54,7 @@ describe("Commit File", () => {
       () =>
         new Promise(() => {
           throw new Error("Error putting fils in branch");
-        })
+        }),
     );
 
     try {

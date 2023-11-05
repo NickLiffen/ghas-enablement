@@ -10,7 +10,7 @@ export const putFileInBranch = async (
   refs: string,
   owner: string,
   repo: string,
-  octokit: Octokit
+  octokit: Octokit,
 ): Promise<string | unknown> => {
   const regExpExecArray = /[^/]*$/.exec(refs);
   const branch = regExpExecArray ? regExpExecArray[0] : "";
@@ -33,19 +33,19 @@ export const putFileInBranch = async (
       data: { content },
     } = (await octokit.request(
       "PUT /repos/{owner}/{repo}/contents/{path}",
-      requestParams
+      requestParams,
     )) as putFileInPathResponse;
 
     const { html_url } = content || {};
 
     inform(
-      `Successfully put file in branch on the following repository ${requestParams.repo}. The path is: ${html_url}`
+      `Successfully put file in branch on the following repository ${requestParams.repo}. The path is: ${html_url}`,
     );
 
     return html_url as unknown;
   } catch (err) {
     error(
-      `Problem putting file in branch on the following repository: ${requestParams.repo}. The error was: ${err}`
+      `Problem putting file in branch on the following repository: ${requestParams.repo}. The error was: ${err}`,
     );
     throw err;
   }

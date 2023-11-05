@@ -11,7 +11,7 @@ import { response } from "../../types/common";
 export const enableActionsOnRepo = async (
   owner: string,
   repo: string,
-  octokit: Octokit
+  octokit: Octokit,
 ): Promise<response> => {
   const requestParams = {
     owner,
@@ -22,13 +22,13 @@ export const enableActionsOnRepo = async (
   try {
     const { status } = (await octokit.request(
       "PUT /repos/{owner}/{repo}/actions/permissions",
-      requestParams
+      requestParams,
     )) as createActionsResponse;
     inform(`Enabled Actions for ${repo}. Status: ${status}`);
     return { status, message: "Enabled" } as response;
   } catch (err) {
     error(
-      `Problem enabling Actions on the following repository: ${requestParams.repo}. The error was: ${err}`
+      `Problem enabling Actions on the following repository: ${requestParams.repo}. The error was: ${err}`,
     );
     throw err;
   }

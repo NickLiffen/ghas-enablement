@@ -44,14 +44,14 @@ export const client = async (retrySeconds?: number): Promise<Octokit> => {
         privateKey: env.APP_PRIVATE_KEY as string,
         installationId: parseInt(
           env.APP_INSTALLATION_ID as string,
-          10
+          10,
         ) as number,
       },
       ...baseOctokitOptions,
     });
   } else {
     throw new Error(
-      "You have not specified a Personal Access Token or all the requried variables for a GitHub App. Please re-check the documentation"
+      "You have not specified a Personal Access Token or all the requried variables for a GitHub App. Please re-check the documentation",
     );
   }
 };

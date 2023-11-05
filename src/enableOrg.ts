@@ -53,7 +53,7 @@ async function start() {
 
     if (org.trim() === "")
       throw new Error(
-        "You must provide an ORG_NAME in the .env file to enable security products on"
+        "You must provide an ORG_NAME in the .env file to enable security products on",
       );
 
     if (
@@ -61,7 +61,7 @@ async function start() {
       !parsedEnable.includes("secret_scanning")
     )
       throw new Error(
-        "You cannot enable pushprotection without enabling secretscanning"
+        "You cannot enable pushprotection without enabling secretscanning",
       );
 
     if (
@@ -72,10 +72,10 @@ async function start() {
       // as it is not supported on GHES
       parsedEnable.splice(
         parsedEnable.indexOf("code_scanning_default_setup"),
-        1
+        1,
       );
       inform(
-        "Code Scanning default setup is not supported on org level on GHES, skipping it"
+        "Code Scanning default setup is not supported on org level on GHES, skipping it",
       );
     }
 
@@ -87,7 +87,7 @@ async function start() {
       await enableSecurityProductOnAllOrgRepos(
         org,
         "advanced_security",
-        client
+        client,
       );
       // remove advanced_security from the list of products to enable
       parsedEnable.splice(parsedEnable.indexOf("advanced_security"), 1);
@@ -106,7 +106,7 @@ async function start() {
       await enableAutomaticSecurityProductForNewRepos(
         org,
         parsedAutomatic,
-        client
+        client,
       );
     }
   } catch (err) {

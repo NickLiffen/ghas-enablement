@@ -9,7 +9,7 @@ import { response } from "../../types/common";
 export const enableGHAS = async (
   owner: string,
   repo: string,
-  octokit: Octokit
+  octokit: Octokit,
 ): Promise<response> => {
   const requestParamsEnableCodeScanning = {
     owner,
@@ -23,13 +23,13 @@ export const enableGHAS = async (
   try {
     const { status } = (await octokit.request(
       "PATCH /repos/{owner}/{repo}",
-      requestParamsEnableCodeScanning
+      requestParamsEnableCodeScanning,
     )) as updateReposResponse;
     inform(`Enabled GHAS for ${repo}. Status: ${status}`);
     return { status, message: "Enabled" } as response;
   } catch (err) {
     error(
-      `Problem enabling GHAS on the following repository: ${repo}. The error was: ${err}`
+      `Problem enabling GHAS on the following repository: ${repo}. The error was: ${err}`,
     );
     throw err;
   }

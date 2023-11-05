@@ -14,7 +14,7 @@ import { getOrganizationFromLocalFile } from "./getOrganizationFromLocalFile";
 
 export const collectRepos = async (
   func: Func,
-  query: GetGraphQLQueryFunction
+  query: GetGraphQLQueryFunction,
 ): Promise<response> => {
   /* The object we are going to use which contains organisation which we are going to collect the repositories from */
   let res: orgsInEnterpriseArray;
@@ -37,7 +37,7 @@ export const collectRepos = async (
       inform(`This is org number ${index + 1} of ${res.length}`);
       const repositoriesInOrg = (await func(
         res[index].login,
-        graphQuery
+        graphQuery,
       )) as usersWriteAdminReposArray;
       res[index].repos = repositoriesInOrg;
     }

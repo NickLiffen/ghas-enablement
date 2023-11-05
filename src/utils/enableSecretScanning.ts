@@ -11,7 +11,7 @@ export const enableSecretScanningAlerts = async (
   owner: string,
   repo: string,
   octokit: Octokit,
-  enablePushProtection: boolean
+  enablePushProtection: boolean,
 ): Promise<response> => {
   const requestParamsEnableSecretScanning = {
     owner,
@@ -34,13 +34,13 @@ export const enableSecretScanningAlerts = async (
   try {
     const { status } = (await octokit.request(
       "PATCH /repos/{owner}/{repo}",
-      requestParamsEnableSecretScanning
+      requestParamsEnableSecretScanning,
     )) as updateReposResponse;
     inform(`Enabled Secret Scanning for ${repo}. Status: ${status}`);
     return { status, message: "Enabled" } as response;
   } catch (err) {
     error(
-      `Problem enabling Secret Scanning on the following repository: ${repo}. The error was: ${err}`
+      `Problem enabling Secret Scanning on the following repository: ${repo}. The error was: ${err}`,
     );
     throw err;
   }

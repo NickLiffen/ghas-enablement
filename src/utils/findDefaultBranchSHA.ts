@@ -11,7 +11,7 @@ export const findDefulatBranchSHA = async (
   defaultBranch: string,
   owner: string,
   repo: string,
-  octokit: Octokit
+  octokit: Octokit,
 ): Promise<string> => {
   const ref = `heads/${defaultBranch}` as string;
 
@@ -28,17 +28,17 @@ export const findDefulatBranchSHA = async (
       },
     } = (await octokit.request(
       "GET /repos/{owner}/{repo}/git/ref/{ref}",
-      requestParams
+      requestParams,
     )) as listDefaultBranchSHAResponse;
 
     inform(
-      `Found default branch SHA on the following repository: ${repo}. The default branch is: ${sha}`
+      `Found default branch SHA on the following repository: ${repo}. The default branch is: ${sha}`,
     );
 
     return sha as string;
   } catch (err) {
     error(
-      `Problem finding default branch SHA on the following repository: ${requestParams.repo}. The error was: ${err}`
+      `Problem finding default branch SHA on the following repository: ${requestParams.repo}. The error was: ${err}`,
     );
     throw err;
   }

@@ -72,7 +72,7 @@ export type orgsInEnterpriseObject = {
 export type performOrganisationsQueryType = [
   string,
   string,
-  orgsInEnterpriseArray
+  orgsInEnterpriseArray,
 ];
 
 export type getOrgLocalFileResponse = {
@@ -85,7 +85,7 @@ export type performRepositoryQueryType = [string, string, reposInOrgArray];
 export type performRepositoryLanguageQueryType = [
   string,
   string,
-  reposByLanguageArray
+  reposByLanguageArray,
 ];
 
 export type reposInOrgArray = reposInOrgObject[];
@@ -109,7 +109,7 @@ export type reposByLanguageArray = reposByLanguageObject[];
 
 type Func = (
   slug: string,
-  graphQuery: string
+  graphQuery: string,
 ) => Promise<usersWriteAdminReposArray>;
 
 type GetGraphQLQueryFunction = () => string;

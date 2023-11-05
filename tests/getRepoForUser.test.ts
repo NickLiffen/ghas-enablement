@@ -87,7 +87,7 @@ describe("Fetch Repos for current authenticated user", () => {
       () =>
         new Promise((resolve) => {
           resolve(octokitResponseOne.data);
-        })
+        }),
     );
 
     const response = await fetchReposByUser(client);
@@ -103,7 +103,7 @@ describe("Fetch Repos for current authenticated user", () => {
       () =>
         new Promise((resolve) => {
           resolve(octokitResponseTwo.data);
-        })
+        }),
     );
 
     const response = await fetchReposByUser(client);
@@ -119,7 +119,7 @@ describe("Fetch Repos for current authenticated user", () => {
       () =>
         new Promise((resolve) => {
           resolve(octokitResponseThree.data);
-        })
+        }),
     );
 
     const response = await fetchReposByUser(client);
@@ -135,7 +135,7 @@ describe("Fetch Repos for current authenticated user", () => {
       () =>
         new Promise(() => {
           throw new Error("Error finding repos");
-        })
+        }),
     );
 
     try {

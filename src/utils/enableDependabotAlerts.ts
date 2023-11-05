@@ -13,17 +13,17 @@ import { response } from "../../types/common";
 
 const checkVulnerabilityAlertsStatus = async (
   requestParams: listVulnerabilityAlertsParameters,
-  octokit: Octokit
+  octokit: Octokit,
 ): Promise<response> => {
   try {
     (await octokit.request(
       "GET /repos/{owner}/{repo}/vulnerability-alerts",
-      requestParams
+      requestParams,
     )) as listVulnerabilityAlertsResponse;
     return { status: 204, message: "Enabled" } as response;
   } catch (err) {
     inform(
-      `Dependabot is not enabled on the following repository: ${requestParams.repo}.`
+      `Dependabot is not enabled on the following repository: ${requestParams.repo}.`,
     );
     return { status: 404, message: "Not-Enabled" } as response;
   }
@@ -32,7 +32,7 @@ const checkVulnerabilityAlertsStatus = async (
 export const enableDependabotAlerts = async (
   owner: string,
   repo: string,
-  octokit: Octokit
+  octokit: Octokit,
 ): Promise<response> => {
   const requestParams = {
     owner,
@@ -44,7 +44,7 @@ export const enableDependabotAlerts = async (
 
   const { status, message } = (await checkVulnerabilityAlertsStatus(
     requestParams,
-    octokit
+    octokit,
   )) as response;
 
   inform(`Is Dependabot Alerts enabled already for ${repo}? : ${message}`);
@@ -59,13 +59,13 @@ export const enableDependabotAlerts = async (
   try {
     const { status } = (await octokit.request(
       "PUT /repos/{owner}/{repo}/vulnerability-alerts",
-      requestParams
+      requestParams,
     )) as createVulnerabilityAlertsResponse;
     inform(`Enabled Dependabot for ${repo}. Status: ${status}`);
     return { status, message: "Enabled" } as response;
   } catch (err) {
     error(
-      `Problem enabling Dependabot Alerts on the following repository: ${requestParams.repo}. The error was: ${err}`
+      `Problem enabling Dependabot Alerts on the following repository: ${requestParams.repo}. The error was: ${err}`,
     );
     throw err;
   }

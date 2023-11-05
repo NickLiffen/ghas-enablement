@@ -8,7 +8,7 @@ import { Octokit } from "@octokit/core";
 export const checkIfCodeQLHasAlreadyRanOnRepo = async (
   owner: string,
   repo: string,
-  octokit: Octokit
+  octokit: Octokit,
 ): Promise<boolean> => {
   const requestParams = {
     owner,
@@ -18,7 +18,7 @@ export const checkIfCodeQLHasAlreadyRanOnRepo = async (
   try {
     const { data } = (await octokit.request(
       "GET /repos/{owner}/{repo}/code-scanning/analyses",
-      requestParams
+      requestParams,
     )) as checkCodeScanningAnalysesResponse;
     // If there are no analysis, the result is not a list and data.length will return undefined.
     if (data.length > 0) return true;

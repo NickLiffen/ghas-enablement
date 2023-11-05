@@ -6,7 +6,7 @@ export const enableIssueCreation = async (
   pr: string,
   owner: string,
   repo: string,
-  octokit: Octokit
+  octokit: Octokit,
 ): Promise<void> => {
   const number = pr.split("/").at(-1) as string;
   const body = issueText(pr, number);
@@ -17,7 +17,7 @@ export const enableIssueCreation = async (
       repo,
       title: "GitHub Advanced Security - Code Scanning Enablement :wave:",
       body,
-    }
+    },
   );
 
   if (status !== 201) {

@@ -35,7 +35,7 @@ describe("Default Branch", () => {
       () =>
         new Promise((resolve) => {
           resolve(data);
-        })
+        }),
     );
 
     const response = await findDefulatBranch(repo, client);
@@ -50,7 +50,7 @@ describe("Default Branch", () => {
       () =>
         new Promise(() => {
           throw new Error("Error finding default branch");
-        })
+        }),
     );
 
     try {

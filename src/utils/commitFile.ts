@@ -22,7 +22,7 @@ if (platform !== "win32" && platform !== "darwin" && platform !== "linux") {
   throw new Error(
     `We detected an OS that wasn't Windows, Linux or Mac. Right now, these
     are the only three OS's supported. Log an issue on the repository for
-    wider support`
+    wider support`,
   );
 }
 
@@ -31,14 +31,14 @@ export const commitFileMac = async (
   repo: string,
   primaryLanguage: string,
   refs: string,
-  authToken: string
+  authToken: string,
 ): Promise<response> => {
   let gitCommands: commands;
   let index: number;
 
   const authBaseURL = baseURL!.replace(
     "https://",
-    `https://x-access-token:${authToken}@`
+    `https://x-access-token:${authToken}@`,
   ) as string;
   const regExpExecArray = /[^/]*$/.exec(refs);
   const branch = regExpExecArray ? regExpExecArray[0] : "";
@@ -62,7 +62,7 @@ export const commitFileMac = async (
       repo,
       branch,
       fileName,
-      authBaseURL
+      authBaseURL,
     ) as commands;
     inform(gitCommands);
   } catch (err) {
@@ -78,7 +78,7 @@ export const commitFileMac = async (
         gitCommands[index].args,
         "in",
         gitCommands[index].cwd,
-      ].join(" ")
+      ].join(" "),
     );
     // Adding try/catch so we can whitelist
     try {
@@ -88,7 +88,7 @@ export const commitFileMac = async (
         {
           cwd: gitCommands[index].cwd,
           shell: true,
-        }
+        },
       );
       if (stderr) {
         error(stderr);

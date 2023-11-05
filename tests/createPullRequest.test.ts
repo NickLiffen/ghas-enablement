@@ -37,7 +37,7 @@ describe("Create Pull Request", () => {
       () =>
         new Promise((resolve) => {
           resolve(data);
-        })
+        }),
     );
 
     const response = await createPullRequest(base, refs, repo, client);
@@ -53,7 +53,7 @@ describe("Create Pull Request", () => {
       () =>
         new Promise(() => {
           throw new Error("Error creating pull request");
-        })
+        }),
     );
 
     try {

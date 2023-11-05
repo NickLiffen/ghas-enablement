@@ -16,7 +16,7 @@ const performOrganisationsQuery = async (
   client: Octokit,
   query: string,
   slug: string,
-  after: string | null
+  after: string | null,
 ): Promise<performOrganisationsQueryType> => {
   try {
     const {
@@ -42,18 +42,18 @@ const getOrganisationsInEnterprise = async (
   slug: string,
   query: string,
   paginatedData = [] as orgsInEnterpriseArray,
-  ec = null as string | null
+  ec = null as string | null,
 ): Promise<orgsInEnterpriseArray> => {
   try {
     const [hasNextPage, endCursor, nodes] = await performOrganisationsQuery(
       client,
       query,
       slug,
-      ec
+      ec,
     );
 
     inform(
-      `${nodes.length} organisations found. Is there more orgs: ${hasNextPage}`
+      `${nodes.length} organisations found. Is there more orgs: ${hasNextPage}`,
     );
 
     nodes.forEach((element) => {
@@ -67,7 +67,7 @@ const getOrganisationsInEnterprise = async (
         slug,
         query,
         paginatedData,
-        endCursor
+        endCursor,
       );
     }
     return paginatedData;
@@ -84,7 +84,7 @@ export const index = async (client: Octokit): Promise<void> => {
       : "no-enterprise-set";
     if (slug === "no-enterprise-set")
       throw new Error(
-        "No Enterprise Set. Please set the GITHUB_ENTERPRISE environment variable."
+        "No Enterprise Set. Please set the GITHUB_ENTERPRISE environment variable.",
       );
     const query = await getOrganisationsQuery();
     const data = await getOrganisationsInEnterprise(client, slug, query);

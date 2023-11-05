@@ -52,7 +52,7 @@ describe("Enable Dependabot", () => {
       () =>
         new Promise((resolve) => {
           resolve(alreadyEnabledData);
-        })
+        }),
     );
 
     const response = await enableDependabotAlerts(repo, client);
@@ -68,7 +68,7 @@ describe("Enable Dependabot", () => {
       () =>
         new Promise((resolve) => {
           resolve(enabledData);
-        })
+        }),
     );
 
     const response = await enableDependabotAlerts(repo, client);
@@ -84,7 +84,7 @@ describe("Enable Dependabot", () => {
       () =>
         new Promise(() => {
           throw new Error("Error enabling Dependabot");
-        })
+        }),
     );
 
     try {

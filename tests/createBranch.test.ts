@@ -33,10 +33,10 @@ describe("Create Branch", () => {
     const mockAddListener = jest.spyOn(client, "request");
 
     mockAddListener.mockImplementation(
-      (url, options?) =>
+      () =>
         new Promise((resolve) => {
           resolve(data);
-        })
+        }),
     );
 
     const response = await createBranch(sha, repo, client);
@@ -52,7 +52,7 @@ describe("Create Branch", () => {
       () =>
         new Promise(() => {
           throw new Error("Error creating branch");
-        })
+        }),
     );
 
     try {

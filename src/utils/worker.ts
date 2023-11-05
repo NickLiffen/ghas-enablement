@@ -34,14 +34,14 @@ export const worker = async (): Promise<unknown> => {
     file = readFileSync(reposFileLocation, "utf8");
     if (file === "") {
       throw new Error(
-        "We found your repos.json but it was empty, please run `yarn run getRepos` to collect the repos to run this script on."
+        "We found your repos.json but it was empty, please run `yarn run getRepos` to collect the repos to run this script on.",
       );
     }
     repos = JSON.parse(file);
   } catch (err) {
     console.error(err);
     throw new Error(
-      "We did not find your repos.json file, please run `yarn run getRepos` to collect the repos to run this script on."
+      "We did not find your repos.json file, please run `yarn run getRepos` to collect the repos to run this script on.",
     );
   }
 
@@ -49,13 +49,13 @@ export const worker = async (): Promise<unknown> => {
     inform(
       `Currently looping over: ${orgIndex + 1}/${
         repos.length
-      }. The org name is: ${repos[orgIndex].login}`
+      }. The org name is: ${repos[orgIndex].login}`,
     );
     for (repoIndex = 0; repoIndex < repos[orgIndex].repos.length; repoIndex++) {
       inform(
         `Currently looping over: ${repoIndex + 1}/${
           repos[orgIndex].repos.length
-        }. The repo name is: ${repos[orgIndex].repos[repoIndex].repo}`
+        }. The repo name is: ${repos[orgIndex].repos[repoIndex].repo}`,
       );
       const {
         repo: repoName,
@@ -92,7 +92,7 @@ export const worker = async (): Promise<unknown> => {
             owner,
             repo,
             client,
-            enablePushProtection
+            enablePushProtection,
           )
         : null;
 
@@ -105,23 +105,23 @@ export const worker = async (): Promise<unknown> => {
         const codeQLAlreadyRan = await checkIfCodeQLHasAlreadyRanOnRepo(
           owner,
           repo,
-          client
+          client,
         );
 
         inform(
-          `Has ${owner}/${repo} had a CodeQL scan uploaded? ${codeQLAlreadyRan}`
+          `Has ${owner}/${repo} had a CodeQL scan uploaded? ${codeQLAlreadyRan}`,
         );
 
         if (!codeQLAlreadyRan) {
           inform(
-            `As ${owner}/${repo} hasn't had a CodeQL Scan, going to run CodeQL enablement`
+            `As ${owner}/${repo} hasn't had a CodeQL Scan, going to run CodeQL enablement`,
           );
           const defaultBranch = await findDefulatBranch(owner, repo, client);
           const defaultBranchSHA = await findDefulatBranchSHA(
             defaultBranch,
             owner,
             repo,
-            client
+            client,
           );
           const ref = await createBranch(defaultBranchSHA, owner, repo, client);
           const authToken = (await generateAuth()) as string;
@@ -131,7 +131,7 @@ export const worker = async (): Promise<unknown> => {
             ref,
             owner,
             repo,
-            client
+            client,
           );
           if (createIssue) {
             await enableIssueCreation(pullRequestURL, owner, repo, client);
