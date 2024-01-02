@@ -74,8 +74,8 @@ const getRepositoryInOrganizationPaginate = async (
         process.env.GHES === "true"
           ? true
           : visibility === "PRIVATE" || visibility === "INTERNAL"
-          ? true
-          : false;
+            ? true
+            : false;
       return (viewerPermission === "ADMIN" || viewerPermission === null) &&
         isArchived === false &&
         languageCheck &&
