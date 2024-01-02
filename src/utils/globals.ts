@@ -41,11 +41,11 @@ const user =
 const root = existsSync("/vscode") // Requires user
   ? ("workspaces" as string)
   : platform === "win32" || platform === "darwin"
-  ? (`Users/${user}` as string)
-  : (`home/${user}` as string);
+    ? (`Users/${user}` as string)
+    : (`home/${user}` as string);
 export const destDir =
   process.env.TEMP_DIR != ""
     ? process.env.TEMP_DIR
     : existsSync("/vscode") // Requires root
-    ? ("workspaces" as string)
-    : (`${root}/Desktop` as string);
+      ? ("workspaces" as string)
+      : (`${root}/Desktop` as string);
