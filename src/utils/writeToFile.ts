@@ -30,8 +30,8 @@ export const createFile = async (
     const writeFile = promisify(fs.writeFile);
     const data = JSON.stringify(list, null, 2);
     writeFile(fileLocation, data);
-    inform(`Success created repos.json`);
-    return { status: 200, message: "Success created repos.json" };
+    inform(`Success created ${fileLocation}`);
+    return { status: 200, message: `Success created ${fileLocation}` };
   } catch (err) {
     error(err);
     throw err;
