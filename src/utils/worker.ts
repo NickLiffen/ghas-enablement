@@ -2,8 +2,8 @@
 
 import { readFileSync } from "node:fs";
 
-import { findDefulatBranch } from "./findDefaultBranch.js";
-import { findDefulatBranchSHA } from "./findDefaultBranchSHA.js";
+import { findDefaultBranch } from "./findDefaultBranch.js";
+import { findDefaultBranchSHA } from "./findDefaultBranchSHA.js";
 import { createBranch } from "./createBranch.js";
 import { enableSecretScanningAlerts } from "./enableSecretScanning";
 import { createPullRequest } from "./createPullRequest.js";
@@ -116,8 +116,8 @@ export const worker = async (): Promise<unknown> => {
           inform(
             `As ${owner}/${repo} hasn't had a CodeQL Scan, going to run CodeQL enablement`,
           );
-          const defaultBranch = await findDefulatBranch(owner, repo, client);
-          const defaultBranchSHA = await findDefulatBranchSHA(
+          const defaultBranch = await findDefaultBranch(owner, repo, client);
+          const defaultBranchSHA = await findDefaultBranchSHA(
             defaultBranch,
             owner,
             repo,

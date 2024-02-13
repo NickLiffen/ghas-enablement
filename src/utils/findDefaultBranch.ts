@@ -7,7 +7,7 @@ import {
   listDefaultBranchResponse,
 } from "./octokitTypes";
 
-export const findDefulatBranch = async (
+export const findDefaultBranch = async (
   owner: string,
   repo: string,
   octokit: Octokit,
