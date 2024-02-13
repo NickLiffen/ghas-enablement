@@ -9,6 +9,6 @@
     "noUnusedParameters": true,
     "removeComments": true,
     "preserveConstEnums": true,
-    "resolveJsonModule": true
-  }
+    "resolveJsonModule": true,
+  },
 }

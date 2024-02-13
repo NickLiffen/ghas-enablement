@@ -1,24 +1,10 @@
 /* eslint-disable no-alert, no-await-in-loop */
 
 import { readFileSync } from "node:fs";
-
-import { findDefaultBranch } from "./findDefaultBranch.js";
-import { findDefaultBranchSHA } from "./findDefaultBranchSHA.js";
-import { createBranch } from "./createBranch.js";
-import { enableSecretScanningAlerts } from "./enableSecretScanning";
-import { createPullRequest } from "./createPullRequest.js";
-import { writeToFile } from "./writeToFile.js";
-import { client as octokit } from "./clients";
-import { commitFileMac } from "./commitFile.js";
-import { enableGHAS } from "./enableGHAS.js";
-import { enableDependabotAlerts } from "./enableDependabotAlerts";
-import { enableDependabotFixes } from "./enableDependabotUpdates";
-import { enableIssueCreation } from "./enableIssueCreation";
-import { enableActionsOnRepo } from "./enableActions";
-import { auth as generateAuth } from "./clients";
-import { checkIfCodeQLHasAlreadyRanOnRepo } from "./checkCodeQLEnablement";
-
 import { Octokit } from "@octokit/core";
+
+import { enableFeaturesForRepository } from "./enableFeaturesForRepository";
+import { client as octokit, auth as generateAuth } from "./clients";
 import { inform, reposFileLocation } from "./globals.js";
 import { reposFile } from "../../types/common/index.js";
 
@@ -28,7 +14,9 @@ export const worker = async (): Promise<unknown> => {
   let repoIndex: number;
   let repos: reposFile;
   let file: string;
+
   const client = (await octokit()) as Octokit;
+
   // Read the repos.json file and get the list of repos using fs.readFileSync, handle errors, if empty file return error, if file exists and is not empty JSON.parse it and return the list of repos
   try {
     file = readFileSync(reposFileLocation, "utf8");
@@ -57,87 +45,15 @@ export const worker = async (): Promise<unknown> => {
           repos[orgIndex].repos.length
         }. The repo name is: ${repos[orgIndex].repos[repoIndex].repo}`,
       );
-      const {
-        repo: repoName,
-        enableDependabot,
-        enableDependabotUpdates,
-        enableSecretScanning,
-        enablePushProtection,
-        primaryLanguage,
-        createIssue,
-        enableCodeScanning,
-        enableActions,
-      } = repos[orgIndex].repos[repoIndex];
 
-      const [owner, repo] = repoName.split("/");
-
-      // If Code Scanning or Secret Scanning need to be enabled, let's go ahead and enable GHAS first
-      enableCodeScanning || enableSecretScanning
-        ? await enableGHAS(owner, repo, client)
-        : null;
-
-      // If they want to enable Dependabot, and they are NOT on GHES (as that currently isn't GA yet), enable Dependabot
-      enableDependabot && process.env.GHES != "true"
-        ? await enableDependabotAlerts(owner, repo, client)
-        : null;
-
-      // If they want to enable Dependabot Security Updates, and they are NOT on GHES (as that currently isn't GA yet), enable Dependabot Security Updates
-      enableDependabotUpdates && process.env.GHES != "true"
-        ? await enableDependabotFixes(owner, repo, client)
-        : null;
-
-      // Kick off the process for enabling Secret Scanning
-      enableSecretScanning
-        ? await enableSecretScanningAlerts(
-            owner,
-            repo,
-            client,
-            enablePushProtection,
-          )
-        : null;
-
-      // If they want to enable Actions
-      enableActions ? await enableActionsOnRepo(owner, repo, client) : null;
-
-      // Kick off the process for enabling Code Scanning only if it is set to be enabled AND the primary language for the repo exists. If it doesn't exist that means CodeQL doesn't support it.
-      if (enableCodeScanning && primaryLanguage != "no-language") {
-        // First, let's check and see if CodeQL has already ran on that repository. If it has, we don't need to do anything.
-        const codeQLAlreadyRan = await checkIfCodeQLHasAlreadyRanOnRepo(
-          owner,
-          repo,
+      try {
+        await enableFeaturesForRepository({
+          repository: repos[orgIndex].repos[repoIndex],
           client,
-        );
-
-        inform(
-          `Has ${owner}/${repo} had a CodeQL scan uploaded? ${codeQLAlreadyRan}`,
-        );
-
-        if (!codeQLAlreadyRan) {
-          inform(
-            `As ${owner}/${repo} hasn't had a CodeQL Scan, going to run CodeQL enablement`,
-          );
-          const defaultBranch = await findDefaultBranch(owner, repo, client);
-          const defaultBranchSHA = await findDefaultBranchSHA(
-            defaultBranch,
-            owner,
-            repo,
-            client,
-          );
-          const ref = await createBranch(defaultBranchSHA, owner, repo, client);
-          const authToken = (await generateAuth()) as string;
-          await commitFileMac(owner, repo, primaryLanguage, ref, authToken);
-          const pullRequestURL = await createPullRequest(
-            defaultBranch,
-            ref,
-            owner,
-            repo,
-            client,
-          );
-          if (createIssue) {
-            await enableIssueCreation(pullRequestURL, owner, repo, client);
-          }
-          await writeToFile(pullRequestURL);
-        }
+          generateAuth,
+        });
+      } catch (err) {
+        // boo
       }
     }
   }
