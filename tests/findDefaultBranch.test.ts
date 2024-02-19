@@ -1,4 +1,4 @@
-import { findDefulatBranch } from "../src/utils/findDefaultBranch";
+import { findDefaultBranch } from "../src/utils/findDefaultBranch";
 
 import { octokit } from "../src/utils/octokit";
 
@@ -38,7 +38,7 @@ describe("Default Branch", () => {
         }),
     );
 
-    const response = await findDefulatBranch(repo, client);
+    const response = await findDefaultBranch(repo, client);
     expect(response).toStrictEqual(data.data.default_branch);
   });
   it("Error in getting default branch", async () => {
@@ -54,7 +54,7 @@ describe("Default Branch", () => {
     );
 
     try {
-      await findDefulatBranch(repo, client);
+      await findDefaultBranch(repo, client);
     } catch (error: any) {
       expect(error.message).toEqual("Error finding default branch");
     }

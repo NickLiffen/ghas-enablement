@@ -7,7 +7,7 @@ import {
   listDefaultBranchSHAResponse,
 } from "./octokitTypes";
 
-export const findDefulatBranchSHA = async (
+export const findDefaultBranchSHA = async (
   defaultBranch: string,
   owner: string,
   repo: string,

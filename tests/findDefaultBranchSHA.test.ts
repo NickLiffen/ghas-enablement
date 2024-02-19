@@ -1,4 +1,4 @@
-import { findDefulatBranchSHA } from "../src/utils/findDefaultBranchSHA";
+import { findDefaultBranchSHA } from "../src/utils/findDefaultBranchSHA";
 
 import { octokit } from "../src/utils/octokit";
 
@@ -41,7 +41,7 @@ describe("Default Branch SHA", () => {
         }),
     );
 
-    const response = await findDefulatBranchSHA(defaultBranch, repo, client);
+    const response = await findDefaultBranchSHA(defaultBranch, repo, client);
     expect(response).toStrictEqual(data.data.object.sha);
   });
 
@@ -58,7 +58,7 @@ describe("Default Branch SHA", () => {
     );
 
     try {
-      await findDefulatBranchSHA(defaultBranch, repo, client);
+      await findDefaultBranchSHA(defaultBranch, repo, client);
     } catch (error: any) {
       expect(error.message).toEqual("Error finding default branch SHA");
     }

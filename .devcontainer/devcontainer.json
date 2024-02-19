@@ -14,8 +14,8 @@
     "github.copilot",
     "donjayamanne.githistory",
     "nixon.env-cmd-file-syntax",
-    "mattpocock.ts-error-translator"
+    "mattpocock.ts-error-translator",
   ],
   "postCreateCommand": "yarn install --frozen-lockfile && yarn run build",
-  "remoteUser": "root"
+  "remoteUser": "root",
 }
