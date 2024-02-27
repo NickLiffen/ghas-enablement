@@ -5,15 +5,16 @@ import { Octokit } from "@octokit/core";
 
 import { enableFeaturesForRepository } from "./enableFeaturesForRepository";
 import { client as octokit, auth as generateAuth } from "./clients";
-import { inform, reposFileLocation } from "./globals.js";
-import { reposFile } from "../../types/common/index.js";
+import { error, inform, reposFileLocation } from "./globals";
+import { reposFile } from "../../types/common";
 
-export const worker = async (): Promise<unknown> => {
-  let res;
+export const worker = async (): Promise<undefined> => {
   let orgIndex: number;
   let repoIndex: number;
   let repos: reposFile;
   let file: string;
+  let repoCount: number = 0;
+  let errorCount: number = 0;
 
   const client = (await octokit()) as Octokit;
 
@@ -27,7 +28,7 @@ export const worker = async (): Promise<unknown> => {
     }
     repos = JSON.parse(file);
   } catch (err) {
-    console.error(err);
+    error("\n", err);
     throw new Error(
       "We did not find your repos.json file, please run `yarn run getRepos` to collect the repos to run this script on.",
     );
@@ -47,15 +48,22 @@ export const worker = async (): Promise<unknown> => {
       );
 
       try {
+        ++repoCount;
         await enableFeaturesForRepository({
           repository: repos[orgIndex].repos[repoIndex],
           client,
           generateAuth,
         });
       } catch (err) {
-        // boo
+        ++errorCount;
+        error("\n", err);
       }
     }
   }
-  return res;
+
+  if (errorCount > 0) {
+    throw new Error(
+      `\nProcessed a total of ${repoCount} repositories, encountered errors for ${errorCount} out of the total ${repoCount} repositories.`,
+    );
+  }
 };
