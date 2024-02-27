@@ -4,11 +4,16 @@
   "exclude": ["lib", "node_modules"],
   "compilerOptions": {
     "typeRoots": ["./types", "node_modules/@types"],
+    "strict": true,
     "outDir": "./lib",
+    "rootDir": "./src",
+    "target": "ES2017",
+    "sourceMap": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "removeComments": true,
     "preserveConstEnums": true,
     "resolveJsonModule": true,
+    "esModuleInterop": true,
   },
 }

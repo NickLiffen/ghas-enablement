@@ -14,7 +14,8 @@
     "getRepos": "node ./lib/getRepos.js",
     "getOrgs": "node ./lib/getOrgs.js",
     "enableOrg": "node ./lib/enableOrg.js",
-    "start": "npm run build && node ./lib/enable.js"
+    "start": "npm run build && node ./lib/enable.js",
+    "start:debug": "npx ts-node ./src/enable.ts"
   },
   "keywords": [
     "GitHub",
