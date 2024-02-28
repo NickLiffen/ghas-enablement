@@ -32,7 +32,7 @@ const performOrganisationsQuery = async (
     })) as GraphQlQueryResponseData;
     return [hasNextPage, endCursor, nodes];
   } catch (err) {
-    console.error(err);
+    error("\n", err);
     throw err;
   }
 };
@@ -90,7 +90,7 @@ export const index = async (client: Octokit): Promise<void> => {
     const data = await getOrganisationsInEnterprise(client, slug, query);
     await createFile(data, orgsFileLocation);
   } catch (err) {
-    console.error(err);
+    error("\n", err);
     throw err;
   }
 };

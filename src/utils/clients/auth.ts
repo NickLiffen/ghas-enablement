@@ -1,4 +1,5 @@
 import { createAppAuth, StrategyOptions } from "@octokit/auth-app";
+import { error, inform } from "../globals";
 
 import { env } from "process";
 
@@ -24,10 +25,10 @@ export const auth = async (): Promise<string | Error> => {
   const auth = createAppAuth(options);
   try {
     const data = await auth({ type: "installation" });
-    console.log(data);
+    inform(data);
     return data.token;
   } catch (err: any) {
-    console.error("Error within function (githubAuth)", err.message);
+    error("\n", "Error within function (githubAuth)", err.message);
     throw new Error(
       "We failed to generate a token from the credentials provided on the GitHub App. Please re-check the credentails provided.",
     );
