@@ -12,8 +12,11 @@
     "lint:write": "npx eslint --fix '**/*.{ts,json}'",
     "test": "npx jest --coverage --verbose",
     "getRepos": "node ./lib/getRepos.js",
+    "getRepos:debug": "npx ts-node ./src/getRepos.ts",
     "getOrgs": "node ./lib/getOrgs.js",
+    "getOrgs:debug": "npx ts-node ./src/getOrgs.ts",
     "enableOrg": "node ./lib/enableOrg.js",
+    "enableOrg:debug": "npx ts-node ./src/enableOrg.ts",
     "start": "npm run build && node ./lib/enable.js",
     "start:debug": "npx ts-node ./src/enable.ts"
   },
