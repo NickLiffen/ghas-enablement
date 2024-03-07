@@ -10,7 +10,11 @@ import {
 } from "./utils/enableProductOnOrg";
 import { client as octokit } from "./utils/clients";
 
+import { validateFeatureEnablementConfiguration } from "./utils/validateFeatureEnablementConfiguration";
+
 async function start() {
+  validateFeatureEnablementConfiguration();
+
   try {
     const enable = (process.env.ENABLE_ON?.split(",") || []) as string[];
     const org = process.env.GITHUB_ORG || "";
