@@ -7,8 +7,14 @@ import {
   GetGraphQLQueryFunction,
   orgsInEnterpriseArray,
   response,
-  usersWriteAdminReposArray,
 } from "../../types/common";
+
+import { GraphQlQueryResponseData } from "@octokit/graphql";
+
+import {
+  whereRepositoryViewerPermissionIsAdmin,
+  toRepositoryDesiredConfig,
+} from "./predicates";
 
 import { getOrganizationFromLocalFile } from "./getOrganizationFromLocalFile";
 
@@ -38,13 +44,15 @@ export const collectRepos = async (
       const repositoriesInOrg = (await func(
         res[index].login,
         graphQuery,
-      )) as usersWriteAdminReposArray;
-      res[index].repos = repositoriesInOrg;
+      )) as GraphQlQueryResponseData;
+      res[index].repos = repositoriesInOrg
+        .filter(whereRepositoryViewerPermissionIsAdmin)
+        .map(toRepositoryDesiredConfig);
     }
     inform(`All repos collected. Writing them to file: ${reposFileLocation}`);
     await createFile(res, reposFileLocation);
 
-    return { status: 200, message: "sucess" };
+    return { status: 200, message: "success" };
   } catch (err) {
     error(err);
     throw err;

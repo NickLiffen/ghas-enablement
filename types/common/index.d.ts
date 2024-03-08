@@ -121,7 +121,20 @@ export type GraphQLQueryResponseGetRepos = {
   visibility: string;
   primaryLanguage: {
     name: string;
-  };
+  } | null;
+};
+
+export type RepositoryDesiredConfig = {
+  enableDependabot: boolean;
+  enableDependabotUpdates: boolean;
+  enableSecretScanning: boolean;
+  enableCodeScanning: boolean;
+  enablePushProtection: boolean;
+  enableActions: boolean;
+  primaryLanguage: string;
+  createIssue: boolean;
+  repo: string;
+  repositoryNode: GraphQLQueryResponseGetRepos;
 };
 
 export type GraphQLQueryResponseData = GraphQLQueryResponseGetRepos[];

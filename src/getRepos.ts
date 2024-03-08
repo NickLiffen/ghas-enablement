@@ -10,9 +10,11 @@ import { collectRepos } from "./utils/collectRepos";
 
 import { getRepositoriesQuery } from "./utils/graphql";
 
+import { Func } from "../types/common";
+
 async function start() {
   try {
-    await collectRepos(paginateQuery, getRepositoriesQuery);
+    await collectRepos(paginateQuery as Func, getRepositoriesQuery);
   } catch (err) {
     error(err);
     return err;
