@@ -1,7 +1,6 @@
-import {
-  enableFeaturesForRepository,
-  RepositoryFeatures,
-} from "../src/utils/enableFeaturesForRepository";
+import { enableFeaturesForRepository } from "../src/utils/enableFeaturesForRepository";
+
+import { RepositoryFeatures } from "../types/common";
 
 import { Octokit } from "@octokit/core";
 jest.mock("@octokit/core", () => {

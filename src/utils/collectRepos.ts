@@ -13,7 +13,7 @@ import { GraphQlQueryResponseData } from "@octokit/graphql";
 
 import {
   whereRepositoryViewerPermissionIsAdmin,
-  toRepositoryDesiredConfig,
+  toRepositoryFeatures,
 } from "./predicates";
 
 import { getOrganizationFromLocalFile } from "./getOrganizationFromLocalFile";
@@ -47,7 +47,7 @@ export const collectRepos = async (
       )) as GraphQlQueryResponseData;
       res[index].repos = repositoriesInOrg
         .filter(whereRepositoryViewerPermissionIsAdmin)
-        .map(toRepositoryDesiredConfig);
+        .map(toRepositoryFeatures);
     }
     inform(`All repos collected. Writing them to file: ${reposFileLocation}`);
     await createFile(res, reposFileLocation);

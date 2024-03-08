@@ -77,7 +77,7 @@ export type performOrganisationsQueryType = [
 
 export type getOrgLocalFileResponse = {
   status: number;
-  data: orgsInEnterpriseArray | null;
+  data?: orgsInEnterpriseArray | null;
 };
 
 export type performRepositoryQueryType = [string, string, reposInOrgArray];
@@ -124,7 +124,7 @@ export type GraphQLQueryResponseGetRepos = {
   } | null;
 };
 
-export type RepositoryDesiredConfig = {
+export type RepositoryFeatures = {
   enableDependabot: boolean;
   enableDependabotUpdates: boolean;
   enableSecretScanning: boolean;
@@ -134,7 +134,7 @@ export type RepositoryDesiredConfig = {
   primaryLanguage: string;
   createIssue: boolean;
   repo: string;
-  repositoryNode: GraphQLQueryResponseGetRepos;
+  targetRepositoryNode?: GraphQLQueryResponseGetRepos;
 };
 
 export type GraphQLQueryResponseData = GraphQLQueryResponseGetRepos[];

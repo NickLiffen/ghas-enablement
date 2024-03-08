@@ -1,5 +1,5 @@
 import {
-  RepositoryDesiredConfig,
+  RepositoryFeatures,
   GraphQLQueryResponseGetRepos,
 } from "../../types/common";
 
@@ -37,11 +37,11 @@ export function whereRepositoryVisibilityIsNotPublic(
   return isGHES || visibility !== "PUBLIC";
 }
 
-export function toRepositoryDesiredConfig(
+export function toRepositoryFeatures(
   repositoryNode: GraphQLQueryResponseGetRepos,
   featureToEnable: string = process.env.ENABLE_ON as string,
   isRequireCreateIssue: boolean = process.env.CREATE_ISSUE === "true",
-): RepositoryDesiredConfig {
+): RepositoryFeatures {
   return {
     enableDependabot: featureToEnable.includes("dependabot") as boolean,
     enableDependabotUpdates: featureToEnable.includes(
@@ -56,6 +56,6 @@ export function toRepositoryDesiredConfig(
     ),
     createIssue: isRequireCreateIssue,
     repo: repositoryNode.nameWithOwner,
-    repositoryNode: repositoryNode,
+    targetRepositoryNode: repositoryNode,
   };
 }

@@ -1,12 +1,12 @@
 import {
-  toRepositoryDesiredConfig,
+  toRepositoryFeatures,
   whereRepositoryViewerPermissionIsAdmin,
   whereRepositoryLanguageToCheckIsMatched,
   whereRepositoryVisibilityIsNotPublic,
 } from "../src/utils/predicates";
 import {
   GraphQLQueryResponseGetRepos,
-  RepositoryDesiredConfig,
+  RepositoryFeatures,
 } from "../types/common";
 
 describe("whereRepositoryViewerPermissionIsAdmin", () => {
@@ -57,8 +57,8 @@ describe("whereRepositoryLanguageToCheckIsMatched", () => {
 describe("whereRepositoryVisibilityIsNotPublic", () => {
   const mockRepositoryNode = {
     nameWithOwner: "TestOwner/TestRepo",
-    isPrivate: true,
-  };
+    visibility: "PRIVATE",
+  } as GraphQLQueryResponseGetRepos;
 
   it("should return true when repository is private", () => {
     const result = whereRepositoryVisibilityIsNotPublic(mockRepositoryNode);
@@ -68,13 +68,13 @@ describe("whereRepositoryVisibilityIsNotPublic", () => {
   it("should return false when repository is public", () => {
     const result = whereRepositoryVisibilityIsNotPublic({
       ...mockRepositoryNode,
-      isPrivate: false,
-    });
+      visibility: "PRIVATE",
+    } as GraphQLQueryResponseGetRepos);
     expect(result).toBe(false);
   });
 });
 
-describe("toRepositoryDesiredConfig", () => {
+describe("toRepositoryFeatures", () => {
   const mockRepositoryNode = Object.create(null, {
     nameWithOwner: { value: "TestOwner/TestRepo", enumerable: true },
     primaryLanguage: {
@@ -90,8 +90,7 @@ describe("toRepositoryDesiredConfig", () => {
       "dependabot,dependabotupdates,secretscanning,codescanning,pushprotection,actions";
     process.env.CREATE_ISSUE = "true";
 
-    const result: RepositoryDesiredConfig =
-      toRepositoryDesiredConfig(mockRepositoryNode);
+    const result: RepositoryFeatures = toRepositoryFeatures(mockRepositoryNode);
     expect(result).toEqual({
       enableDependabot: true,
       enableDependabotUpdates: true,
@@ -110,8 +109,7 @@ describe("toRepositoryDesiredConfig", () => {
     process.env.ENABLE_ON = "";
     process.env.CREATE_ISSUE = "false";
 
-    const result: RepositoryDesiredConfig =
-      toRepositoryDesiredConfig(mockRepositoryNode);
+    const result: RepositoryFeatures = toRepositoryFeatures(mockRepositoryNode);
     expect(result).toEqual({
       enableDependabot: false,
       enableDependabotUpdates: false,
@@ -130,7 +128,7 @@ describe("toRepositoryDesiredConfig", () => {
     process.env.ENABLE_ON = "dependabot";
     process.env.CREATE_ISSUE = "true";
 
-    const result: RepositoryDesiredConfig = toRepositoryDesiredConfig({
+    const result: RepositoryFeatures = toRepositoryFeatures({
       ...mockRepositoryNode,
       primaryLanguage: null,
     });

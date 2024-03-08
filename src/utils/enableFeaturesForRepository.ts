@@ -1,6 +1,6 @@
 import { Octokit } from "@octokit/core";
 
-import { inform } from "./globals";
+import { error, inform } from "./globals";
 import { findDefaultBranch } from "./findDefaultBranch";
 import { findDefaultBranchSHA } from "./findDefaultBranchSHA";
 import { createBranch } from "./createBranch";
@@ -14,18 +14,12 @@ import { enableDependabotFixes } from "./enableDependabotUpdates";
 import { enableIssueCreation } from "./enableIssueCreation";
 import { enableActionsOnRepo } from "./enableActions";
 import { checkIfCodeQLHasAlreadyRanOnRepo } from "./checkCodeQLEnablement";
+import {
+  GraphQLQueryResponseGetRepos,
+  RepositoryFeatures,
+} from "../../types/common";
 
-export type RepositoryFeatures = {
-  enableDependabot: boolean;
-  enableDependabotUpdates: boolean;
-  enableSecretScanning: boolean;
-  enableCodeScanning: boolean;
-  enablePushProtection: boolean;
-  enableActions: boolean;
-  primaryLanguage: string;
-  createIssue: boolean;
-  repo: string;
-};
+import { whereRepositoryLanguageToCheckIsMatched as isMatchesRepositoryLanguageToCheck } from "./predicates";
 
 export const enableFeaturesForRepository = async ({
   repository,
@@ -46,6 +40,7 @@ export const enableFeaturesForRepository = async ({
     createIssue,
     enableCodeScanning,
     enableActions,
+    targetRepositoryNode,
   } = repository;
 
   const [owner, repo] = repoName.split("/");
@@ -55,17 +50,8 @@ export const enableFeaturesForRepository = async ({
     ? await enableGHAS(owner, repo, client)
     : null;
 
-  // If they want to enable Dependabot, and they are NOT on GHES (as that currently isn't GA yet), enable Dependabot
-  enableDependabot && process.env.GHES != "true"
-    ? await enableDependabotAlerts(owner, repo, client)
-    : null;
-
-  // If they want to enable Dependabot Security Updates, and they are NOT on GHES (as that currently isn't GA yet), enable Dependabot Security Updates
-  enableDependabotUpdates && process.env.GHES != "true"
-    ? await enableDependabotFixes(owner, repo, client)
-    : null;
-
   // Kick off the process for enabling Secret Scanning
+  // Secret should be enabled whenever desired even when the repository is archived
   enableSecretScanning
     ? await enableSecretScanningAlerts(
         owner,
@@ -75,11 +61,49 @@ export const enableFeaturesForRepository = async ({
       )
     : null;
 
+  if (targetRepositoryNode?.isArchived) {
+    inform(`Repository ${repoName} is archived, skipping further processing`);
+    return;
+  }
+
+  // If they want to enable Dependabot, and they are NOT on GHES (as that currently isn't GA yet), enable Dependabot
+  try {
+    enableDependabot ? await enableDependabotAlerts(owner, repo, client) : null;
+  } catch (e) {
+    if (process.env.GHES === "true") {
+      inform(
+        `Error enabling Dependabot for ${owner}/${repo} (probably because the feature is not supported in this version of GHES): ${e}`,
+      );
+    } else {
+      error(`Error enabling Dependabot for ${owner}/${repo}: ${e}`);
+    }
+  }
+
+  // If they want to enable Dependabot Security Updates, and they are NOT on GHES (as that currently isn't GA yet), enable Dependabot Security Updates
+  try {
+    enableDependabotUpdates
+      ? await enableDependabotFixes(owner, repo, client)
+      : null;
+  } catch (e) {
+    if (process.env.GHES === "true") {
+      inform(
+        `Error enabling Dependabot for ${owner}/${repo} (probably because the feature is not supported in this version of GHES): ${e}`,
+      );
+    } else {
+      error(`Error enabling Dependabot for ${owner}/${repo}: ${e}`);
+    }
+  }
+
   // If they want to enable Actions
   enableActions ? await enableActionsOnRepo(owner, repo, client) : null;
 
   // Kick off the process for enabling Code Scanning only if it is set to be enabled AND the primary language for the repo exists. If it doesn't exist that means CodeQL doesn't support it.
-  if (enableCodeScanning && primaryLanguage != "no-language") {
+  if (
+    enableCodeScanning &&
+    isMatchesRepositoryLanguageToCheck(
+      targetRepositoryNode as GraphQLQueryResponseGetRepos,
+    )
+  ) {
     // First, let's check and see if CodeQL has already ran on that repository. If it has, we don't need to do anything.
     const codeQLAlreadyRan = await checkIfCodeQLHasAlreadyRanOnRepo(
       owner,

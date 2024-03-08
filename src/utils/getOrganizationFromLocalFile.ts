@@ -6,8 +6,8 @@ import {
 
 import { inform, orgsFileLocation } from "./globals";
 
-/* The reason I am doing this versus import x from "../x" is becuase the file may not exist */
-export async function getOrganizationFromLocalFile() {
+/* The reason I am doing this versus import x from "../x" is because the file may not exist */
+export async function getOrganizationFromLocalFile(): Promise<getOrgLocalFileResponse> {
   try {
     const data = (await fs.readFile(orgsFileLocation, "utf-8")) as string;
     const organizations = JSON.parse(data) as orgsInEnterpriseArray;
@@ -16,6 +16,6 @@ export async function getOrganizationFromLocalFile() {
     inform(
       `Could not find file: ${orgsFileLocation}. Assuming no organizations have been collected.`,
     );
-    return { status: 404, data: null } as getOrgLocalFileResponse;
+    return { status: 404, data: null };
   }
 }
