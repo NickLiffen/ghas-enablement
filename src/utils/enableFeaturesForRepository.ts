@@ -19,7 +19,10 @@ import {
   RepositoryFeatures,
 } from "../../types/common";
 
-import { whereRepositoryLanguageToCheckIsMatched as isMatchesRepositoryLanguageToCheck } from "./predicates";
+import {
+  whereRepositoryLanguageToCheckIsMatched as isMatchesRepositoryLanguageToCheck,
+  whereRepositoryVisibilityIsNotPublic as isNotPublicRepositoryVisibility,
+} from "./predicates";
 
 export const enableFeaturesForRepository = async ({
   repository,
@@ -46,7 +49,10 @@ export const enableFeaturesForRepository = async ({
   const [owner, repo] = repoName.split("/");
 
   // If Code Scanning or Secret Scanning need to be enabled, let's go ahead and enable GHAS first
-  enableCodeScanning || enableSecretScanning
+  (enableCodeScanning || enableSecretScanning) &&
+  isNotPublicRepositoryVisibility(
+    targetRepositoryNode as GraphQLQueryResponseGetRepos,
+  )
     ? await enableGHAS(owner, repo, client)
     : null;
 
