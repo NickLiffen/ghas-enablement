@@ -5,6 +5,7 @@ import { createFile } from "./writeToFile";
 import {
   Func,
   GetGraphQLQueryFunction,
+  GraphQLQueryResponseGetRepos,
   orgsInEnterpriseArray,
   response,
 } from "../../types/common";
@@ -46,8 +47,12 @@ export const collectRepos = async (
         graphQuery,
       )) as GraphQlQueryResponseData;
       res[index].repos = repositoriesInOrg
-        .filter(whereRepositoryViewerPermissionIsAdmin)
-        .map(toRepositoryFeatures);
+        .filter((repositoryNode: GraphQLQueryResponseGetRepos) =>
+          whereRepositoryViewerPermissionIsAdmin(repositoryNode),
+        )
+        .map((repositoryNode: GraphQLQueryResponseGetRepos) =>
+          toRepositoryFeatures(repositoryNode),
+        );
     }
     inform(`All repos collected. Writing them to file: ${reposFileLocation}`);
     await createFile(res, reposFileLocation);
