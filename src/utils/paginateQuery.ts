@@ -4,14 +4,9 @@ import { Octokit } from "@octokit/core";
 
 import { GraphQlQueryResponseData } from "@octokit/graphql";
 
-import {
-  GraphQLQueryResponse,
-  usersWriteAdminReposArray,
-} from "../../types/common";
+import { GraphQLQueryResponse } from "../../types/common";
 
-import { filterAsync } from "./filterAsync";
 import { error, inform } from "./globals";
-import { getcodeQLLanguage } from "./getcodeQLLanguage";
 
 const performRepositoryQuery = async (
   client: Octokit,
@@ -42,9 +37,9 @@ const getRepositoryInOrganizationPaginate = async (
   client: Octokit,
   slug: string,
   query: string,
-  paginatedData = [] as usersWriteAdminReposArray,
+  paginatedData = [] as GraphQlQueryResponseData,
   ec = null as string | null,
-): Promise<usersWriteAdminReposArray> => {
+): Promise<GraphQlQueryResponseData> => {
   try {
     const [hasNextPage, endCursor, nodes] = await performRepositoryQuery(
       client,
@@ -53,64 +48,21 @@ const getRepositoryInOrganizationPaginate = async (
       ec,
     );
 
-    /* If (the viewerPermission is set to NULL OR the viewerPermission is set to ADMIN) 
-      OR the reposiory is not archived, keep in the array*/
-    const results = await filterAsync(nodes, async (value) => {
-      const {
-        nameWithOwner,
-        viewerPermission,
+    nodes.forEach(
+      ({
         isArchived,
+        nameWithOwner,
         primaryLanguage,
+        viewerPermission,
         visibility,
-      } = value;
-      const { name } = primaryLanguage || { name: "no-language" };
-      inform(
-        `Repo Name: ${nameWithOwner} Permission: ${viewerPermission} Archived: ${isArchived} Language: ${name} Visibility: ${visibility}`,
-      );
-      const languageCheck = process.env.LANGUAGE_TO_CHECK
-        ? name.toLocaleLowerCase() === `${process.env.LANGUAGE_TO_CHECK}`
-        : true;
-      const publicRepoCheck =
-        process.env.GHES === "true"
-          ? true
-          : visibility === "PRIVATE" || visibility === "INTERNAL"
-            ? true
-            : false;
-      return (viewerPermission === "ADMIN" || viewerPermission === null) &&
-        isArchived === false &&
-        languageCheck &&
-        publicRepoCheck
-        ? true
-        : false;
-    });
-
-    inform(
-      `Found ${results.length} repositories that met the valid criteria in the organisation ${slug}. Out of ${nodes.length}.`,
+      }) => {
+        inform(
+          `FOUND in organization::${slug} >>>> Repo Name: ${nameWithOwner} Permission: ${viewerPermission} Archived: ${isArchived} Language: ${primaryLanguage?.name} Visibility: ${visibility}`,
+        );
+      },
     );
 
-    const enable = process.env.ENABLE_ON as string;
-
-    if (enable.includes("pushprotection") && !enable.includes("secretscanning"))
-      throw new Error(
-        "You cannot enable pushprotection without enabling secretscanning",
-      );
-
-    results.forEach((element) => {
-      return paginatedData.push({
-        enableDependabot: enable.includes("dependabot") as boolean,
-        enableDependabotUpdates: enable.includes(
-          "dependabotupdates",
-        ) as boolean,
-        enableSecretScanning: enable.includes("secretscanning") as boolean,
-        enableCodeScanning: enable.includes("codescanning") as boolean,
-        enablePushProtection: enable.includes("pushprotection") as boolean,
-        enableActions: enable.includes("actions") as boolean,
-        primaryLanguage: getcodeQLLanguage(element.primaryLanguage?.name || ""),
-        createIssue:
-          process.env.CREATE_ISSUE === "true" ? true : (false as boolean),
-        repo: element.nameWithOwner,
-      });
-    });
+    paginatedData.push(...nodes);
 
     if (hasNextPage) {
       await getRepositoryInOrganizationPaginate(
@@ -131,7 +83,7 @@ const getRepositoryInOrganizationPaginate = async (
 export const paginateQuery = async (
   slug: string,
   graphQuery: string,
-): Promise<usersWriteAdminReposArray> => {
+): Promise<GraphQlQueryResponseData> => {
   try {
     const client = await octokit();
     const data = await getRepositoryInOrganizationPaginate(
@@ -139,7 +91,7 @@ export const paginateQuery = async (
       slug,
       graphQuery,
     );
-    return data.filter(({ primaryLanguage: pl }) => pl !== "no-language");
+    return data;
   } catch (err) {
     error(err);
     throw err;

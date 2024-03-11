@@ -41,8 +41,8 @@ const getOrganisationsInEnterprise = async (
   client: Octokit,
   slug: string,
   query: string,
-  paginatedData = [] as orgsInEnterpriseArray,
-  ec = null as string | null,
+  paginatedData: orgsInEnterpriseArray = [],
+  ec: string | null = null,
 ): Promise<orgsInEnterpriseArray> => {
   try {
     const [hasNextPage, endCursor, nodes] = await performOrganisationsQuery(
